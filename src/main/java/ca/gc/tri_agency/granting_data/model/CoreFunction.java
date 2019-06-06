@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
-public class GrantSystemCapability implements LocalizedParametersModel {
+public class CoreFunction implements LocalizedParametersModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -22,15 +22,8 @@ public class GrantSystemCapability implements LocalizedParametersModel {
 
 	protected String nameFr;
 
-	protected String acronymFr;
+	protected String acronym;
 
-	protected String acronymEn;
-
-	@ManyToOne
-	@JoinColumn(name = "granting_system_id")
-	private GrantingSystem grantingSystem;
-
-	/** General type indicator. */
 	@Column(name = "granting_function")
 	@Enumerated(EnumType.STRING)
 	private GrantingFunction grantingFunction;
@@ -40,15 +33,14 @@ public class GrantSystemCapability implements LocalizedParametersModel {
 		ADMIN, APPLY, ASSESS, AWARD, AQUIT
 	}
 
-	public GrantSystemCapability() {
+	public CoreFunction() {
 
 	}
 
-	public GrantSystemCapability(String nameEn, String nameFr, String acronymEn, String acronymnFr) {
+	public CoreFunction(String nameEn, String nameFr, String acronym) {
 		this.setNameEn(nameEn);
 		this.setNameFr(nameFr);
-		this.setAcronymEn(acronymEn);
-		this.setAcronymFr(acronymnFr);
+		this.setAcronym(acronym);
 	}
 
 	public String getNameEn() {
@@ -67,33 +59,18 @@ public class GrantSystemCapability implements LocalizedParametersModel {
 		this.nameFr = nameFr;
 	}
 
-	public String getAcronymFr() {
-		return acronymFr;
+	public String getAcronym() {
+		return acronym;
 	}
 
-	public void setAcronymFr(String acronymFr) {
-		this.acronymFr = acronymFr;
-	}
-
-	public String getAcronymEn() {
-		return acronymEn;
-	}
-
-	public void setAcronymEn(String acronymEn) {
-		this.acronymEn = acronymEn;
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public GrantingSystem getGrantingSystem() {
-		return grantingSystem;
-	}
-
-	public void setGrantingSystem(GrantingSystem grantingSystem) {
-		this.grantingSystem = grantingSystem;
-	}
 
 	public GrantingFunction getGrantingFunction() {
 		return grantingFunction;

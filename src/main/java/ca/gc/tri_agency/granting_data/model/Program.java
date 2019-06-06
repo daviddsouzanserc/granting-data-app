@@ -44,20 +44,10 @@ public class Program implements LocalizedParametersModel {
 
 	private String programLeadName;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable
-	private Set<GrantSystemCapability> grantingCapabilities;
-
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable
-	private Set<Agency> agencies;
-
 	public Program() {
-		agencies = new HashSet<Agency>();
 	}
 
 	public void loadFromForm(ProgramForm f) {
-		this.setAgencies(f.getAgencies());
 		this.setApplyMethod(f.getApplyMethod());
 		this.setAwardManagementSystem(f.getAwardManagementSystem());
 		this.setDivision(f.getDivision());
@@ -126,15 +116,6 @@ public class Program implements LocalizedParametersModel {
 	public void setProgramLeadName(String programLeadName) {
 		this.programLeadName = programLeadName;
 	}
-
-	public Set<Agency> getAgencies() {
-		return agencies;
-	}
-
-	public void setAgencies(Set<Agency> agencies) {
-		this.agencies = agencies;
-	}
-
 	public Agency getLeadAgency() {
 		return leadAgency;
 	}
@@ -168,11 +149,4 @@ public class Program implements LocalizedParametersModel {
 		this.fundingType = fundingType;
 	}
 
-	public Set<GrantSystemCapability> getGrantingCapabilities() {
-		return grantingCapabilities;
-	}
-
-	public void setGrantingCapabilities(Set<GrantSystemCapability> grantingCapabilities) {
-		this.grantingCapabilities = grantingCapabilities;
-	}
 }

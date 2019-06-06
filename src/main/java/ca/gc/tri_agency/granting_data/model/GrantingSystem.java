@@ -18,9 +18,7 @@ public class GrantingSystem implements LocalizedParametersModel {
 	protected String nameFr;// awards management information system (AMIS)
 	// Système inform
 	// atisé de gestion des subventions et bourses (AMIS)
-	protected String acronymFr;
-
-	protected String acronymEn;
+	protected String acronym;
 
 	public GrantingSystem() {
 
@@ -29,8 +27,35 @@ public class GrantingSystem implements LocalizedParametersModel {
 	public GrantingSystem(String nameEn, String nameFr, String acronymEn, String acronymnFr) {
 		this.setNameEn(nameEn);
 		this.setNameFr(nameFr);
-		this.setAcronymEn(acronymEn);
-		this.setAcronymFr(acronymnFr);
+		this.setAcronym(acronym);
+	}
+
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
+
+	public String getNameFr() {
+		return nameFr;
+	}
+
+	public void setNameFr(String nameFr) {
+		this.nameFr = nameFr;
+	}
+
+	public String getAcronym() {
+		return acronym;
+	}
+
+	public void setAcronym(String acronym) {
+		this.acronym = acronym;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	// public String getName() {
@@ -53,40 +78,5 @@ public class GrantingSystem implements LocalizedParametersModel {
 	// return retval;
 	// }
 	//
-	public String getNameEn() {
-		return nameEn;
-	}
-
-	public void setNameEn(String nameEn) {
-		this.nameEn = nameEn;
-	}
-
-	public String getNameFr() {
-		return nameFr;
-	}
-
-	public void setNameFr(String nameFr) {
-		this.nameFr = nameFr;
-	}
-
-	public String getAcronymFr() {
-		return acronymFr;
-	}
-
-	public void setAcronymFr(String acronymFr) {
-		this.acronymFr = acronymFr;
-	}
-
-	public String getAcronymEn() {
-		return acronymEn;
-	}
-
-	public void setAcronymEn(String acronymEn) {
-		this.acronymEn = acronymEn;
-	}
-
-	public Long getId() {
-		return id;
-	}
 
 }

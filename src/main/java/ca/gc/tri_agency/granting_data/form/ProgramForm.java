@@ -63,7 +63,6 @@ public class ProgramForm {
 		this.applyMethod = p.getApplyMethod();
 		this.awardManagementSystem = p.getAwardManagementSystem();
 		this.programLeadName = p.getProgramLeadName();
-		this.agencies = p.getAgencies();
 		this.leadAgency = p.getLeadAgency();
 
 	}

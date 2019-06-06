@@ -4,32 +4,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
-public class DatasetAppRegistrationRole implements LocalizedParametersModel {
+public class SystemProgram implements LocalizedParametersModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String identifier;
+	private String extId;
 
 	private String nameEn;
 
 	private String nameFr;
+	
+	@ManyToOne
+	@JoinColumn(name = "linked_program_id")
+	private Program linkedProgram;
 
-	public String toString() {
-		return "" + id + " : " + identifier + " : " + nameEn + " : " + nameFr;
-	}
-
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+	@ManyToOne
+	@JoinColumn(name = "granting_system_id")
+	private GrantingSystem grantingSystem;
 
 	public String getNameEn() {
 		return nameEn;
@@ -50,4 +48,13 @@ public class DatasetAppRegistrationRole implements LocalizedParametersModel {
 	public Long getId() {
 		return id;
 	}
+
+	public String getExtId() {
+		return extId;
+	}
+
+	public void setExtId(String extId) {
+		this.extId = extId;
+	}
+
 }

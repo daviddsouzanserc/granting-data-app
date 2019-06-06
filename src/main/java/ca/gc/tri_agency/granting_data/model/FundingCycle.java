@@ -10,32 +10,21 @@ import javax.persistence.ManyToOne;
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
-public class DatasetProgram implements LocalizedParametersModel {
+public class FundingCycle implements LocalizedParametersModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private String extId;
 
-	@ManyToOne
-	@JoinColumn(name = "agency_id")
-	private Agency leadAgency;
-
-	@ManyToOne
-	@JoinColumn(name = "dataset_id")
-	private Dataset dataset;
-
 	private String nameEn;
 
 	private String nameFr;
-
+	
 	@ManyToOne
-	@JoinColumn(name = "entity_link_id", nullable = true)
-	private EntityLinkProgram entityLink;
+	@JoinColumn(name = "program_id")
+	private Program program;
 
-	public String toString() {
-		return "DatasetProgram: " + id + " : " + extId + " : " + nameEn + " : " + nameFr;
-	}
 
 	public String getNameEn() {
 		return nameEn;
@@ -65,28 +54,12 @@ public class DatasetProgram implements LocalizedParametersModel {
 		this.extId = extId;
 	}
 
-	public Dataset getDataset() {
-		return dataset;
+	public Program getProgram() {
+		return program;
 	}
 
-	public void setDataset(Dataset dataset) {
-		this.dataset = dataset;
-	}
-
-	public EntityLinkProgram getEntityLink() {
-		return entityLink;
-	}
-
-	public void setEntityLink(EntityLinkProgram entityLink) {
-		this.entityLink = entityLink;
-	}
-
-	public Agency getLeadAgency() {
-		return leadAgency;
-	}
-
-	public void setLeadAgency(Agency leadAgency) {
-		this.leadAgency = leadAgency;
+	public void setProgram(Program program) {
+		this.program = program;
 	}
 
 }

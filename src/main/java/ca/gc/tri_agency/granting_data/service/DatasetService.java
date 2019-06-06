@@ -9,7 +9,7 @@ import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.Dataset;
 import ca.gc.tri_agency.granting_data.model.DatasetConfiguration;
 import ca.gc.tri_agency.granting_data.model.DatasetOrganization;
-import ca.gc.tri_agency.granting_data.model.DatasetProgram;
+import ca.gc.tri_agency.granting_data.model.SystemProgram;
 import ca.gc.tri_agency.granting_data.model.EntityLinkOrganization;
 import ca.gc.tri_agency.granting_data.model.EntityLinkProgram;
 import ca.gc.tri_agency.granting_data.model.Organization;
@@ -34,7 +34,7 @@ public interface DatasetService {
 
 	public Dataset configureNewDatasetFromFilename(String filename);
 
-	public DatasetProgram getDatasetProgram(long id);
+	public SystemProgram getDatasetProgram(long id);
 
 	public DatasetOrganization getDatasetOrganization(long id);
 
@@ -48,13 +48,13 @@ public interface DatasetService {
 
 	public long linkMatchingOrgEntities(Long id);
 
-	public List<DatasetProgram> getUnlinkedDatasetPrograms(long id);
+	public List<SystemProgram> getUnlinkedDatasetPrograms(long id);
 
 	List<DatasetOrganization> getUnlinkedDatasetOrgs(long id);
 
-	public void linkDatasetProgram(DatasetProgram dsProg, Program prog);
+	public void linkDatasetProgram(SystemProgram dsProg, Program prog);
 
-	public Program createProgramFromDatasetProg(DatasetProgram prog, Agency defaultAgency);
+	public Program createProgramFromDatasetProg(SystemProgram prog, Agency defaultAgency);
 
 	public long linkMatchingProgramEntities(Long id);
 

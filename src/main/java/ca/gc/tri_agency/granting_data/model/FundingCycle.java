@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
+import java.text.SimpleDateFormat;
 @Entity
 public class FundingCycle implements LocalizedParametersModel {
 	@Id
@@ -24,7 +25,10 @@ public class FundingCycle implements LocalizedParametersModel {
 	@ManyToOne
 	@JoinColumn(name = "program_id")
 	private Program program;
-
+	
+	/*could add:
+	private SimpleDateFormat applyDeadlineDate;
+	*/ 
 
 	public String getNameEn() {
 		return nameEn;
@@ -61,5 +65,14 @@ public class FundingCycle implements LocalizedParametersModel {
 	public void setProgram(Program program) {
 		this.program = program;
 	}
+	
+	/*
+	public SimpleDateFormat getApplyDeadlineDate() {
+		return applyDeadlineDate;
+	}
 
+	public void setApplyDeadlineDate(SimpleDateFormat applyDeadlineDate) {
+		this.applyDeadlineDate = applyDeadlineDate;
+	}
+	*/
 }

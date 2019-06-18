@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
 <head>
 <meta charset="ISO-8859-1">
 <title>Granting Data - Home</title>
 </head>
 <body>
+	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	<div class="container">
-		<p>Welcome to the data store. Please select one of the following
-			options</p>
+		<p>Welcome to the Granting Data Application. Please select one of the following options</p>
 		<ol>
 			<li><a href="login">Login</a></li>
 		</ol>

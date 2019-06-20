@@ -36,9 +36,9 @@ public class Program implements LocalizedParametersModel {
 	@JoinColumn(name = "lead_agency_id")
 	private Agency leadAgency;
 	
-//	@ManyToMany
-//	@JoinColumn(name = "participating_agency_id")
-//	private Agency participatingAgency;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable
+	private Set<Agency> participatingAgencies;
 
 	private String division; // could be dropped
 

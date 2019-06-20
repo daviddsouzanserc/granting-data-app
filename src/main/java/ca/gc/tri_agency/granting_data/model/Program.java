@@ -35,6 +35,10 @@ public class Program implements LocalizedParametersModel {
 	@ManyToOne
 	@JoinColumn(name = "lead_agency_id")
 	private Agency leadAgency;
+	
+//	@ManyToMany
+//	@JoinColumn(name = "participating_agency_id")
+//	private Agency participatingAgency;
 
 	private String division; // could be dropped
 

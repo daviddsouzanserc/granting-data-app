@@ -24,10 +24,10 @@ public class SystemFundingOpportunity implements LocalizedParametersModel {
 	@ManyToOne
 	@JoinColumn(name = "linked_funding_opportunity_id")
 	private FundingOpportunity linkedFundingOpportunity;
-
+	
 	@ManyToOne
-	@JoinColumn(name = "core_function_system_map__id")
-	private CoreFunctionSystemMap coreFunctionSystemMap;
+	@JoinColumn(name = "granting_system_id")
+	private GrantingSystem grantingSystem;
 
 	public String getNameEn() {
 		return nameEn;

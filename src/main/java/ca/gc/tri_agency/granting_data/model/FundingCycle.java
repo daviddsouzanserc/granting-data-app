@@ -23,8 +23,8 @@ public class FundingCycle implements LocalizedParametersModel {
 	private String nameFr;
 	
 	@ManyToOne
-	@JoinColumn(name = "program_id")
-	private Program program;
+	@JoinColumn(name = "funding_opportunity_id")
+	private FundingOpportunity fundingOpportunity;
 	
 	/*could add:
 	private SimpleDateFormat applyDeadlineDate;
@@ -58,12 +58,12 @@ public class FundingCycle implements LocalizedParametersModel {
 		this.extId = extId;
 	}
 
-	public Program getProgram() {
-		return program;
+	public FundingOpportunity getFundingOpportunity() {
+		return fundingOpportunity;
 	}
 
-	public void setProgram(Program program) {
-		this.program = program;
+	public void setFundingOpportunity(FundingOpportunity program) {
+		this.fundingOpportunity = program;
 	}
 	
 	/*

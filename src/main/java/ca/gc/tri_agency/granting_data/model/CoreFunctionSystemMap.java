@@ -20,8 +20,8 @@ public class CoreFunctionSystemMap implements LocalizedParametersModel {
 	private String nameFr;
 	
 	@ManyToOne
-	@JoinColumn(name = "program_id")
-	private Program program;
+	@JoinColumn(name = "funding_opportunity_id")
+	private FundingOpportunity fundingOpportunity;
 
 	@ManyToOne
 	@JoinColumn(name = "core_function_id")
@@ -52,12 +52,12 @@ public class CoreFunctionSystemMap implements LocalizedParametersModel {
 	}
 
 
-	public Program getProgram() {
-		return program;
+	public FundingOpportunity getFundingOpportunity() {
+		return fundingOpportunity;
 	}
 
-	public void setProgram(Program program) {
-		this.program = program;
+	public void setFundingOpportunity(FundingOpportunity program) {
+		this.fundingOpportunity = program;
 	}
 
 	public CoreFunction getCoreFunction() {

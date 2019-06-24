@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
-import ca.gc.tri_agency.granting_data.model.Program;
+import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 
 public class ProgramForm {
 
@@ -53,7 +53,7 @@ public class ProgramForm {
 	@NotNull
 	private Agency leadAgency;
 
-	public ProgramForm(Program p) {
+	public ProgramForm(FundingOpportunity p) {
 		id = p.getId();
 		nameEn = p.getNameEn();
 		nameFr = p.getNameFr();

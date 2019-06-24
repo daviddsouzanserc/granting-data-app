@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
-public class SystemProgram implements LocalizedParametersModel {
+public class SystemFundingOpportunity implements LocalizedParametersModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -22,12 +22,12 @@ public class SystemProgram implements LocalizedParametersModel {
 	private String nameFr;
 	
 	@ManyToOne
-	@JoinColumn(name = "linked_program_id")
-	private Program linkedProgram;
+	@JoinColumn(name = "linked_funding_opportunity_id")
+	private FundingOpportunity linkedFundingOpportunity;
 
 	@ManyToOne
-	@JoinColumn(name = "granting_system_id")
-	private GrantingSystem grantingSystem;
+	@JoinColumn(name = "core_function_system_map__id")
+	private CoreFunctionSystemMap coreFunctionSystemMap;
 
 	public String getNameEn() {
 		return nameEn;

@@ -22,8 +22,8 @@ public class LeadContributor {
 	private String email;
 	
 	@ManyToOne
-	@JoinColumn(name = "program_id")
-	private Program program;
+	@JoinColumn(name = "funding_opportunity_id")
+	private FundingOpportunity fundingOpportunity;
 
 	@ManyToOne
 	@JoinColumn(name = "aduser_id")
@@ -49,12 +49,12 @@ public class LeadContributor {
 		this.email = email;
 	}
 
-	public Program getProgram() {
-		return program;
+	public FundingOpportunity getFundingOpportunity() {
+		return fundingOpportunity;
 	}
 
-	public void setProgram(Program program) {
-		this.program = program;
+	public void setFundingOpportunity(FundingOpportunity program) {
+		this.fundingOpportunity = program;
 	}
 
 	public ADUser getAduser() {

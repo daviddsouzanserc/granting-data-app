@@ -23,7 +23,7 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 import java.text.SimpleDateFormat;
 
 @Entity
-public class Program implements LocalizedParametersModel {
+public class FundingOpportunity implements LocalizedParametersModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -64,7 +64,7 @@ public class Program implements LocalizedParametersModel {
 	private SimpleDateFormat applicationDeadline;
 
 	*/
-	public Program() {
+	public FundingOpportunity() {
 	}
 
 	public void loadFromForm(ProgramForm f) {

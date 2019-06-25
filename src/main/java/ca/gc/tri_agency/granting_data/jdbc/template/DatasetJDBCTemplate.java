@@ -23,15 +23,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import ca.gc.tri_agency.granting_data.jdbc.DatasetDAO;
-import ca.gc.tri_agency.granting_data.jdbc.DatasetRowMapper;
-import ca.gc.tri_agency.granting_data.model.Dataset;
-import ca.gc.tri_agency.granting_data.model.Dataset.DatasetStatus;
-import ca.gc.tri_agency.granting_data.model.Dataset.DatasetType;
 import ca.gc.tri_agency.granting_data.model.file.ApplyDatasetRow;
 import ca.gc.tri_agency.granting_data.model.file.AwardDatasetRow;
-import ca.gc.tri_agency.granting_data.repo.DatasetConfigurationRepository;
-import ca.gc.tri_agency.granting_data.repo.DatasetRepository;
-import ca.gc.tri_agency.granting_data.service.DatasetService;
+//import ca.gc.tri_agency.granting_data.repo.DatasetConfigurationRepository;
+//import ca.gc.tri_agency.granting_data.repo.DatasetRepository;
 
 @Component
 public class DatasetJDBCTemplate implements DatasetDAO {
@@ -42,11 +37,11 @@ public class DatasetJDBCTemplate implements DatasetDAO {
 	@Autowired
 	JdbcTemplate jdbcTemplateObject;
 	
-	@Autowired
-	DatasetRepository datasetRepo;
-	
-	@Autowired
-	DatasetConfigurationRepository datasetConfigRepo;
+//	@Autowired
+//	DatasetRepository datasetRepo;
+//	
+//	@Autowired
+//	DatasetConfigurationRepository datasetConfigRepo;
 	
 	@Override
 	public void setDataSource(DataSource dataSource) {

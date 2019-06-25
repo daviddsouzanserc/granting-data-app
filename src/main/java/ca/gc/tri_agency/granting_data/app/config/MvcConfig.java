@@ -25,5 +25,33 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/login").setViewName("login");
 	}
 	
-	
+	@Bean
+	public Function<String, String> currentUrlWithoutParam() {
+		return param -> ServletUriComponentsBuilder.fromCurrentRequest().replaceQueryParam(param).toUriString();
+	}
+
+	@Bean("messageSource")
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:messages");
+
+		messageSource.setDefaultEncoding("UTF-8");
+		messageSource.setUseCodeAsDefaultMessage(false);
+		return messageSource;
+	}
+
+	@Bean
+	public LocaleResolver localeResolver() {
+		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+		// CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+		localeResolver.setDefaultLocale(Locale.ENGLISH);
+		return localeResolver;
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+		localeChangeInterceptor.setParamName("lang");
+		registry.addInterceptor(localeChangeInterceptor);
+	}
 }

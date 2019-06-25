@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links,scripts)">
+<meta charset="ISO-8859-1">
+<title th:replace="${title}">Application</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<!-- Common styles and scripts -->
+	<link rel="stylesheet" type="text/css"
+		href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" th:href="@{/css/main.css}"
+		href="../../css/main.css" />
+	<script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<!--/* Per-page placeholder for additional links */-->
+  	<th:block th:replace="${links}" />
+
+	<!--/* Per-page placeholder for additional links */-->
+  	<th:block th:replace="${scripts}" />
+<title>Insert title here</title>
+</head>
+
+<body>
+	<header th:fragment="header_nav(activeTab)">
+	<div class="container" style="height:10px; align: right;">
+		<nav class="navbar">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="nav-item" th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
+   					<a class="nav-link" th:href="@{${currentUrl}(lang=#{lang.otherLocale})}" th:text="#{lang.otherLanguage}">other language</a>
+				</li>
+				<li class="nav-item" th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
+					<form th:action="@{/logout}" method="post"><input type="submit" value="Sign Out"/ class="btn"></form>
+				</li>
+   			</ul>
+		</nav>
+	</div>
+	<div class="container"><img src="/images/sig-blk-en.svg" height="40px;" style="padding: 4px;"/></div>
+	
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a th:class="${activeTab == 'home'}? 'navbar-brand active' : 'navbar-brand'"href="/">Granting Data</a>
+			</div>  <!-- 
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li th:class="${activeTab == 'api'}? 'active' : null"><a href="/api/home">APIs</a></li>
+					<li th:class="${activeTab == 'entities'}? 'active' : null"><a href="/entities/home">Entities</a></li>
+					<li th:class="${activeTab == 'reports'}? 'active' : null"><a href="/reports/home">Reports</a></li>
+					<li th:class="${activeTab == 'datasets'}? 'active' : null"><a href="/datasets/home">Data-Sets</a></li>
+					
+				</ul>
+			</div>      all the different tabs will be put in this list-->
+		</div>
+	</nav>
+	</header>
+</body>
+</html>

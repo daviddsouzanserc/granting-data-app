@@ -1,42 +1,43 @@
 package ca.gc.tri_agency.granting_data.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.naming.Name;
+
+import org.springframework.ldap.odm.annotations.Attribute;
+import org.springframework.ldap.odm.annotations.Entry;
+import org.springframework.ldap.odm.annotations.Id;
 
 
-@Entity
+@Entry(
+	base = "ou=users"/* or should be "ou=people" */,	
+	objectClasses = { /* "person", "inetOrgPerson", "top"  */ }	)
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Name id;
 
-	private String name;
-
-	private String email;
+	private @Attribute(name = "cn") String username;
+	private @Attribute(name = "sn") String password;
 	
-
-	public Long getId() {
+	public Name getId() {
 		return id;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	
+	public String getUsername() {
+		return username;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
 	
+	public void setId(Name id) {
+		this.id = id;
+	}
 	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

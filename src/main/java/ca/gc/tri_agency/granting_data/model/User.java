@@ -8,7 +8,7 @@ import org.springframework.ldap.odm.annotations.Id;
 
 
 @Entry(base = "ou=NSERC_Users",
-objectClasses = {"top","person","organizationalPerson","user"})
+objectClasses = {"top","organizationalUnit","person","user"}) 
 public final class User {
 	@Id
 	private Name id;

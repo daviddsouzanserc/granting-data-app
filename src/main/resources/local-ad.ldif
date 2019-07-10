@@ -14,12 +14,12 @@ objectclass: top
 objectclass: organizationalUnit
 ou: subgroups
 
-dn: ou=people,dc=nserc,dc=ca
+dn: ou=NSERC_Users,dc=nserc,dc=ca
 objectclass: top
 objectclass: organizationalUnit
-ou: people
+ou: NSERC_Users
 
-dn: uid=admin,ou=people,dc=nserc,dc=ca
+dn: uid=admin,ou=NSERC_Users,dc=nserc,dc=ca
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -29,7 +29,7 @@ sn: admin
 uid: admin
 userPassword: password
 
-dn: uid=nserc-user,ou=people,dc=nserc,dc=ca
+dn: uid=nserc-user,ou=NSERC_Users,dc=nserc,dc=ca
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -39,7 +39,7 @@ sn: NSERC
 uid: nserc-user
 userPassword: password
 
-dn: uid=sshrc-user,ou=people,dc=nserc,dc=ca
+dn: uid=sshrc-user,ou=NSERC_Users,dc=nserc,dc=ca
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -49,7 +49,7 @@ sn: SSHRC
 uid: sshrc-user
 userPassword: password
 
-dn: uid=nserc-user-edi,ou=people,dc=nserc,dc=ca
+dn: uid=nserc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -59,7 +59,7 @@ sn: NSERC EDI
 uid: nserc-user-edi
 userPassword: password
 
-dn: uid=sshrc-user-edi,ou=people,dc=nserc,dc=ca
+dn: uid=sshrc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -74,40 +74,40 @@ objectclass: top
 objectclass: groupOfUniqueNames
 cn: admin
 ou: admin
-uniqueMember: uid=admin,ou=people,dc=nserc,dc=ca
+uniqueMember: uid=admin,ou=NSERC_Users,dc=nserc,dc=ca
 
 dn: cn=agency_user,ou=groups,dc=nserc,dc=ca
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: agency_user
 ou: agency_user
-uniqueMember: uid=nserc-user,ou=people,dc=nserc,dc=ca
-uniqueMember: uid=nserc-user-edi,ou=people,dc=nserc,dc=ca
-uniqueMember: uid=sshrc-user,ou=people,dc=nserc,dc=ca
-uniqueMember: uid=sshrc-user-edi,ou=people,dc=nserc,dc=ca
-uniqueMember: uid=admin,ou=people,dc=nserc,dc=ca
+uniqueMember: uid=nserc-user,ou=NSERC_Users,dc=nserc,dc=ca
+uniqueMember: uid=nserc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
+uniqueMember: uid=sshrc-user,ou=NSERC_Users,dc=nserc,dc=ca
+uniqueMember: uid=sshrc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
+uniqueMember: uid=admin,ou=NSERC_Users,dc=nserc,dc=ca
 
 dn: cn=nserc,ou=groups,dc=nserc,dc=ca
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: nserc
 ou: nserc
-uniqueMember: uid=nserc-user,ou=people,dc=nserc,dc=ca
-uniqueMember: uid=nserc-user-edi,ou=people,dc=nserc,dc=ca
+uniqueMember: uid=nserc-user,ou=NSERC_Users,dc=nserc,dc=ca
+uniqueMember: uid=nserc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
 
 dn: cn=sshrc,ou=groups,dc=nserc,dc=ca
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: sshrc
 ou: sshrc
-uniqueMember: uid=sshrc-user,ou=people,dc=nserc,dc=ca
-uniqueMember: uid=sshrc-user-edi,ou=people,dc=nserc,dc=ca
+uniqueMember: uid=sshrc-user,ou=NSERC_Users,dc=nserc,dc=ca
+uniqueMember: uid=sshrc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
 
 dn: cn=edi_authorized,ou=groups,dc=nserc,dc=ca
 objectclass: top
 objectclass: groupOfUniqueNames
 cn: sshrc
 ou: sshrc
-uniqueMember: uid=nserc-user-edi,ou=people,dc=nserc,dc=ca
-uniqueMember: uid=sshrc-user-edi,ou=people,dc=nserc,dc=ca
+uniqueMember: uid=nserc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
+uniqueMember: uid=sshrc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca
 

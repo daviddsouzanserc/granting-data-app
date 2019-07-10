@@ -1,4 +1,4 @@
-package ca.gc.tri_agency.granting_data.repo;
+package ca.gc.tri_agency.granting_data.repoLdap;
 
 import java.util.List;
 

@@ -19,8 +19,8 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-2">
         <createTable tableName="agency">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="acronym_en" type="VARCHAR(255)"/>
             <column name="acronym_fr" type="VARCHAR(255)"/>
@@ -28,46 +28,10 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-3">
-        <createTable tableName="award_dataset">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="application_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="application_identifier" type="VARCHAR(255)"/>
-            <column name="awarded_amount" type="VARCHAR(255)"/>
-            <column name="competition_year" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="create_date" type="VARCHAR(255)"/>
-            <column name="dataset_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="family_name" type="VARCHAR(255)"/>
-            <column name="funding_year" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="given_name" type="VARCHAR(255)"/>
-            <column name="person_identifier" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="program_en" type="VARCHAR(255)"/>
-            <column name="program_fr" type="VARCHAR(255)"/>
-            <column name="program_id" type="VARCHAR(255)"/>
-            <column name="role_code" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role_en" type="VARCHAR(255)"/>
-            <column name="role_fr" type="VARCHAR(255)"/>
-            <column name="source" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-4">
         <createTable tableName="core_function">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="acronym" type="VARCHAR(255)"/>
             <column name="granting_function" type="VARCHAR(255)"/>
@@ -77,8 +41,8 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-5">
         <createTable tableName="core_function_system_map">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
@@ -89,8 +53,8 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-6">
         <createTable tableName="funding_cycle">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
@@ -100,8 +64,8 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-7">
         <createTable tableName="funding_opportunity">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="apply_method" type="VARCHAR(255)"/>
             <column name="award_management_system" type="VARCHAR(255)"/>
@@ -126,8 +90,8 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-9">
         <createTable tableName="granting_system">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="acronym" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
@@ -136,8 +100,8 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-11">
         <createTable tableName="lead_contributor">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="email" type="VARCHAR(255)"/>
             <column name="name" type="VARCHAR(255)"/>
@@ -145,66 +109,10 @@
             <column name="funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-12">
-        <createTable tableName="master_dataset">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="addr_four" type="VARCHAR(255)"/>
-            <column name="addr_one" type="VARCHAR(255)"/>
-            <column name="addr_three" type="VARCHAR(255)"/>
-            <column name="addr_two" type="VARCHAR(255)"/>
-            <column name="appl_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="application_identifier" type="VARCHAR(255)"/>
-            <column name="city" type="VARCHAR(255)"/>
-            <column name="competition_year" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="country" type="VARCHAR(255)"/>
-            <column name="create_date" type="VARCHAR(255)"/>
-            <column name="dataset_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="family_name" type="VARCHAR(255)"/>
-            <column name="given_name" type="VARCHAR(255)"/>
-            <column name="org_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="org_name_en" type="VARCHAR(255)"/>
-            <column name="org_name_fr" type="VARCHAR(255)"/>
-            <column name="person_identifier" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="postal_zip_code" type="VARCHAR(255)"/>
-            <column name="program_en" type="VARCHAR(255)"/>
-            <column name="program_fr" type="VARCHAR(255)"/>
-            <column name="program_id" type="VARCHAR(255)"/>
-            <column name="role_code" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role_en" type="VARCHAR(255)"/>
-            <column name="role_fr" type="VARCHAR(255)"/>
-            <column name="source" type="VARCHAR(255)"/>
-            <column name="state_prov_code" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-13">
-        <createTable tableName="orgs_with_external_link_num">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="create_date_time" type="datetime(6)"/>
-            <column name="link_num" type="BIGINT"/>
-            <column name="name_en" type="VARCHAR(255)"/>
-            <column name="name_fr" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-14">
         <createTable tableName="system_funding_opportunity">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
@@ -215,49 +123,14 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1561406614448-15">
         <createTable tableName="user">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
             </column>
             <column name="email" type="VARCHAR(255)"/>
             <column name="name" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-16">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="aduser"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-17">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="agency"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-18">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="core_function"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-19">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="core_function_system_map"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-20">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_cycle"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-21">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-22">
-        <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY" tableName="funding_opportunity_participating_agencies"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-23">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_system"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-24">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="lead_contributor"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-25">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="orgs_with_external_link_num"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-26">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-27">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="user"/>
-    </changeSet>
+    
     <changeSet author="dev_dyd (generated)" id="1561406614448-28">
         <createIndex indexName="FK14tr15getkq8fb5kjrrjptvjr" tableName="system_funding_opportunity">
             <column name="linked_funding_opportunity_id"/>

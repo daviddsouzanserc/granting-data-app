@@ -7,15 +7,15 @@ import org.springframework.ldap.odm.annotations.Entry;
 import org.springframework.ldap.odm.annotations.Id;
 
 
-@Entry(
-	base = "ou=users"/* or should be "ou=people" */,	
-	objectClasses = { /* "person", "inetOrgPerson", "top"  */ }	)
-public class User {
+@Entry(base = "ou=NSERC_Users",
+objectClasses = {"top","person","organizationalPerson","user"})
+public final class User {
 	@Id
 	private Name id;
 
 	private @Attribute(name = "cn") String username;
 	private @Attribute(name = "sn") String password;
+	private @Attribute(name = "sAMAccountName") String accountName;
 	
 	public Name getId() {
 		return id;
@@ -29,6 +29,10 @@ public class User {
 		return password;
 	}
 	
+	public String getAccountName() {
+		return accountName;
+	}
+	
 	public void setId(Name id) {
 		this.id = id;
 	}
@@ -39,5 +43,14 @@ public class User {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+	
+	
+	public String toString() {
+		return username + "\t" + accountName;
 	}
 }

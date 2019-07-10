@@ -57,7 +57,11 @@ public class WebSecurityConfig {
 		if(Boolean.parseBoolean(useActiveDirectory)) {
 			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
 			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
-		}	
+		}
+		else {
+			auth.ldapAuthentication().userDnPatterns(ldapUserDnPattern).groupSearchBase(ldapGroupSearchBase).contextSource()
+				.url(ldapUrls + ldapBaseDn).and().passwordCompare().passwordAttribute("userPassword");
+		}
 	}
 	
 	@Configuration
@@ -74,8 +78,8 @@ public class WebSecurityConfig {
 	public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests().antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**").permitAll()
-					.and().authorizeRequests().antMatchers("/datasets/**").hasRole("ADMIN")
+			http.authorizeRequests().antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**", "/fundingOpp/**").permitAll()
+					.and().authorizeRequests().antMatchers("/datasets/**", "/fundingOpp/**").hasRole("ADMIN")
 					.antMatchers("/entities/**", "/reports/**").hasAnyRole("NSERC_USER", "SSHRC_USER", "AGENCY_USER").anyRequest().authenticated()
 					.and().formLogin().loginPage("/login").permitAll().and().logout().permitAll()
 					.and().exceptionHandling().accessDeniedPage("/exception/forbiden-by-role");

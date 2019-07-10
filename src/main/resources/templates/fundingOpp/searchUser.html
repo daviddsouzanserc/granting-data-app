@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
+<title>Granting Data</title>
+</head>
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('')}" ></div>
+	<div class="container">
+		<h1>Search User</h1> <!--  th:utext="${fundingOpp.searchUser}" --> 
+		<form action="#" th:action="@{searchUser}"  method="get">
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:utext="#{searchUser.nameEn}">Name EN</div>
+				<div><input type="text" name="username" /></div>
+			</div>
+			<input type="submit" class="btn btn-primary" role="button" th:value="#{searchUser.submit}" />
+		</form>	
+		<table th:if="${matchingUsers != null}">
+   			<thead>
+       			<tr>
+           			<th> Username </th>
+       			</tr>
+   			</thead>
+  			<tbody>
+   				<tr th:if="${matchingUsers.empty}">
+           			<td colspan="2"> No Matching Users </td>
+       			</tr>
+       			<tr th:each="user : ${matchingUsers}">
+           			<td><span th:text="${user.username}"></span></td>
+       			</tr>
+   			</tbody>
+		</table>
+	</div>
+	
+</body>
+</html>

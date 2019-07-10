@@ -17,4 +17,6 @@ import java.util.stream.Collectors;
 public interface UserService {
 	
 	public List<String> search(String u);
+	
+	public String searchByAccountName(String u);
 }

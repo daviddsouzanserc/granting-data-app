@@ -1,0 +1,113 @@
+dn: dc=nserc_poc,dc=net
+objectclass: top
+objectclass: domain
+objectclass: extensibleObject
+dc: nserc_poc
+
+dn: ou=groups,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+dn: ou=subgroups,ou=groups,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: subgroups
+
+dn: ou=people,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+dn: uid=admin,ou=people,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: admin
+sn: admin
+uid: admin
+userPassword: password
+
+dn: uid=nserc-user,ou=people,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: NSERC User
+sn: NSERC
+uid: nserc-user
+userPassword: password
+
+dn: uid=sshrc-user,ou=people,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: SSHRC User
+sn: SSHRC
+uid: sshrc-user
+userPassword: password
+
+dn: uid=nserc-user-edi,ou=people,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: NSERC User EDI
+sn: NSERC EDI
+uid: nserc-user-edi
+userPassword: password
+
+dn: uid=sshrc-user-edi,ou=people,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: SSHRC User EDI
+sn: SSHRC EDI
+uid: sshrc-user-edi
+userPassword: password
+
+dn: cn=admin,ou=groups,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: admin
+ou: admin
+uniqueMember: uid=admin,ou=people,dc=nserc_poc,dc=net
+
+dn: cn=agency_user,ou=groups,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: agency_user
+ou: agency_user
+uniqueMember: uid=nserc-user,ou=people,dc=nserc_poc,dc=net
+uniqueMember: uid=nserc-user-edi,ou=people,dc=nserc_poc,dc=net
+uniqueMember: uid=sshrc-user,ou=people,dc=nserc_poc,dc=net
+uniqueMember: uid=sshrc-user-edi,ou=people,dc=nserc_poc,dc=net
+uniqueMember: uid=admin,ou=people,dc=nserc_poc,dc=net
+
+dn: cn=nserc,ou=groups,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: nserc
+ou: nserc
+uniqueMember: uid=nserc-user,ou=people,dc=nserc_poc,dc=net
+uniqueMember: uid=nserc-user-edi,ou=people,dc=nserc_poc,dc=net
+
+dn: cn=sshrc,ou=groups,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: sshrc
+ou: sshrc
+uniqueMember: uid=sshrc-user,ou=people,dc=nserc_poc,dc=net
+uniqueMember: uid=sshrc-user-edi,ou=people,dc=nserc_poc,dc=net
+
+dn: cn=edi_authorized,ou=groups,dc=nserc_poc,dc=net
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: sshrc
+ou: sshrc
+uniqueMember: uid=nserc-user-edi,ou=people,dc=nserc_poc,dc=net
+uniqueMember: uid=sshrc-user-edi,ou=people,dc=nserc_poc,dc=net
+

@@ -30,4 +30,16 @@ public class UserServiceImpl implements UserService {
 		
 		return userList.stream().map(User::getUsername).collect(Collectors.toList());
 	}
+
+	
+	public String searchByAccountName(String u) {
+		User user = userRepository.findByAccountName(u);
+		if(user == null) {
+			return "";
+		}
+		
+		return user.toString();
+	}
+	
+	
 }

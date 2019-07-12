@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
+   http://www.liquibase.org/xml/ns/dbchangelog 
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+   
+	<changeSet author="dev_jfs" id="1">
+		<addColumn tableName="funding_cycle">
+			<column name="comp_year" type="DATE"></column>
+		</addColumn>
+    </changeSet>
+    <changeSet author="dev_jfs" id="2">
+        <createTable tableName="system_funding_cycle">
+			<column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="ext_id" type="VARCHAR(255)"/>
+			<column name="comp_year" type="DATE"></column>
+            <column name="name_en" type="VARCHAR(255)"/>
+            <column name="name_fr" type="VARCHAR(255)"/>
+            <column name="funding_opportunity_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

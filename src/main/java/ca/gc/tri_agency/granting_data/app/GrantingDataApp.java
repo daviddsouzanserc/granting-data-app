@@ -35,8 +35,8 @@ public class GrantingDataApp {
 		LdapContextSource contextSource = new LdapContextSource();
 		contextSource.setUrl(env.getRequiredProperty("ldap.urls"));
 		contextSource.setBase(env.getRequiredProperty("ldap.base.dn"));
-		contextSource.setUserDn(env.getRequiredProperty("ldap.principal"));
-		contextSource.setPassword(env.getRequiredProperty("ldap.password"));
+//		contextSource.setUserDn(env.getRequiredProperty("ldap.principal"));
+//		contextSource.setPassword(env.getRequiredProperty("ldap.password"));
 		return contextSource;
 	}
 	

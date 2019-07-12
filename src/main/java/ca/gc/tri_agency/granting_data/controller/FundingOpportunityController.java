@@ -1,6 +1,5 @@
 package ca.gc.tri_agency.granting_data.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +10,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ca.gc.tri_agency.granting_data.service.UserService;
+import ca.gc.tri_agency.granting_data.service.UserRepo;
 
 @Controller
-@RequestMapping(value = "/fundingOpp", method=RequestMethod.GET)
+@RequestMapping(value = "/fundingOpp", method = RequestMethod.GET)
 public class FundingOpportunityController {
-	@Autowired UserService userService;
-	
+	@Autowired
+	UserRepo userRepo;
 
 	@GetMapping(value = "/searchUser")
 	public String searchUserForm() {
 		return "fundingOpp/searchUser";
 	}
 
-	@GetMapping(value="/searchUser", params="username")
+	@GetMapping(value = "/searchUser", params = "username")
 	public String searchUserAction(@RequestParam("username") String username, Model model) {
-		List<String> matchingUsers = userService.search(username);
-		model.addAttribute("matchingUsers",  matchingUsers);
+		List<String> matchingUsers = userRepo.search(username);
+		model.addAttribute("matchingUsers", matchingUsers);
 		return "fundingOpp/searchUser";
 	}
 

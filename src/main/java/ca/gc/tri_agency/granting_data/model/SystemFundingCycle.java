@@ -13,9 +13,8 @@ import javax.persistence.TemporalType;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
-@Deprecated
 @Entity
-public class FundingCycle implements LocalizedParametersModel {
+public class SystemFundingCycle implements LocalizedParametersModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -30,8 +29,8 @@ public class FundingCycle implements LocalizedParametersModel {
 	private Date compYear;
 
 	@ManyToOne
-	@JoinColumn(name = "funding_opportunity_id")
-	private FundingOpportunity fundingOpportunity;
+	@JoinColumn(name = "system_funding_opportunity_id")
+	private SystemFundingOpportunity systemFundingOpportunity;
 
 	/*
 	 * could add: private SimpleDateFormat applyDeadlineDate;
@@ -65,19 +64,19 @@ public class FundingCycle implements LocalizedParametersModel {
 		this.extId = extId;
 	}
 
-	public FundingOpportunity getFundingOpportunity() {
-		return fundingOpportunity;
-	}
-
-	public void setFundingOpportunity(FundingOpportunity program) {
-		this.fundingOpportunity = program;
-	}
-
 	public Date getCompYear() {
 		return compYear;
 	}
 
 	public void setCompYear(Date compYear) {
 		this.compYear = compYear;
+	}
+
+	public SystemFundingOpportunity getSystemFundingOpportunity() {
+		return systemFundingOpportunity;
+	}
+
+	public void setSystemFundingOpportunity(SystemFundingOpportunity systemFundingOpportunity) {
+		this.systemFundingOpportunity = systemFundingOpportunity;
 	}
 }

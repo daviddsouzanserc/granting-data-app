@@ -25,7 +25,7 @@
            			<td colspan="2"> No Matching Users </td>
        			</tr>
        			<tr th:each="user : ${matchingUsers}">
-           			<td><span th:text="${user}"></span></td>
+           			<td><span th:text="${user.username}"></span></td>
        			</tr>
    			</tbody>
 		</table>

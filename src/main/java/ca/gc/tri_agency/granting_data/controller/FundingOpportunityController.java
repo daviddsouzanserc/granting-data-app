@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.service.UserRepo;
 
 @Controller
@@ -23,17 +24,17 @@ public class FundingOpportunityController {
 		return "fundingOpp/searchUser";
 	}
 
+//	@GetMapping(value = "/searchUser", params = "username")
+//	public String searchUserAction(@RequestParam("username") String username, Model model) {
+//		List<String> matchingUsers = userRepo.search(username);
+//		model.addAttribute("matchingUsers", matchingUsers);
+//		return "fundingOpp/searchUser";
+//	}
+
 	@GetMapping(value = "/searchUser", params = "username")
 	public String searchUserAction(@RequestParam("username") String username, Model model) {
-		List<String> matchingUsers = userRepo.search(username);
+		List<User> matchingUsers = userRepo.searchOther(username);
 		model.addAttribute("matchingUsers", matchingUsers);
 		return "fundingOpp/searchUser";
 	}
-
-//	@GetMapping(value="/searchUser", params="username")
-//	public String searchUserAction(@RequestParam("username") String username, Model model) {
-//		List<String> matchingUsers = userService.getAllUsers();
-//		model.addAttribute("matchingUsers",  matchingUsers);
-//		return "fundingOpp/searchUser";
-//	}
 }

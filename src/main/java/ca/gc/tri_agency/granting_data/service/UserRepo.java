@@ -22,6 +22,18 @@ public class UserRepo {
 	@Autowired
 	private LdapTemplate ldapTemplate;
 
+	public List<User> searchOther(String username) {
+
+		SearchControls sc = new SearchControls();
+		sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
+		sc.setReturningAttributes(null); // new String[] { "cn" } <- if want only specific attributes. null if want all
+											// attributes. empty array if want no attributes
+
+		String filter = "(&(objectclass=person)(cn=" + username + "))";
+
+		return ldapTemplate.search(LdapUtils.emptyLdapName(), filter, sc, new UserAttributesMapper());
+	}
+
 	public List<String> search(String username) {
 
 		SearchControls sc = new SearchControls();
@@ -32,7 +44,6 @@ public class UserRepo {
 
 		return ldapTemplate.search(LdapUtils.emptyLdapName(), filter, sc, new UserAttributesMapper()).stream()
 				.map(User::getUsername).collect(Collectors.toList());
-
 	}
 
 	private class UserAttributesMapper implements AttributesMapper<User> {
@@ -44,6 +55,10 @@ public class UserRepo {
 			Attribute cn = attributes.get("cn");
 			if (cn != null) {
 				user.setUsername((String) cn.get());
+			}
+			Attribute sn = attributes.get("sn");
+			if (sn != null) {
+				user.setPassword((String) sn.get());
 			}
 
 			return user;

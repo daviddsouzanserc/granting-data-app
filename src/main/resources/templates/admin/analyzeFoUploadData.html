@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+	<title>Granting Data - Analyze Funding Opportunity Upload Data</title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function () {
+			var table = $('#datasetFilesTable').DataTable({
+				paging: false;
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('datasets')}" ></div>
+	<div class="section">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8">
+				<h2>Analyze Funding Opportunity Upload Data</h2>
+				<p>Please review and analyze the upload data.  Actionable items are listed with a checkbox.  Check the valid entries and click submit to register it into the database.</p>
+				<form method="POST" th:action="@{analyzeFoUploadData}">
+					<input type="hidden" name="filename" th:value="${filename}" />
+					<table id="datasetFilesTable" class="display">
+  			        <!-- Header Table -->
+				    <thead>
+				            <tr>
+				                <th>Funding Cycle</th>
+				                <th>Funding Opportunity</th>
+				                <th>Action</th>
+				            </tr>
+					</thead>
+					<tbody>
+						<tr th:each="fo : ${fileRows}">
+							<td th:text="${fo.foCycle}"></td>
+							<td th:text="${fo.getLocalizedAttribute('programName')}" ></td>
+							<td>
+								<div th:switch="${#arrays.contains(actionRowIds, fo.foCycle)}">
+									<div th:case="true">For Action: <input type="checkbox" name="idToAction" th:value="${fo.foCycle}" checked="checked" /></div> 
+									<div th:case="false">Exists</div>
+									<div th:case="*">???</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					</table>
+					<input type="submit" value="Register" />
+				</form>
+			</div>
+	</div>
+   </body>
+</html>
+

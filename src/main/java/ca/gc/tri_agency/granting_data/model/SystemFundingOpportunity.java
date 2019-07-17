@@ -20,11 +20,11 @@ public class SystemFundingOpportunity implements LocalizedParametersModel {
 	private String nameEn;
 
 	private String nameFr;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "linked_funding_opportunity_id")
 	private FundingOpportunity linkedFundingOpportunity;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "granting_system_id")
 	private GrantingSystem grantingSystem;
@@ -55,6 +55,22 @@ public class SystemFundingOpportunity implements LocalizedParametersModel {
 
 	public void setExtId(String extId) {
 		this.extId = extId;
+	}
+
+	public GrantingSystem getGrantingSystem() {
+		return grantingSystem;
+	}
+
+	public void setGrantingSystem(GrantingSystem grantingSystem) {
+		this.grantingSystem = grantingSystem;
+	}
+
+	public FundingOpportunity getLinkedFundingOpportunity() {
+		return linkedFundingOpportunity;
+	}
+
+	public void setLinkedFundingOpportunity(FundingOpportunity linkedFundingOpportunity) {
+		this.linkedFundingOpportunity = linkedFundingOpportunity;
 	}
 
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
+<title>Data store - Create Data-Set</title>
+</head>
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('datasets')}" ></div>
+	<div class="section">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8">
+				<h2>Funding Cycle Dataset Import</h2>
+				<p>Please select a dataset file for import:</p>
+				<table id="datasetFilesTable" class="display">
+			       <!-- Header Table -->
+			    <thead>
+			            <tr>
+			                <th>Filename</th>
+			                <th>Action</th>
+			            </tr>
+				</thead>
+				<tbody>
+					<tr th:each="file : ${datasetFiles}">
+						<td th:text="${file.name}"></td>
+						<td><a class="btn" th:text="Select" th:href="@{analyzeFoUploadData(filename=${file.name})}"></a></td>
+					</tr>
+				</tbody>
+				</table>
+			</div>
+	</div>
+   </body>
+</html>
+

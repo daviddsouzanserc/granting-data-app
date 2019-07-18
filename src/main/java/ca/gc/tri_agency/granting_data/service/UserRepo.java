@@ -58,7 +58,7 @@ public class UserRepo {
 			}
 			Attribute sn = attributes.get("sn");
 			if (sn != null) {
-				user.setPassword((String) sn.get());
+				user.setSn((String) sn.get());
 			}
 
 			return user;

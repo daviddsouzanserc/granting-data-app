@@ -14,10 +14,11 @@
 			</div>
 			<input type="submit" class="btn btn-primary" role="button" th:value="#{searchUser.submit}" />
 		</form>	
-		<table th:if="${matchingUsers != null}">
+		<table th:if="${matchingUsers != null}" class="table table-bordered">
    			<thead>
        			<tr>
            			<th> Username </th>
+           			<th> Surname </th>
        			</tr>
    			</thead>
   			<tbody>
@@ -26,6 +27,7 @@
        			</tr>
        			<tr th:each="user : ${matchingUsers}">
            			<td><span th:text="${user.username}"></span></td>
+           			<td><span th:text="${user.sn}"></span></td>
        			</tr>
    			</tbody>
 		</table>

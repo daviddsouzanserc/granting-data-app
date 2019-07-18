@@ -24,7 +24,7 @@ objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
-cn: admin
+cn: Admin User
 sn: admin
 uid: admin
 userPassword: password

@@ -76,8 +76,9 @@ public class WebSecurityConfig {
 	public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+
 			http.authorizeRequests().antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**")
-					.permitAll().and().authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
+					.permitAll().and().authorizeRequests().antMatchers("/admin/**", "/fundingOpp/**").hasRole("ADMIN")
 					.antMatchers("/entities/**", "/reports/**").hasAnyRole("NSERC_USER", "SSHRC_USER", "AGENCY_USER")
 					.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
 					.permitAll().and().exceptionHandling().accessDeniedPage("/exception/forbiden-by-role");

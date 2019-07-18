@@ -12,4 +12,6 @@ public interface AdminService {
 
 	public List<String> generateActionableFoCycleIds(List<FundingCycleDatasetRow> foCycles);
 
+	public int applyChangesFromFileByIds(String filename, String[] idsToAction);
+
 }

@@ -20,9 +20,9 @@
             </column>
             <column name="ext_id" type="VARCHAR(255)"/>
 			<column name="comp_year" type="DATE"></column>
-            <column name="name_en" type="VARCHAR(255)"/>
-            <column name="name_fr" type="VARCHAR(255)"/>
-            <column name="funding_opportunity_id" type="BIGINT"/>
+            <column name="num_apps_received" type="BIGINT"/>
+            
+            <column name="system_funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

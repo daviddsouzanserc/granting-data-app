@@ -6,7 +6,10 @@
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready( function () {
-			var table = $('#datasetFilesTable').DataTable({});
+
+			var table = $('#datasetFilesTable').DataTable({
+				paging: false;
+			});
 		});
 	</script>
 </head>
@@ -19,6 +22,7 @@
 				<h2>Analyze Funding Opportunity Upload Data</h2>
 				<p>Please review and analyze the upload data.  Actionable items are listed with a checkbox.  Check the valid entries and click submit to register it into the database.</p>
 				<form method="POST" th:action="@{analyzeFoUploadData}">
+					<input type="hidden" name="filename" th:value="${filename}" />
 					<table id="datasetFilesTable" class="display">
   			        <!-- Header Table -->
 				    <thead>
@@ -32,7 +36,13 @@
 						<tr th:each="fo : ${fileRows}">
 							<td th:text="${fo.foCycle}"></td>
 							<td th:text="${fo.getLocalizedAttribute('programName')}" ></td>
-							<td><input type="checkbox" name="actionIds" th:value="${fo.foCycle}" /></td>
+							<td>
+								<div th:switch="${#arrays.contains(actionRowIds, fo.foCycle)}">
+									<div th:case="true">For Action: <input type="checkbox" name="idToAction" th:value="${fo.foCycle}" checked="checked" /></div> 
+									<div th:case="false">Exists</div>
+									<div th:case="*">???</div>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 					</table>

@@ -21,9 +21,7 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 
 	private String extId;
 
-	private String nameEn;
-
-	private String nameFr;
+	private Long numAppsReceived;
 
 	@Temporal(TemporalType.DATE)
 	private Date compYear;
@@ -35,22 +33,6 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 	/*
 	 * could add: private SimpleDateFormat applyDeadlineDate;
 	 */
-
-	public String getNameEn() {
-		return nameEn;
-	}
-
-	public void setNameEn(String nameEn) {
-		this.nameEn = nameEn;
-	}
-
-	public String getNameFr() {
-		return nameFr;
-	}
-
-	public void setNameFr(String nameFr) {
-		this.nameFr = nameFr;
-	}
 
 	public Long getId() {
 		return id;
@@ -78,5 +60,13 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 
 	public void setSystemFundingOpportunity(SystemFundingOpportunity systemFundingOpportunity) {
 		this.systemFundingOpportunity = systemFundingOpportunity;
+	}
+
+	public Long getNumAppsReceived() {
+		return numAppsReceived;
+	}
+
+	public void setNumAppsReceived(Long numAppsReceived) {
+		this.numAppsReceived = numAppsReceived;
 	}
 }

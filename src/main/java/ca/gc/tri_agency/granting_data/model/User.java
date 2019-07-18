@@ -1,42 +1,53 @@
 package ca.gc.tri_agency.granting_data.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.naming.Name;
 
+import org.springframework.ldap.odm.annotations.Attribute;
+import org.springframework.ldap.odm.annotations.Entry;
+import org.springframework.ldap.odm.annotations.Id;
 
-@Entity
-public class User {
+@Entry(base = "ou=NSERC_Users", objectClasses = { "top", "organizationalUnit", "person", "user" })
+public final class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Name id;
 
-	private String name;
+	private @Attribute(name = "cn") String username;
+	private @Attribute(name = "sn") String sn;
+	private @Attribute(name = "sAMAccountName") String accountName;
 
-	private String email;
-	
-
-	public Long getId() {
+	public Name getId() {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getSn() {
+		return sn;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getAccountName() {
+		return accountName;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setId(Name id) {
+		this.id = id;
 	}
-	
-	
-	
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setSn(String sn) {
+		this.sn = sn;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	public String toString() {
+		return username + "\t" + accountName;
+	}
 }

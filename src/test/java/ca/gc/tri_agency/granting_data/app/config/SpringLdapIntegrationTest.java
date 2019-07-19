@@ -40,7 +40,7 @@ public class SpringLdapIntegrationTest {
 
 	@Test
 	public void testFindPerson() {
-		ADUser user = userRepository.findPerson("uid=admin,ou=people,dc=nserc_poc,dc=net");
+		ADUser user = userRepository.findPerson("uid=admin,ou=NSERC_Users,dc=nserc,dc=ca");
 		assertNotNull(user);
 		assertEquals(user.getFullName(), "Admin User");
 	}

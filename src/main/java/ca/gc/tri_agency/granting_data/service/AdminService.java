@@ -14,4 +14,6 @@ public interface AdminService {
 
 	public int applyChangesFromFileByIds(String filename, String[] idsToAction);
 
+	public int importProgramsFromFile();
+
 }

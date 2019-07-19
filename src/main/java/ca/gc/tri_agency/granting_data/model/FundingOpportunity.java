@@ -15,12 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import org.springframework.context.i18n.LocaleContextHolder;
-
 import ca.gc.tri_agency.granting_data.form.ProgramForm;
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
-
-import java.text.SimpleDateFormat;
 
 @Entity
 public class FundingOpportunity implements LocalizedParametersModel {
@@ -35,7 +31,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	@ManyToOne
 	@JoinColumn(name = "lead_agency_id")
 	private Agency leadAgency;
-	
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable
 	private Set<Agency> participatingAgencies;
@@ -51,20 +47,9 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	private String awardManagementSystem;
 
 	private String programLeadName;
-	
-	/* could be added:
-	private Long numberOfApplications;
-	
-	private boolean participantComplexity; single/multiple applications
-	
-	private String programOfficerName;
-	
-	private String programAssistantName;
-	
-	private SimpleDateFormat applicationDeadline;
 
-	*/
 	public FundingOpportunity() {
+		setParticipatingAgencies(new HashSet<Agency>());
 	}
 
 	public void loadFromForm(ProgramForm f) {
@@ -77,16 +62,6 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		this.setNameEn(f.getNameEn());
 		this.setNameFr(f.getNameFr());
 		this.setProgramLeadName(f.getProgramLeadName());
-	}
-
-	public String getName() {
-		String retval = "";
-		if (LocaleContextHolder.getLocale().toString().contains("en")) {
-			retval = getNameEn();
-		} else {
-			retval = getNameFr();
-		}
-		return retval;
 	}
 
 	public String getNameEn() {
@@ -136,6 +111,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	public void setProgramLeadName(String programLeadName) {
 		this.programLeadName = programLeadName;
 	}
+
 	public Agency getLeadAgency() {
 		return leadAgency;
 	}
@@ -168,49 +144,13 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	public void setFundingType(String fundingType) {
 		this.fundingType = fundingType;
 	}
-	
-	/*
-	
-	public Long getNumberOfApplications() {
-		return numberOfApplications;
+
+	public Set<Agency> getParticipatingAgencies() {
+		return participatingAgencies;
 	}
-	
-	public void setNumberOfApplications(Long numberOfApplications) {
-		this.numberOfApplications = numberOfApplications;
+
+	public void setParticipatingAgencies(Set<Agency> participatingAgencies) {
+		this.participatingAgencies = participatingAgencies;
 	}
-	
-	public boolean getParticipantComplexity() {
-		return participantComplexity;
-	}
-	
-	public void setParticipantComplexity(boolean participantComplexity) {
-		this.participantComplexity = participantComplexity;
-	}
-	
-	public SimpleDateFormat getApplicationDealine() {
-		return applicationdDeadline;
-	}
-	
-	public void setApplicationDeadline(SimpleDateFormat applicationDeadline) {
-		this.applicationDeadline = applicationDeadline;
-	}
-	
-	public String getProgramOfficer() {
-		return progranOfficer;
-	}
-	
-	public void setPogramOfficer(String programOfficer) {
-		this.programOfficer = programOfficer;
-	}
-	
-	public String getProgramAssistant() {
-		return programAssistance;
-	}
-	
-	public void setProgramAssistant(String programAssistant) {
-		this.getProgramAssistant() = programAssistant;
-	}
-	
-	
-	*/
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
 import ca.gc.tri_agency.granting_data.service.AdminService;
+import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,6 +21,9 @@ public class AdminController {
 
 	@Autowired
 	AdminService adminService;
+
+	@Autowired
+	DataAccessService dataSevice;
 
 	@GetMapping("/selectFileForComparison")
 	public String compareData_selectDatasetUploadFile(Model model) {
@@ -61,6 +65,12 @@ public class AdminController {
 		int num = adminService.importProgramsFromFile();
 		redirectAttrs.addFlashAttribute("actionMessage", "Successfully applied " + num + " Funcing Cycles");
 		return "redirect:/admin/home";
+	}
+
+	@GetMapping("/analyzeSystemFo")
+	public String analyzeSystemFo(Model model) {
+		model.addAttribute("systemFOs", dataSevice.getAllSystemFOs());
+		return "admin/analyzeSystemFo";
 	}
 
 }

@@ -20,10 +20,15 @@ import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
 import com.ebay.xcelite.sheet.XceliteSheet;
 
+import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingSystem;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
+import ca.gc.tri_agency.granting_data.model.file.ProgramFromFile;
+import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
+import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
@@ -37,6 +42,12 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	SystemFundingOpportunityRepository systemFoRepo;
+
+	@Autowired
+	FundingOpportunityRepository foRepo;
+
+	@Autowired
+	AgencyRepository agencyRepo;
 
 	@Autowired
 	SystemFundingCycleRepository systemFundingCycleRepo;
@@ -58,40 +69,17 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public List<FundingCycleDatasetRow> getFundingCyclesFromFile(String filename) {
-		List<FundingCycleDatasetRow> fileRows = loadObjectList(filename);
-		return fileRows;
-
-		// List<FundingCycleDatasetRow> retval = new
-		// ArrayList<FundingCycleDatasetRow>();
-		// List<SystemFundingCycle> dbFundingCycles =
-		// systemFundingCycleRepo.findAll();
-		// for (FundingCycleDatasetRow row : fileRows) {
-		// boolean found = false;
-		// for (SystemFundingCycle cycle : dbFundingCycles) {
-		// if (cycle.getExtId().compareTo(row.getFoCycle()) == 0) {
-		// found = true;
-		// }
-		// }
-		// if (found == false) {
-		// retval.add(row);
-		// }
-		// }
-		// return new ArrayList<FundingCycleDatasetRow>(fileRows);
-	}
-
-	private List<FundingCycleDatasetRow> loadObjectList(String fileName) {
 		Collection<FundingCycleDatasetRow> rows = null;
 
 		Xcelite xcelite;
 		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("datasets/" + fileName).getFile());
+		File file = new File(classLoader.getResource("datasets/" + filename).getFile());
 		xcelite = new Xcelite(file);
 		XceliteSheet sheet = xcelite.getSheet(0);
 		SheetReader<FundingCycleDatasetRow> reader = sheet.getBeanReader(FundingCycleDatasetRow.class);
 		rows = reader.read();
 
 		return new ArrayList<FundingCycleDatasetRow>(rows);
-
 	}
 
 	@Override
@@ -170,6 +158,80 @@ public class AdminServiceImpl implements AdminService {
 			}
 		}
 		return retval;
+	}
+
+	@Override
+	public int importProgramsFromFile() {
+		int retval = 0;
+		HashMap<String, Agency> agencyMap = new HashMap<String, Agency>();
+		List<Agency> list = agencyRepo.findAll();
+		agencyMap = new HashMap<String, Agency>();
+		for (Agency a : list) {
+			agencyMap.put(a.getAcronymEn(), a);
+		}
+
+		Collection<ProgramFromFile> programsFromFile = extractProgramsFromFile("programFile.xlsm");
+		for (ProgramFromFile p : programsFromFile) {
+			FundingOpportunity newFo = new FundingOpportunity();
+			if (p.getNameEn().trim().length() == 0) {
+				LOG.log(Level.WARN, "empty name, assuming empty row.  skipping row");
+				continue;
+			}
+			newFo.setNameEn(p.getNameEn());
+			newFo.setNameFr(p.getNameFr());
+			newFo.setDivision(p.getDivision());
+			newFo.setFundingType(p.getFundingType());
+			Agency leadAgency = agencyMap.get(p.getLeadAgency());
+			newFo.setLeadAgency(leadAgency);
+			if (leadAgency == null) { // ASSUMPTION
+				newFo.setLeadAgency(agencyMap.get("NSERC"));
+			}
+
+			// ASSUMPTION: IF BLANK, THEN ITS SINGLE. ??
+			if (p.getNumberOfAgencies() == null) {
+				p.setNumberOfAgencies("Single");
+			}
+			String numAgencyText = p.getNumberOfAgencies().toLowerCase();
+			if (numAgencyText.indexOf("single", 0) >= 0) {
+				newFo.getParticipatingAgencies().add(leadAgency);
+			} else {
+				if (numAgencyText.indexOf("tri") >= 0) {
+					newFo.getParticipatingAgencies().addAll(agencyMap.values());
+				} else {
+					if (numAgencyText.indexOf("bi") >= 0) {
+						newFo.getParticipatingAgencies().add(agencyMap.get("NSERC"));
+						newFo.getParticipatingAgencies().add(agencyMap.get("SSHRC"));
+					} else {
+						LOG.log(Level.ERROR, "unknown config for 'number of agencies':: " + numAgencyText);
+					}
+				}
+			}
+
+			newFo.setFrequency(p.getFrequency());
+			newFo.setApplyMethod(p.getApplyMethod());
+			newFo.setAwardManagementSystem(p.getAwardManagementSystem());
+			newFo.setProgramLeadName(p.getProgramLeadName());
+
+			LOG.log(Level.INFO, "about to store:" + newFo);
+			foRepo.save(newFo);
+			retval++;
+		}
+		return retval;
+	}
+
+	public Collection<ProgramFromFile> extractProgramsFromFile(String filename) {
+		Collection<ProgramFromFile> programs = null;
+
+		Xcelite xcelite;
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource(filename).getFile());
+		xcelite = new Xcelite(file);
+		XceliteSheet sheet = xcelite.getSheet(0);
+		SheetReader<ProgramFromFile> reader = sheet.getBeanReader(ProgramFromFile.class);
+		programs = reader.read();
+
+		return programs;
+
 	}
 
 }

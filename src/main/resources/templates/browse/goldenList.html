@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
+<meta charset="ISO-8859-1">
+<title>Granting Data - Golden List</title>
+</head>
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
+	<div class="container">
+		
+			<h1>Golden List</h1>
+			<table id="goldenListTable" class="table table-bordered">
+				<thead>
+		            <tr>
+		                <th>Funding Opportunities EN</th>
+		                <th>Funding Opportunities FR</th>
+		            </tr>
+				</thead>
+				
+				<tbody>
+	       			<tr th:each="fo : ${goldenList}">
+	           			<td><a th:href="@{selectFo(name=${fo.nameEn})}"><span th:text="${fo.nameEn}"></span></a></td>
+	           			<td><a th:href="@{selectFo(name=${fo.nameEn})}"><span th:text="${fo.nameFr}"></span></a></td>
+	       			</tr>
+   				</tbody>
+			</table>
+		
+	
+	</div>
+
+</body>
+</html>

@@ -12,14 +12,17 @@
 			<table id="goldenListTable" class="table table-bordered">
 				<thead>
 		            <tr>
-		                <th>Funding Opportunities EN</th>
-		                <th>Funding Opportunities FR</th>
+		                <th>Funding Opportunity Name</th>
+		                <th>Lead Agency</th>
+		                <th>Cycle Start Date</th>
+		                <th>Cycle End Date</th>
+		                <th>Expected Applications</th>
 		            </tr>
 				</thead>
 				
 				<tbody>
 	       			<tr th:each="fo : ${goldenList}">
-	           			<td><a th:href="@{selectFo(name=${fo.nameEn})}"><span th:text="${fo.nameEn}"></span></a></td>
+	           			<td><a th:href="@{selectFo(name=${fo.getLocalizedAttribute('name')})}"><span th:text="${fo.getLocalizedAttribute('name')}"></span></a></td>
 	           			<td><a th:href="@{selectFo(name=${fo.nameEn})}"><span th:text="${fo.nameFr}"></span></a></td>
 	       			</tr>
    				</tbody>

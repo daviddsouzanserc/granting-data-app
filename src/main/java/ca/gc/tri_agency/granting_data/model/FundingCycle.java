@@ -13,7 +13,6 @@ import javax.persistence.TemporalType;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
-@Deprecated
 @Entity
 public class FundingCycle implements LocalizedParametersModel {
 	@Id

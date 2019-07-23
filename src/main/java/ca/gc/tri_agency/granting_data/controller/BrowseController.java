@@ -24,6 +24,8 @@ public class BrowseController {
 	@GetMapping("/goldenList")
 	public String goldListDisplay(Model model) {
 		model.addAttribute("goldenList", goldenListService.getGoldenList());
+		model.addAttribute("fcByFoMap", goldenListService.getFundingCycleByFundingOpportunityMap());
+
 		return "browse/goldenList";
 	}
 

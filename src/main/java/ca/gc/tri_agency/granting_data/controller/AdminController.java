@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
 import ca.gc.tri_agency.granting_data.service.AdminService;
+import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,6 +22,9 @@ public class AdminController {
 
 	@Autowired
 	AdminService adminService;
+
+	@Autowired
+	DataAccessService dataSevice;
 
 	@GetMapping("/selectFileForComparison")
 	public String compareData_selectDatasetUploadFile(Model model) {
@@ -61,6 +66,25 @@ public class AdminController {
 		int num = adminService.importProgramsFromFile();
 		redirectAttrs.addFlashAttribute("actionMessage", "Successfully applied " + num + " Funcing Cycles");
 		return "redirect:/admin/home";
+	}
+
+	@GetMapping("/analyzeSystemFOs")
+	public String analyzeSystemFOs(Model model) {
+		model.addAttribute("systemFOs", dataSevice.getAllSystemFOs());
+		return "admin/analyzeSystemFOs";
+	}
+
+	@GetMapping("/viewSystemFO")
+	public String viewSystemFO(@RequestParam Long id, Model model) {
+		model.addAttribute("systemFO", dataSevice.getSystemFO(id));
+		model.addAttribute("fosForLink", dataSevice.getAllFundingOpportunities());
+		return "admin/viewSystemFo";
+	}
+
+	@PostMapping(value = "/registerFOLink")
+	public String registerProgramLinkPost(@ModelAttribute("id") Long id, @ModelAttribute("foId") Long foId) {
+		adminService.linkSystemFO(id, foId);
+		return "redirect:analyzeSystemFOs";
 	}
 
 }

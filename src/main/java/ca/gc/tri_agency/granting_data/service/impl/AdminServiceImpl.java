@@ -129,6 +129,7 @@ public class AdminServiceImpl implements AdminService {
 					targetFo.setNameFr(row.getProgramNameFr());
 					targetFo.setGrantingSystem(targetSystem);
 					targetFo = systemFoRepo.save(targetFo);
+					map.put(targetFo.getExtId(), targetFo);
 
 				}
 				SystemFundingCycle newCycle = new SystemFundingCycle();
@@ -232,6 +233,15 @@ public class AdminServiceImpl implements AdminService {
 
 		return programs;
 
+	}
+
+	@Override
+	public int linkSystemFO(long systemFoId, long foId) {
+		SystemFundingOpportunity systemFo = systemFoRepo.getOne(systemFoId);
+		FundingOpportunity fo = foRepo.getOne(foId);
+		systemFo.setLinkedFundingOpportunity(fo);
+		systemFoRepo.save(systemFo);
+		return 1;
 	}
 
 }

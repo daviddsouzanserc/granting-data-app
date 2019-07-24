@@ -14,7 +14,7 @@ import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @Service
-public class DataAccessServiceImpl implements DataAccessService {
+public class RestrictedDataServiceImpl implements DataAccessService {
 
 	@Autowired
 	SystemFundingOpportunityRepository systemFoRepo;

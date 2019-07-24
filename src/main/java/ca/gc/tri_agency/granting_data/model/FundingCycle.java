@@ -28,6 +28,14 @@ public class FundingCycle implements LocalizedParametersModel {
 	@Temporal(TemporalType.DATE)
 	private Date compYear;
 
+	@Temporal(TemporalType.DATE)
+	private Date startDate;
+
+	@Temporal(TemporalType.DATE)
+	private Date endDate;
+
+	private Long expectedApplications;
+
 	@ManyToOne
 	@JoinColumn(name = "funding_opportunity_id")
 	private FundingOpportunity fundingOpportunity;
@@ -78,5 +86,29 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	public void setCompYear(Date compYear) {
 		this.compYear = compYear;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public Long getExpectedApplications() {
+		return expectedApplications;
+	}
+
+	public void setExpectedApplications(Long expectedApplications) {
+		this.expectedApplications = expectedApplications;
 	}
 }

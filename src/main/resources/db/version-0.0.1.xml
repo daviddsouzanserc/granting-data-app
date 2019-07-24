@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <databaseChangeLog 
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
@@ -8,10 +9,12 @@
    http://www.liquibase.org/xml/ns/dbchangelog 
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
    
-    <changeSet author="dev_dyd (generated)" id="1561406614448-2">
+
+     
+    <changeSet author="dev_dyd (generated)" id="1563982544433-1">
         <createTable tableName="agency">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="acronym_en" type="VARCHAR(255)"/>
             <column name="acronym_fr" type="VARCHAR(255)"/>
@@ -19,10 +22,10 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-4">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-2">
         <createTable tableName="core_function">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="acronym" type="VARCHAR(255)"/>
             <column name="granting_function" type="VARCHAR(255)"/>
@@ -30,10 +33,10 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-5">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-3">
         <createTable tableName="core_function_system_map">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
@@ -42,21 +45,25 @@
             <column name="granting_system_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-6">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-4">
         <createTable tableName="funding_cycle">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
+            <column name="comp_year" type="date"/>
+            <column name="end_date" type="date"/>
+            <column name="expected_applications" type="BIGINT"/>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
+            <column name="start_date" type="date"/>
             <column name="funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-7">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-5">
         <createTable tableName="funding_opportunity">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="apply_method" type="VARCHAR(255)"/>
             <column name="award_management_system" type="VARCHAR(255)"/>
@@ -69,7 +76,7 @@
             <column name="lead_agency_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-8">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-6">
         <createTable tableName="funding_opportunity_participating_agencies">
             <column name="funding_opportunity_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -79,31 +86,47 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-9">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-7">
         <createTable tableName="granting_system">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="acronym" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-11">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-8">
+        <createTable tableName="hibernate_sequence">
+            <column name="next_val" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-9">
         <createTable tableName="lead_contributor">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
+            <column name="ad_user_dn" type="VARCHAR(255)"/>
             <column name="email" type="VARCHAR(255)"/>
             <column name="name" type="VARCHAR(255)"/>
-            <column name="ad_user_dn" type="VARCHAR(255)"/>
             <column name="funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-14">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-10">
+        <createTable tableName="system_funding_cycle">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comp_year" type="date"/>
+            <column name="ext_id" type="VARCHAR(255)"/>
+            <column name="num_apps_received" type="BIGINT"/>
+            <column name="system_funding_opportunity_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-11">
         <createTable tableName="system_funding_opportunity">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
@@ -112,62 +135,82 @@
             <column name="linked_funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-15">
-        <createTable tableName="user">
-			<column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="email" type="VARCHAR(255)"/>
-            <column name="name" type="VARCHAR(255)"/>
-        </createTable>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-12">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="agency"/>
     </changeSet>
-    
-    <changeSet author="dev_dyd (generated)" id="1561406614448-28">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-13">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="core_function"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-14">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="core_function_system_map"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-15">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_cycle"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-16">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_opportunity"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-17">
+        <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY" tableName="funding_opportunity_participating_agencies"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-18">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_system"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-19">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="lead_contributor"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-20">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_funding_cycle"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-21">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_funding_opportunity"/>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-22">
         <createIndex indexName="FK14tr15getkq8fb5kjrrjptvjr" tableName="system_funding_opportunity">
             <column name="linked_funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-29">
-        <createIndex indexName="FK4wpm5t3c8pff5cttcbrso8u5f" tableName="lead_contributor">
-            <column name="ad_user_dn"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-30">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-23">
         <createIndex indexName="FK528n91tiwm42hbh9296moiphq" tableName="funding_opportunity">
             <column name="lead_agency_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-31">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-24">
         <createIndex indexName="FK6bwbn2qevrkb0xtgfw7372cy" tableName="funding_cycle">
             <column name="funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-32">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-25">
         <createIndex indexName="FK7omxtqso7ypmg8d27gs306aag" tableName="core_function_system_map">
             <column name="granting_system_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-33">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-26">
         <createIndex indexName="FKbsasob7skpngyxtdeg9j9ierw" tableName="system_funding_opportunity">
             <column name="granting_system_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-34">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-27">
+        <createIndex indexName="FKikhvk8ji466d7w30b6wqhmees" tableName="system_funding_cycle">
+            <column name="system_funding_opportunity_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="dev_dyd (generated)" id="1563982544433-28">
         <createIndex indexName="FKisws5uvu49wx4kkcgyooit8ud" tableName="core_function_system_map">
             <column name="funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-35">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-29">
         <createIndex indexName="FKmnm9gjqoedc34m9wb3nevyqa5" tableName="lead_contributor">
             <column name="funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-36">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-30">
         <createIndex indexName="FKn99g3llljq5hmao5ywfd021vg" tableName="core_function_system_map">
             <column name="core_function_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_dyd (generated)" id="1561406614448-37">
+    <changeSet author="dev_dyd (generated)" id="1563982544433-31">
         <createIndex indexName="FKuip0ni018fonghd8p7e326g8" tableName="funding_opportunity_participating_agencies">
             <column name="participating_agencies_id"/>
         </createIndex>

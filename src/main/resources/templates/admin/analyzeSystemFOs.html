@@ -15,8 +15,8 @@
 	<div class="section">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8">
-				<h1>Programs Table</h1>
-				<table id="programsTable" class="display">
+				<h1>System Funding Opportunities - Analyze Links</h1>
+				<table id="dataTable" class="display">
 			       <!-- Header Table -->
 			       <thead>
 			            <tr>
@@ -27,16 +27,18 @@
 			            </tr>
 			        </thead>
 			        <tbody>
-						<tr th:each="app : ${systemFOs}">
-							<td><a th:href="@{viewSystemFO(id=${app.id})}" th:text="${app.extlId}"></a></td>
-							<td th:text="${app.nameEn}"></td>
-							<td th:text="${app.grantingSystem.nameEn}"></td>
-							<th><a th:href="@{../browse/viewFo(id=${})}" th:text="${app.linkedFundingOpportunity.nameEn}"></th>
+						<tr th:each="fo : ${systemFOs}">
+							<td><a th:href="@{viewSystemFO(id=${fo.id})}" th:text="${fo.extId}"></a></td>
+							<td th:text="${fo.nameEn}"></td>
+							<td th:text="${fo.grantingSystem.nameEn}"></td>
+							<th>
+								<a th:if="${fo.linkedFundingOpportunity != null}" th:href="@{../browse/viewFo(id=${fo.linkedFundingOpportunity.id})}" th:text="${fo.linkedFundingOpportunity.nameEn}" ></a>
+								<div th:if="${fo.linkedFundingOpportunity == null}">Not Linked</div>
+							</th>
 						</tr>
 					</tbody>
 			        
 			    </table>
-		        <p>Click <a th:href="programs">here</a> to access JSON API.</p>
 			</div>
 			<div class="col-sm-2"></div>
 

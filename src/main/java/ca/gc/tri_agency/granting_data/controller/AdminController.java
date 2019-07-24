@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,10 +68,23 @@ public class AdminController {
 		return "redirect:/admin/home";
 	}
 
-	@GetMapping("/analyzeSystemFo")
-	public String analyzeSystemFo(Model model) {
+	@GetMapping("/analyzeSystemFOs")
+	public String analyzeSystemFOs(Model model) {
 		model.addAttribute("systemFOs", dataSevice.getAllSystemFOs());
-		return "admin/analyzeSystemFo";
+		return "admin/analyzeSystemFOs";
+	}
+
+	@GetMapping("/viewSystemFO")
+	public String viewSystemFO(@RequestParam Long id, Model model) {
+		model.addAttribute("systemFO", dataSevice.getSystemFO(id));
+		model.addAttribute("fosForLink", dataSevice.getAllFundingOpportunities());
+		return "admin/viewSystemFo";
+	}
+
+	@PostMapping(value = "/registerFOLink")
+	public String registerProgramLinkPost(@ModelAttribute("id") Long id, @ModelAttribute("foId") Long foId) {
+		adminService.linkSystemFO(id, foId);
+		return "redirect:analyzeSystemFOs";
 	}
 
 }

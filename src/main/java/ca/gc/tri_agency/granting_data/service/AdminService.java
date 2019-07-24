@@ -16,4 +16,6 @@ public interface AdminService {
 
 	public int importProgramsFromFile();
 
+	public int linkSystemFO(long systemFoId, long foId);
+
 }

@@ -1,20 +1,16 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
-import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
-import ca.gc.tri_agency.granting_data.service.DataAccessService;
+import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
 
 @Service
-public class RestrictedDataServiceImpl implements DataAccessService {
+public class RestrictedDataServiceImpl implements RestrictedDataService {
 
 	@Autowired
 	SystemFundingOpportunityRepository systemFoRepo;
@@ -24,28 +20,9 @@ public class RestrictedDataServiceImpl implements DataAccessService {
 	AgencyRepository agencyRepo;
 
 	@Override
-	public List<SystemFundingOpportunity> getAllSystemFOs() {
-		return systemFoRepo.findAll();
-	}
+	public void saveFundingOpportunity(FundingOpportunity targetUpdate) {
+		// TODO Auto-generated method stub
 
-	@Override
-	public SystemFundingOpportunity getSystemFO(long id) {
-		return systemFoRepo.getOne(id);
-	}
-
-	@Override
-	public List<FundingOpportunity> getAllFundingOpportunities() {
-		return foRepo.findAll();
-	}
-
-	@Override
-	public FundingOpportunity getFundingOpportunity(long id) {
-		return foRepo.getOne(id);
-	}
-
-	@Override
-	public List<Agency> getAllAgencies() {
-		return agencyRepo.findAll();
 	}
 
 }

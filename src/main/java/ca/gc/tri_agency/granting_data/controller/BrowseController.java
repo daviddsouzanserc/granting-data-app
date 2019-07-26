@@ -54,6 +54,7 @@ public class BrowseController {
 	public String editProgram(@RequestParam("id") long id, Model model) {
 		FundingOpportunity fo = dataService.getFundingOpportunity(id);
 		model.addAttribute("fo", fo);
+
 		List<Agency> allAgencies = dataService.getAllAgencies();
 		List<Agency> otherAgencies = new ArrayList<Agency>();
 		for (Agency a : allAgencies) {
@@ -67,9 +68,9 @@ public class BrowseController {
 	}
 
 	@PostMapping(value = "/editProgram")
-	public String editProgramPost(@Valid @ModelAttribute("fo") FundingOpportunity command, // Model
+	public String editProgramPost(@Valid @ModelAttribute("fo") FundingOpportunity command // Model
 																							// model,
-			BindingResult bindingResult) {
+			, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
 			// model.addAttribute("allAgencies", dataService.getAllAgencies());

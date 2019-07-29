@@ -19,8 +19,6 @@ public class ProgramForm {
 	@Size(min = 2)
 	private String nameEn;
 
-	@NotNull
-	@Size(min = 2)
 	private String nameFr;
 
 	@NotNull
@@ -43,8 +41,6 @@ public class ProgramForm {
 	@Size(min = 2)
 	private String awardManagementSystem;
 
-	@NotNull
-	@Size(min = 2)
 	private String programLeadName;
 
 	@NotNull

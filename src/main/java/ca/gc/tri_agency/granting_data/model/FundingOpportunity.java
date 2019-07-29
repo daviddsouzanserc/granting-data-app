@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import ca.gc.tri_agency.granting_data.form.ProgramForm;
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
@@ -53,6 +54,18 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	}
 
 	public void loadFromForm(FundingOpportunity f) {
+		this.setApplyMethod(f.getApplyMethod());
+		this.setAwardManagementSystem(f.getAwardManagementSystem());
+		this.setDivision(f.getDivision());
+		this.setFundingType(f.getFundingType());
+		this.setFrequency(f.getFrequency());
+		this.setLeadAgency(f.getLeadAgency());
+		this.setNameEn(f.getNameEn());
+		this.setNameFr(f.getNameFr());
+		this.setProgramLeadName(f.getProgramLeadName());
+	}
+
+	public void loadFromForm(ProgramForm f) {
 		this.setApplyMethod(f.getApplyMethod());
 		this.setAwardManagementSystem(f.getAwardManagementSystem());
 		this.setDivision(f.getDivision());

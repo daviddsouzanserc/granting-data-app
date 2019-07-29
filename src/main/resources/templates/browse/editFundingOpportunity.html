@@ -7,10 +7,8 @@
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
 	<div class="container">
-		<form action="#" th:action="@{editProgram}" th:object="${ProgramForm}" method="post">
-			<input type="hidden" th:field="*{id}" />
-            		
-        
+		<form action="#" th:action="@{editFo}" th:object="${programForm}" method="post">            		
+        	<input type="hidden" th:field="*{id}" />
 			<h1>Edit Funding Opportunity</h1>
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:utext="#{form.name}">Name</div>

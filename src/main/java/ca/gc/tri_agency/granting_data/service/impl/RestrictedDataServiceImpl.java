@@ -20,9 +20,8 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	AgencyRepository agencyRepo;
 
 	@Override
-	public void saveFundingOpportunity(FundingOpportunity targetUpdate) {
-		// TODO Auto-generated method stub
-
+	public FundingOpportunity saveFundingOpportunity(FundingOpportunity targetUpdate) {
+		return foRepo.save(targetUpdate);
 	}
 
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ca.gc.tri_agency.granting_data.form.ProgramForm;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
@@ -56,7 +55,7 @@ public class BrowseController {
 	public String editFo(@RequestParam("id") long id, Model model) {
 		FundingOpportunity fo = dataService.getFundingOpportunity(id);
 		model.addAttribute("fo", fo);
-		model.addAttribute("programForm", new ProgramForm(fo));
+		model.addAttribute("programForm", fo);
 
 		List<Agency> allAgencies = dataService.getAllAgencies();
 		List<Agency> otherAgencies = new ArrayList<Agency>();
@@ -86,7 +85,8 @@ public class BrowseController {
 //	}
 
 	@PostMapping(value = "/editFo")
-	public String editFoPost(@Valid @ModelAttribute("programForm") ProgramForm command, BindingResult bindingResult) {
+	public String editFoPost(@Valid @ModelAttribute("programForm") FundingOpportunity command,
+			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			// model.addAttribute("allAgencies", dataService.getAllAgencies());
 			for (ObjectError br : bindingResult.getAllErrors()) {
@@ -94,10 +94,8 @@ public class BrowseController {
 			}
 			return "redirect:/browse/goldenList";
 		}
-		FundingOpportunity targetUpdate = dataService.getFundingOpportunity(command.getId());
-		targetUpdate.loadFromForm(targetUpdate);
-		restrictedDataService.saveFundingOpportunity(targetUpdate);
-		return "redirect:/browse/viewFo?id=" + targetUpdate.getId();
+		restrictedDataService.saveFundingOpportunity(command);
+		return "redirect:/browse/viewFo?id=" + command.getId();
 	}
 
 }

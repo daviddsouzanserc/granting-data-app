@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
+import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 import ca.gc.tri_agency.granting_data.service.GoldenListService;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
+import ca.gc.tri_agency.granting_data.service.UserRepo;
 
 @Controller
 @RequestMapping("/browse")
@@ -36,6 +38,9 @@ public class BrowseController {
 
 	@Autowired
 	RestrictedDataService restrictedDataService;
+
+	@Autowired
+	UserRepo userRepo;
 
 	@GetMapping("/goldenList")
 	public String goldListDisplay(Model model) {
@@ -96,6 +101,19 @@ public class BrowseController {
 		}
 		restrictedDataService.saveFundingOpportunity(command);
 		return "redirect:/browse/viewFo?id=" + command.getId();
+	}
+
+	@GetMapping(value = "editProgramLead")
+	public String editProgramLead(@RequestParam("id") long id, Model model) {
+		return "browse/editProgramLead";
+	}
+
+	@GetMapping(value = "/searchUser")
+	public String searchUserAction(@RequestParam("id") long id, @RequestParam("username") String username,
+			Model model) {
+		List<User> matchingUsers = userRepo.searchOther(username);
+		model.addAttribute("matchingUsers", matchingUsers);
+		return "fundingOpp/searchUser";
 	}
 
 }

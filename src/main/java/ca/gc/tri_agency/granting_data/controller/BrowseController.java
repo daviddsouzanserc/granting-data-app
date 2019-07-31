@@ -105,15 +105,16 @@ public class BrowseController {
 
 	@GetMapping(value = "editProgramLead")
 	public String editProgramLead(@RequestParam("id") long id, Model model) {
+		model.addAttribute("originalId", id);
 		return "browse/editProgramLead";
 	}
 
-	@GetMapping(value = "/searchUser")
-	public String searchUserAction(@RequestParam("id") long id, @RequestParam("username") String username,
+	@GetMapping(value = "/editProgramLead", params = "username")
+	public String editProgramLeadSearchUser(@RequestParam("id") long id, @RequestParam("username") String username,
 			Model model) {
 		List<User> matchingUsers = userRepo.searchOther(username);
 		model.addAttribute("matchingUsers", matchingUsers);
-		return "fundingOpp/searchUser";
+		return "browse/editProgramLead";
 	}
 
 }

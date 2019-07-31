@@ -8,30 +8,35 @@
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
 	<div class="container">
 		<h1>Search User</h1> <!--  th:utext="${fundingOpp.searchUser}" --> 
-		<form action="#" th:action="@{searchUser}"  method="get">
+		<form action="#" th:action="@{editProgramLead}"  method="get">
+			<input type="hidden" name="id" th:value="${originalId}" />
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:utext="#{searchUser.nameEn}">Name EN</div>
 				<div><input type="text" name="username" /></div>
 			</div>
 			<input type="submit" class="btn btn-primary" role="button" th:value="#{searchUser.submit}" />
-		</form>	
-		<table th:if="${matchingUsers != null}" class="table table-bordered">
-   			<thead>
-       			<tr>
-           			<th> Username </th>
-           			<th> Surname </th>
-       			</tr>
-   			</thead>
-  			<tbody>
-   				<tr th:if="${matchingUsers.empty}">
-           			<td colspan="2"> No Matching Users </td>
-       			</tr>
-       			<tr th:each="user : ${matchingUsers}">
-           			<td><span th:text="${user.username}"></span></td>
-           			<td><span th:text="${user.sn}"></span></td>
-       			</tr>
-   			</tbody>
-		</table>
+		</form>
+		
+		<form th:if="${matchingUsers != null}">	
+			<table class="table table-bordered">
+	   			<thead>
+	       			<tr>
+	           			<th> Username </th>
+	           			<th> Surname </th>
+	       			</tr>
+	   			</thead>
+	  			<tbody>
+	   				<tr th:if="${matchingUsers.empty}">
+	           			<td colspan="2"> No Matching Users </td>
+	       			</tr>
+	       			<tr th:each="user : ${matchingUsers}">
+	           			<td><span th:text="${user.username}"></span></td>
+	           			<td><span th:text="${user.sn}"></span></td>
+	       			</tr>
+	   			</tbody>
+			</table>
+		</form>
+		
 	</div>
 </body>
 </html>

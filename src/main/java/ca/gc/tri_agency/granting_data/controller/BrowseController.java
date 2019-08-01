@@ -109,13 +109,22 @@ public class BrowseController {
 		return "browse/editProgramLead";
 	}
 
-	@GetMapping(value = "/editProgramLead", params = "username")
+	@GetMapping(value = "editProgramLead", params = "username")
 	public String editProgramLeadSearchUser(@RequestParam("id") long id, @RequestParam("username") String username,
 			Model model) {
 		List<User> matchingUsers = userRepo.searchOther(username);
 		model.addAttribute("matchingUsers", matchingUsers);
 		model.addAttribute("originalId", id);
 		return "browse/editProgramLead";
+	}
+
+	@PostMapping(value = "/editProgramLead")
+	public String editProgramLeadPost(@RequestParam long foId, @RequestParam String leadUserDn) {
+		// get the FO based on the ID
+		// get the AD person based on the leadUserDn
+		// in the FO, lead name and lead DN, save the FO
+		// service.setFoLeadContributor(long foId, leadUserDn)
+		return "redirect:/browse/fiewFo?id=" + foId;
 	}
 
 }

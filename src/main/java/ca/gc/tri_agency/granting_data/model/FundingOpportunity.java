@@ -48,6 +48,8 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	private String programLeadName;
 
+	private String programLeadDn;
+
 	public FundingOpportunity() {
 		setParticipatingAgencies(new HashSet<Agency>());
 	}
@@ -151,6 +153,14 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	public void setParticipatingAgencies(Set<Agency> participatingAgencies) {
 		this.participatingAgencies = participatingAgencies;
+	}
+
+	public String getProgramLeadDn() {
+		return programLeadDn;
+	}
+
+	public void setProgramLeadDn(String programLeadDn) {
+		this.programLeadDn = programLeadDn;
 	}
 
 }

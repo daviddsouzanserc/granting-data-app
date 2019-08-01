@@ -53,6 +53,7 @@ public class BrowseController {
 	@GetMapping(value = "/viewFo")
 	public String viewFundingOpportunity(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fo", dataService.getFundingOpportunity(id));
+		model.addAttribute("fundingCycles", dataService.getFundingCyclesByFoId(id));
 		return "browse/viewFundingOpportunity";
 	}
 
@@ -124,7 +125,8 @@ public class BrowseController {
 		// get the AD person based on the leadUserDn
 		// in the FO, lead name and lead DN, save the FO
 		// service.setFoLeadContributor(long foId, leadUserDn)
-		return "redirect:/browse/fiewFo?id=" + foId;
+		restrictedDataService.setFoLeadContributor(foId, leadUserDn);
+		return "redirect:/browse/viewFo?id=" + foId;
 	}
 
 }

@@ -70,6 +70,7 @@
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
             <column name="program_lead_name" type="VARCHAR(255)"/>
+            <column name="program_lead_dn" type="VARCHAR(255)"/>
             <column name="lead_agency_id" type="BIGINT"/>
         </createTable>
     </changeSet>

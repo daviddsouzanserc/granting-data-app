@@ -18,26 +18,29 @@
 		</form>
 		
 		<form th:if="${matchingUsers != null}" method="post">
-			<input type="hidden" name="foId" th:value="${...}"/>	
+			<input type="hidden" name="foId" th:value="${originalId}"/>	
 			<table class="table table-bordered">
 	   			<thead>
 	       			<tr>
 	       				<th></th>
 	           			<th> Username </th>
 	           			<th> Surname </th>
+	           			<th> Distinguished Name </th>
 	       			</tr>
 	   			</thead>
 	  			<tbody>
 	   				<tr th:if="${matchingUsers.empty}">
-	           			<td colspan="3"> No Matching Users </td>
+	           			<td colspan="4"> No Matching Users </td>
 	       			</tr>
 	       			<tr th:each="user : ${matchingUsers}">
-	       				<td><input name="leadUserDn" th:value="DN-TODO" type="radio" /></td>
+	       				<td><input name="leadUserDn" th:value="${user.dn}" type="radio" /></td>
 	           			<td><span th:text="${user.username}"></span></td>
 	           			<td><span th:text="${user.sn}"></span></td>
+	           			<td><span th:text="${user.dn}"></span></td>
 	       			</tr>
 	   			</tbody>
 			</table>
+			<input th:if="${!matchingUsers.empty}" type="submit" class="btn btn-primary" role="button" th:value="Submit" />
 		</form>
 		
 	</div>

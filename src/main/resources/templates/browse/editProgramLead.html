@@ -17,19 +17,21 @@
 			<input type="submit" class="btn btn-primary" role="button" th:value="#{searchUser.submit}" />
 		</form>
 		
-		<form th:if="${matchingUsers != null}">	
+		<form th:if="${matchingUsers != null}" method="post">	
 			<table class="table table-bordered">
 	   			<thead>
 	       			<tr>
+	       				<th></th>
 	           			<th> Username </th>
 	           			<th> Surname </th>
 	       			</tr>
 	   			</thead>
 	  			<tbody>
 	   				<tr th:if="${matchingUsers.empty}">
-	           			<td colspan="2"> No Matching Users </td>
+	           			<td colspan="3"> No Matching Users </td>
 	       			</tr>
 	       			<tr th:each="user : ${matchingUsers}">
+	       				<td><input type="radio" /></td>
 	           			<td><span th:text="${user.username}"></span></td>
 	           			<td><span th:text="${user.sn}"></span></td>
 	       			</tr>

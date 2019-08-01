@@ -114,6 +114,7 @@ public class BrowseController {
 			Model model) {
 		List<User> matchingUsers = userRepo.searchOther(username);
 		model.addAttribute("matchingUsers", matchingUsers);
+		model.addAttribute("originalId", id);
 		return "browse/editProgramLead";
 	}
 

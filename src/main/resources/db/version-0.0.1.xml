@@ -53,9 +53,6 @@
             <column name="comp_year" type="date"/>
             <column name="end_date" type="date"/>
             <column name="expected_applications" type="BIGINT"/>
-            <column name="ext_id" type="VARCHAR(255)"/>
-            <column name="name_en" type="VARCHAR(255)"/>
-            <column name="name_fr" type="VARCHAR(255)"/>
             <column name="start_date" type="date"/>
             <column name="funding_opportunity_id" type="BIGINT"/>
         </createTable>
@@ -73,6 +70,7 @@
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
             <column name="program_lead_name" type="VARCHAR(255)"/>
+            <column name="program_lead_dn" type="VARCHAR(255)"/>
             <column name="lead_agency_id" type="BIGINT"/>
         </createTable>
     </changeSet>

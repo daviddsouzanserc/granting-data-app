@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,7 +16,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import ca.gc.tri_agency.granting_data.form.ProgramForm;
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
@@ -28,7 +28,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	private String nameFr;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "lead_agency_id")
 	private Agency leadAgency;
 
@@ -48,11 +48,13 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	private String programLeadName;
 
+	private String programLeadDn;
+
 	public FundingOpportunity() {
 		setParticipatingAgencies(new HashSet<Agency>());
 	}
 
-	public void loadFromForm(ProgramForm f) {
+	public void loadFromForm(FundingOpportunity f) {
 		this.setApplyMethod(f.getApplyMethod());
 		this.setAwardManagementSystem(f.getAwardManagementSystem());
 		this.setDivision(f.getDivision());
@@ -151,6 +153,14 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	public void setParticipatingAgencies(Set<Agency> participatingAgencies) {
 		this.participatingAgencies = participatingAgencies;
+	}
+
+	public String getProgramLeadDn() {
+		return programLeadDn;
+	}
+
+	public void setProgramLeadDn(String programLeadDn) {
+		this.programLeadDn = programLeadDn;
 	}
 
 }

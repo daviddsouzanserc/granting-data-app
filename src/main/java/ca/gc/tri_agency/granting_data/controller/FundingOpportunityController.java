@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.gc.tri_agency.granting_data.model.User;
-import ca.gc.tri_agency.granting_data.service.UserRepo;
+import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
 
 @Controller
 @RequestMapping(value = "/fundingOpp", method = RequestMethod.GET)

@@ -19,12 +19,6 @@ public class FundingCycle implements LocalizedParametersModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String extId;
-
-	private String nameEn;
-
-	private String nameFr;
-
 	@Temporal(TemporalType.DATE)
 	private Date compYear;
 
@@ -44,32 +38,8 @@ public class FundingCycle implements LocalizedParametersModel {
 	 * could add: private SimpleDateFormat applyDeadlineDate;
 	 */
 
-	public String getNameEn() {
-		return nameEn;
-	}
-
-	public void setNameEn(String nameEn) {
-		this.nameEn = nameEn;
-	}
-
-	public String getNameFr() {
-		return nameFr;
-	}
-
-	public void setNameFr(String nameFr) {
-		this.nameFr = nameFr;
-	}
-
 	public Long getId() {
 		return id;
-	}
-
-	public String getExtId() {
-		return extId;
-	}
-
-	public void setExtId(String extId) {
-		this.extId = extId;
 	}
 
 	public FundingOpportunity getFundingOpportunity() {

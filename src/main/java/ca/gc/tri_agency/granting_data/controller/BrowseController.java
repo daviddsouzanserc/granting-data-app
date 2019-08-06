@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.User;
+import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 import ca.gc.tri_agency.granting_data.service.GoldenListService;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
-import ca.gc.tri_agency.granting_data.service.UserRepo;
 
 @Controller
 @RequestMapping("/browse")
@@ -53,7 +53,7 @@ public class BrowseController {
 	@GetMapping(value = "/viewFo")
 	public String viewFundingOpportunity(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fo", dataService.getFundingOpportunity(id));
-		model.addAttribute("fundingCycles", dataService.getFundingCyclesByFoId(id));
+		model.addAttribute("fundingCycles", dataService.getSystemFundingCyclesByFoId(id));
 		return "browse/viewFundingOpportunity";
 	}
 

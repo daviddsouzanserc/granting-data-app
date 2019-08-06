@@ -8,8 +8,8 @@ import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
+import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
-import ca.gc.tri_agency.granting_data.service.UserRepo;
 
 @Service
 public class RestrictedDataServiceImpl implements RestrictedDataService {

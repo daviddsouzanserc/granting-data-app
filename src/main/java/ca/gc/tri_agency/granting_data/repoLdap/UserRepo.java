@@ -1,4 +1,4 @@
-package ca.gc.tri_agency.granting_data.service;
+package ca.gc.tri_agency.granting_data.repoLdap;
 
 import java.util.List;
 
@@ -26,8 +26,10 @@ public class UserRepo {
 
 		SearchControls sc = new SearchControls();
 		sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
-		sc.setReturningAttributes(null); // new String[] { "cn" } <- if want only specific attributes. null if want all
-											// attributes. empty array if want no attributes
+		// sc.setReturningAttributes(null); // new String[] { "cn" } <- if want only
+		// specific attributes. null if want all
+		// attributes. empty array if want no attributes
+		sc.setReturningAttributes(new String[] { "cn", "sn", "dn" });
 
 		String filter = "(&(objectclass=person)(cn=" + username + "))";
 

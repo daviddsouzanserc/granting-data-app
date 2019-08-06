@@ -71,18 +71,21 @@
 					</tr>
 
 				</thead>
-				<tbody>
+				<tbody th:if="${fundingCycles!=null}">
 					<tr th:each="fundingCycle : ${fundingCycles}">
-						<td th:text="fundingCycle.compYear" ></td>
-						<td th:text="fundingCycle.startDate" ></td>
-						<td th:text="fundingCycle.endDate" ></td>
-						<td th:text="expectedApplications" ></td>
+						<td th:text="${fundingCycle.compYear}" ></td>
+						<td></td>
+						<td></td>
+						<!-- <td th:text="${fundingCycle.startDate}" ></td>
+						<td th:text="${fundingCycle.endDate}" ></td>  -->
+						<td th:text="${fundingCycle.numAppsReceived}" ></td>
 					</tr>
 
 				</tbody>
 				</table>
 			</div>
 		</div>
+		<a class="btn btn-primary" th:href="@{editFo(id=${fo.id})}" role="button">Create Funding Cycle</a> <!-- href to the new page which will create funding cycle -->
 		
 	</div>
    </body>

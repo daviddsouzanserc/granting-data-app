@@ -10,6 +10,7 @@ import javax.naming.directory.SearchControls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,13 @@ public class UserRepo {
 
 		SearchControls sc = new SearchControls();
 		sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
-		// sc.setReturningAttributes(null); // new String[] { "cn" } <- if want only
+		// sc.setSearchScope(SearchControls.OBJECT_SCOPE);
+		// sc.setSearchScope(SearchControls.ONELEVEL_SCOPE);
+
+		sc.setReturningAttributes(null); // new String[] { "cn" } <- if want only
 		// specific attributes. null if want all
 		// attributes. empty array if want no attributes
-		sc.setReturningAttributes(new String[] { "cn", "sn", "dn" });
+		// sc.setReturningAttributes(new String[] { "cn", "sn", "dn" });
 
 		String filter = "(&(objectclass=person)(cn=" + username + "))";
 
@@ -38,6 +42,16 @@ public class UserRepo {
 
 	public User findPerson(String dn) {
 		return ldapTemplate.lookup(dn, new PersonAttributesMapper());
+	}
+
+	private String buildDn(User user) {
+		try {
+			return LdapNameBuilder.newInstance("dc=nserc,dc=ca").add("ou", "NSERC_Users").add("uid", user.getUid())
+					.build().toString();
+		} catch (Exception e) {
+			return null;
+		}
+
 	}
 
 	private class PersonAttributesMapper implements AttributesMapper<User> {
@@ -63,12 +77,16 @@ public class UserRepo {
 			if (sn != null) {
 				user.setSn((String) sn.get());
 			}
-			Attribute dn = attributes.get("dn");
-			if (dn == null) {
-				System.out.println("null dn");
+			Attribute uid = attributes.get("uid");
+			if (uid != null) {
+				user.setUid((String) uid.get());
 			}
+			// Attribute dn = attributes.get("dn");
+			String dn = buildDn(user);
+
 			if (dn != null) {
-				user.setDn((String) dn.get());
+				// user.setDn((String) dn.get());
+				user.setDn(dn);
 			}
 
 			return user;

@@ -105,13 +105,19 @@ public class BrowseController {
 		return "browse/editProgramLead";
 	}
 
+//	@PostMapping(value = "/editProgramLead")
+//	public String editProgramLeadPost(@RequestParam long foId, @RequestParam String leadUserDn) {
+//		// get the FO based on the ID
+//		// get the AD person based on the leadUserDn
+//		// in the FO, lead name and lead DN, save the FO
+//		// service.setFoLeadContributor(long foId, leadUserDn)
+//		restrictedDataService.setFoLeadContributor(foId, leadUserDn);
+//		return "redirect:/browse/viewFo?id=" + foId;
+//	}
+
 	@PostMapping(value = "/editProgramLead")
-	public String editProgramLeadPost(@RequestParam long foId, @RequestParam String leadUserDn) {
-		// get the FO based on the ID
-		// get the AD person based on the leadUserDn
-		// in the FO, lead name and lead DN, save the FO
-		// service.setFoLeadContributor(long foId, leadUserDn)
-		restrictedDataService.setFoLeadContributor(foId, leadUserDn);
+	public String editProgramLeadPost(@RequestParam long foId, @RequestParam User user) {
+		restrictedDataService.setFoLeadContributor(foId, user);
 		return "redirect:/browse/viewFo?id=" + foId;
 	}
 

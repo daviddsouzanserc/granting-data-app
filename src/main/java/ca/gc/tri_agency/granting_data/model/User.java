@@ -15,6 +15,7 @@ public final class User {
 	private @Attribute(name = "sn") String sn;
 	private @Attribute(name = "sAMAccountName") String accountName;
 	private @Attribute(name = "dn") String dn;
+	private @Attribute(name = "uid") String uid;
 
 	public Name getId() {
 		return id;
@@ -36,6 +37,10 @@ public final class User {
 		return dn;
 	}
 
+	public String getUid() {
+		return uid;
+	}
+
 	public void setId(Name id) {
 		this.id = id;
 	}
@@ -54,6 +59,10 @@ public final class User {
 
 	public void setDn(String dn) {
 		this.dn = dn;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 
 	public String toString() {

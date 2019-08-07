@@ -40,4 +40,12 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 		foRepo.save(foToUpdate);
 	}
 
+	@Override
+	public void setFoLeadContributor(long foId, User user) {
+		FundingOpportunity foToUpdate = foRepo.getOne(foId);
+		foToUpdate.setProgramLeadDn(user.getDn());
+		foToUpdate.setProgramLeadName(user.getUsername());
+		foRepo.save(foToUpdate);
+	}
+
 }

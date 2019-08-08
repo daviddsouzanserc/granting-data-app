@@ -30,7 +30,7 @@
 				<div><input th:field="*{expectedApplications}" class="col-sm-2"  /></div>
 				<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}">Expected Applications Error</div>
 			</div>
-			<!-- <input type="hidden" th:field="*{funding_opportunity_id}" th:value="${foId}" />  -->
+			<input type="hidden" name="fundingOpportunity" th:value="${foId}" />
 			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
 		</form>
 		

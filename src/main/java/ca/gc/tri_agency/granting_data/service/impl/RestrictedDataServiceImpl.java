@@ -3,9 +3,11 @@ package ca.gc.tri_agency.granting_data.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
+import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
@@ -18,6 +20,8 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	SystemFundingOpportunityRepository systemFoRepo;
 	@Autowired
 	FundingOpportunityRepository foRepo;
+	@Autowired
+	FundingCycleRepository fcRepo;
 	@Autowired
 	AgencyRepository agencyRepo;
 	@Autowired
@@ -46,6 +50,12 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 		foToUpdate.setProgramLeadDn(user.getDn());
 		foToUpdate.setProgramLeadName(user.getUsername());
 		foRepo.save(foToUpdate);
+	}
+
+	@Override
+	public FundingCycle createOrUpdateFundingCycle(FundingCycle command) {
+		// todo:: verify ownership, throw exception if user is not authorized
+		return fcRepo.save(command);
 	}
 
 }

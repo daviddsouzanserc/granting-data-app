@@ -129,10 +129,17 @@ public class BrowseController {
 	}
 
 	@PostMapping(value = "createFundingCycle")
-	public String createFundingCyclePost(@RequestParam long foId,
-			@Valid @ModelAttribute("programForm") FundingOpportunity command, BindingResult bindingResult) {
+	public String createFundingCyclePost(@Valid @ModelAttribute("fundingCycle") FundingCycle command,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			for (ObjectError br : bindingResult.getAllErrors()) {
+				System.out.println(br.toString());
+			}
+			return "browse/createFundingCycle";
+		}
+		restrictedDataService.createOrUpdateFundingCycle(command);
 
-		return "redirect:/browse/viewFo?id=" + foId;
+		return "redirect:/browse/viewFo?id=" + command.getFundingOpportunity().getId();
 	}
 
 }

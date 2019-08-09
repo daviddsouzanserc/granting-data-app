@@ -17,7 +17,7 @@
 			<input type="submit" class="btn btn-primary" role="button" th:value="#{searchUser.submit}" />
 		</form>
 		
-		<form th:if="${matchingUsers != null}" method="post">
+		<form th:if="${matchingUsers != null}" action="#" th:action="@{editProgramLead}" method="post">
 			<input type="hidden" name="foId" th:value="${originalId}"/>	
 			<table class="table table-bordered">
 	   			<thead>
@@ -34,6 +34,7 @@
 	       			</tr>
 	       			<tr th:each="user : ${matchingUsers}">
 	       				<td><input name="leadUserDn" th:value="${user.dn}" type="radio" /></td>
+	       				<!-- <td><input name="selectedUser" th:value="${user}" type="radio" /></td> -->
 	           			<td><span th:text="${user.username}"></span></td>
 	           			<td><span th:text="${user.sn}"></span></td>
 	           			<td><span th:text="${user.dn}"></span></td>

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
@@ -75,21 +76,6 @@ public class BrowseController {
 		return "browse/editFundingOpportunity";
 	}
 
-//	@PostMapping(value = "/editFo")
-//	public String editProgramPost(@Valid @ModelAttribute("fo") FundingOpportunity command // Model
-//																							// model,
-//			, BindingResult bindingResult) {
-//
-//		if (bindingResult.hasErrors()) {
-//			// model.addAttribute("allAgencies", dataService.getAllAgencies());
-//			return "browse/viewFundingOpportunity";
-//		}
-//		FundingOpportunity targetUpdate = dataService.getFundingOpportunity(command.getId());
-//		targetUpdate.loadFromForm(command);
-//		restrictedDataService.saveFundingOpportunity(targetUpdate);
-//		return "redirect:viewProgram?id=" + targetUpdate.getId();
-//	}
-
 	@PostMapping(value = "/editFo")
 	public String editFoPost(@Valid @ModelAttribute("programForm") FundingOpportunity command,
 			BindingResult bindingResult) {
@@ -127,6 +113,34 @@ public class BrowseController {
 		// service.setFoLeadContributor(long foId, leadUserDn)
 		restrictedDataService.setFoLeadContributor(foId, leadUserDn);
 		return "redirect:/browse/viewFo?id=" + foId;
+	}
+
+//	@PostMapping(value = "/editProgramLead")
+//	public String editProgramLeadPost(@RequestParam("foId") long foId,
+//			@ModelAttribute("selectedUser") User selectedUser) {
+//		restrictedDataService.setFoLeadContributor(foId, selectedUser);
+//		return "redirect:/browse/viewFo?id=" + foId;
+//	}
+
+	@GetMapping(value = "createFundingCycle")
+	public String createFundingCycle(@RequestParam("id") long id, Model model) {
+		model.addAttribute("foId", id);
+		model.addAttribute("fundingCycle", new FundingCycle());
+		return "browse/createFundingCycle";
+	}
+
+	@PostMapping(value = "createFundingCycle")
+	public String createFundingCyclePost(@Valid @ModelAttribute("fundingCycle") FundingCycle command,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			for (ObjectError br : bindingResult.getAllErrors()) {
+				System.out.println(br.toString());
+			}
+			return "browse/createFundingCycle";
+		}
+		restrictedDataService.createOrUpdateFundingCycle(command);
+
+		return "redirect:/browse/viewFo?id=" + command.getFundingOpportunity().getId();
 	}
 
 }

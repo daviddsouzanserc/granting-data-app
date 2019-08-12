@@ -1,6 +1,12 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
@@ -26,6 +32,29 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	AgencyRepository agencyRepo;
 	@Autowired
 	UserRepo userRepo;
+
+	private boolean checkCredentials() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null) {
+			return false;
+		}
+		// securityUser principal = (securityUser) auth.getPrincipal();
+		if (auth.getPrincipal() == null) {
+			return false;
+		}
+		UserDetails principal = (UserDetails) auth.getPrincipal();
+		Collection<? extends GrantedAuthority> userAuthorities = principal.getAuthorities();
+		for (GrantedAuthority g : userAuthorities) {
+			if (g.getAuthority().equals("ROLE_ADMIN")) { // checks if current logged in user is an admin
+				return true;
+			}
+		}
+
+		// todo check is dn is the same as the selected funding opportunity
+
+		return false;
+
+	}
 
 	@Override
 	public FundingOpportunity saveFundingOpportunity(FundingOpportunity targetUpdate) {
@@ -55,6 +84,7 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	@Override
 	public FundingCycle createOrUpdateFundingCycle(FundingCycle command) {
 		// todo:: verify ownership, throw exception if user is not authorized
+		checkCredentials();
 		return fcRepo.save(command);
 	}
 

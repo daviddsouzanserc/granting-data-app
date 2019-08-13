@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
@@ -39,10 +40,11 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 			return false;
 		}
 		// securityUser principal = (securityUser) auth.getPrincipal();
-		if (auth.getPrincipal() == null) {
+		if (auth.getPrincipal() == null || auth.isAuthenticated() == false) {
 			return false;
 		}
 		// Object principal = auth.getPrincipal();
+		LdapUserDetails principal2 = (LdapUserDetails) auth.getPrincipal();
 		UserDetails principal = (UserDetails) auth.getPrincipal(); // <- error, not typecasting
 		Collection<? extends GrantedAuthority> userAuthorities = principal.getAuthorities();
 		for (GrantedAuthority g : userAuthorities) {

@@ -8,6 +8,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.support.LdapNameBuilder;
@@ -18,6 +19,15 @@ import ca.gc.tri_agency.granting_data.model.User;
 
 @Service
 public class UserRepo {
+
+	@Value("${ldap.base.dn.nserc}")
+	private String nsercBaseDn;
+
+	@Value("${ldap.base.dn.sshrc}")
+	private String sshrcBaseDn;
+
+	private String nsercOu = "NSERC_Users";
+	private String sshrcOu = "SSHRC1_Users";
 
 	@Autowired
 	private LdapTemplate ldapTemplate;
@@ -46,8 +56,8 @@ public class UserRepo {
 
 	private String buildDn(User user) {
 		try {
-			return LdapNameBuilder.newInstance("dc=nserc,dc=ca").add("ou", "NSERC_Users").add("uid", user.getUid())
-					.build().toString();
+			return LdapNameBuilder.newInstance(nsercBaseDn).add("ou", nsercOu).add("uid", user.getUid()).build()
+					.toString();
 		} catch (Exception e) {
 			return null;
 		}

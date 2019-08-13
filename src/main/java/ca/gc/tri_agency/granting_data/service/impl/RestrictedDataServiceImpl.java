@@ -1,12 +1,12 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Service;
 
@@ -34,18 +34,19 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	@Autowired
 	UserRepo userRepo;
 
-	private boolean checkCredentials() {
+	private boolean checkCredentials(Long id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth == null) {
 			return false;
 		}
 		// securityUser principal = (securityUser) auth.getPrincipal();
-		if (auth.getPrincipal() == null || auth.isAuthenticated() == false) {
+		if (!auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
 			return false;
 		}
 		// Object principal = auth.getPrincipal();
-		LdapUserDetails principal2 = (LdapUserDetails) auth.getPrincipal();
-		UserDetails principal = (UserDetails) auth.getPrincipal(); // <- error, not typecasting
+		LdapUserDetails principal = (LdapUserDetails) auth.getPrincipal();
+		// UserDetails principal = (UserDetails) auth.getPrincipal(); // <- error, not
+		// typecasting
 		Collection<? extends GrantedAuthority> userAuthorities = principal.getAuthorities();
 		for (GrantedAuthority g : userAuthorities) {
 			if (g.getAuthority().equals("ROLE_ADMIN")) { // checks if current logged in user is an admin
@@ -54,6 +55,11 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 		}
 
 		// todo check is dn is the same as the selected funding opportunity
+		Optional<FundingOpportunity> fo = foRepo.findById(id);
+		String currentUser = principal.getDn();
+		if (currentUser.equals(fo.get().getProgramLeadDn())) {
+			return true;
+		}
 
 		return false;
 
@@ -87,8 +93,10 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	@Override
 	public FundingCycle createOrUpdateFundingCycle(FundingCycle command) {
 		// todo:: verify ownership, throw exception if user is not authorized
-		checkCredentials();
-		return fcRepo.save(command);
+		if (checkCredentials(command.getFundingOpportunity().getId())) {
+			return fcRepo.save(command);
+		}
+		return null; // should throw exception here
 	}
 
 }

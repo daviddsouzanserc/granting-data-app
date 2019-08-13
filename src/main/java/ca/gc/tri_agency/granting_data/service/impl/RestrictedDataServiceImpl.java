@@ -42,7 +42,8 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 		if (auth.getPrincipal() == null) {
 			return false;
 		}
-		UserDetails principal = (UserDetails) auth.getPrincipal();
+		// Object principal = auth.getPrincipal();
+		UserDetails principal = (UserDetails) auth.getPrincipal(); // <- error, not typecasting
 		Collection<? extends GrantedAuthority> userAuthorities = principal.getAuthorities();
 		for (GrantedAuthority g : userAuthorities) {
 			if (g.getAuthority().equals("ROLE_ADMIN")) { // checks if current logged in user is an admin

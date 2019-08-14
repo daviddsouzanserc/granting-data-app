@@ -52,6 +52,9 @@ public class UserRepo {
 				return ctx.getNameInNamespace();
 			}
 		});
+		if (result.isEmpty()) {
+			return null;
+		}
 		return result.get(0).toString();
 
 	}
@@ -102,7 +105,9 @@ public class UserRepo {
 				return ctx.getNameInNamespace();
 			}
 		});
-
+		if (result.isEmpty()) {
+			return null;
+		}
 		dn = result.get(0).toString();
 		return dn;
 	}
@@ -126,7 +131,7 @@ public class UserRepo {
 				user.setUid((String) uid.get());
 			}
 			// Attribute dn = attributes.get("dn");
-			String dn = getDnByUsername(cn.toString());
+			String dn = buildDn((String) cn.get());
 
 			if (dn != null) {
 				// user.setDn((String) dn.get());

@@ -37,4 +37,11 @@ public class FundingOpportunityController {
 		model.addAttribute("matchingUsers", matchingUsers);
 		return "fundingOpp/searchUser";
 	}
+
+	@GetMapping(value = "editProgramLead")
+	public String editProgramLead(Model model) {
+		List<User> matchingUsers = userRepo.getAllPersons();
+		model.addAttribute("matchingUsers", matchingUsers);
+		return "fundingOpp/changeProgramLead";
+	}
 }

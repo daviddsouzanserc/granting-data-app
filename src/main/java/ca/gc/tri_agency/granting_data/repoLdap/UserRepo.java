@@ -1,5 +1,7 @@
 package ca.gc.tri_agency.granting_data.repoLdap;
 
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
+
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -52,6 +54,10 @@ public class UserRepo {
 
 	public User findPerson(String dn) {
 		return ldapTemplate.lookup(dn, new PersonAttributesMapper());
+	}
+
+	public List<User> getAllPersons() {
+		return ldapTemplate.search(query().where("objectclass").is("person"), new PersonAttributesMapper());
 	}
 
 	private String buildDn(User user) {

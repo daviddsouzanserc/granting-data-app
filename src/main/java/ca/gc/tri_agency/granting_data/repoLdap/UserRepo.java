@@ -12,7 +12,12 @@ import javax.naming.directory.SearchControls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.core.support.AbstractContextMapper;
+import org.springframework.ldap.filter.AndFilter;
+import org.springframework.ldap.filter.EqualsFilter;
+import org.springframework.ldap.filter.WhitespaceWildcardsFilter;
 import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
@@ -35,12 +40,26 @@ public class UserRepo {
 	private LdapTemplate ldapTemplate;
 
 	// used search method
+	public String getDnByUsername(String username) {
+
+		AndFilter filter = new AndFilter();
+		filter.and(new EqualsFilter("objectclass", "person"));
+		filter.and(new WhitespaceWildcardsFilter("cn", username));
+
+		List<Object> result = ldapTemplate.search("", filter.toString(), new AbstractContextMapper<Object>() {
+			@Override
+			protected Object doMapFromContext(DirContextOperations ctx) {
+				return ctx.getNameInNamespace();
+			}
+		});
+		return result.get(0).toString();
+
+	}
+
 	public List<User> searchOther(String username) {
 
 		SearchControls sc = new SearchControls();
 		sc.setSearchScope(SearchControls.SUBTREE_SCOPE);
-		// sc.setSearchScope(SearchControls.OBJECT_SCOPE);
-		// sc.setSearchScope(SearchControls.ONELEVEL_SCOPE);
 
 		sc.setReturningAttributes(null); // new String[] { "cn" } <- if want only
 		// specific attributes. null if want all
@@ -53,11 +72,11 @@ public class UserRepo {
 	}
 
 	public User findPerson(String dn) {
-		return ldapTemplate.lookup(dn, new PersonAttributesMapper());
+		return ldapTemplate.lookup(dn, new UserAttributesMapper());
 	}
 
 	public List<User> getAllPersons() {
-		return ldapTemplate.search(query().where("objectclass").is("person"), new PersonAttributesMapper());
+		return ldapTemplate.search(query().where("objectclass").is("person"), new UserAttributesMapper());
 	}
 
 	private String buildDn(User user) {
@@ -70,13 +89,22 @@ public class UserRepo {
 
 	}
 
-	private class PersonAttributesMapper implements AttributesMapper<User> {
-		public User mapFromAttributes(Attributes attrs) throws NamingException {
-			User person = new User();
-			person.setUsername((String) attrs.get("cn").get());
-			person.setSn((String) attrs.get("sn").get());
-			return person;
-		}
+	private String buildDn(String username) {
+		String dn = null;
+
+		AndFilter filter = new AndFilter();
+		filter.and(new EqualsFilter("objectclass", "person"));
+		filter.and(new WhitespaceWildcardsFilter("cn", username));
+
+		List<Object> result = ldapTemplate.search("", filter.toString(), new AbstractContextMapper<Object>() {
+			@Override
+			protected Object doMapFromContext(DirContextOperations ctx) {
+				return ctx.getNameInNamespace();
+			}
+		});
+
+		dn = result.get(0).toString();
+		return dn;
 	}
 
 	private class UserAttributesMapper implements AttributesMapper<User> {
@@ -98,7 +126,7 @@ public class UserRepo {
 				user.setUid((String) uid.get());
 			}
 			// Attribute dn = attributes.get("dn");
-			String dn = buildDn(user);
+			String dn = getDnByUsername(cn.toString());
 
 			if (dn != null) {
 				// user.setDn((String) dn.get());

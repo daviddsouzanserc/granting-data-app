@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-<meta charset="ISO-8859-1">
-<title>Granting Data - Edit Program Lead</title>
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+	<meta charset="ISO-8859-1">
+	<title>Granting Data - Edit Program Lead</title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function () {
+			var table = $('#dataTable').DataTable({});
+		});
+	</script>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
 	<div class="container">
 		<h1>Search User</h1> <!--  th:utext="${fundingOpp.searchUser}" --> 
-		<form action="#" th:action="@{editProgramLead}"  method="get">
-			<input type="hidden" name="id" th:value="${originalId}" />
-			<div class="form-group row">
-				<div class="col-sm-2 col-form-label" th:utext="#{searchUser.nameEn}">Name EN</div>
-				<div><input type="text" name="username" /></div>
-			</div>
-			<input type="submit" class="btn btn-primary" role="button" th:value="#{searchUser.submit}" />
-		</form>
 		
 		<form th:if="${matchingUsers != null}" action="#" th:action="@{editProgramLead}" method="post">
 			<input type="hidden" name="foId" th:value="${originalId}"/>	
-			<table class="table table-bordered">
+			<table id="dataTable" class="display">
 	   			<thead>
 	       			<tr>
 	       				<th></th>

@@ -18,7 +18,6 @@ import org.springframework.ldap.core.support.AbstractContextMapper;
 import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.WhitespaceWildcardsFilter;
-import org.springframework.ldap.support.LdapNameBuilder;
 import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,6 @@ public class UserRepo {
 	@Autowired
 	private LdapTemplate ldapTemplate;
 
-	// used search method
 	public String getDnByUsername(String username) {
 
 		AndFilter filter = new AndFilter();
@@ -82,33 +80,20 @@ public class UserRepo {
 		return ldapTemplate.search(query().where("objectclass").is("person"), new UserAttributesMapper());
 	}
 
-	private String buildDn(User user) {
-		try {
-			return LdapNameBuilder.newInstance(nsercBaseDn).add("ou", nsercOu).add("uid", user.getUid()).build()
-					.toString();
-		} catch (Exception e) {
-			return null;
-		}
-
-	}
+//	private String buildDn(User user) {
+//		try {
+//			return LdapNameBuilder.newInstance(nsercBaseDn).add("ou", nsercOu).add("uid", user.getUid()).build()
+//					.toString();
+//		} catch (Exception e) {
+//			return null;
+//		}
+//
+//	}
 
 	private String buildDn(String username) {
 		String dn = null;
 
-		AndFilter filter = new AndFilter();
-		filter.and(new EqualsFilter("objectclass", "person"));
-		filter.and(new WhitespaceWildcardsFilter("cn", username));
-
-		List<Object> result = ldapTemplate.search("", filter.toString(), new AbstractContextMapper<Object>() {
-			@Override
-			protected Object doMapFromContext(DirContextOperations ctx) {
-				return ctx.getNameInNamespace();
-			}
-		});
-		if (result.isEmpty()) {
-			return null;
-		}
-		dn = result.get(0).toString();
+		dn = getDnByUsername(username);
 		return dn;
 	}
 

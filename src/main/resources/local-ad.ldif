@@ -29,14 +29,14 @@ sn: admin
 uid: admin
 userPassword: password
 
-dn: uid=nserc-user,ou=NSERC_Users,dc=nserc,dc=ca
+dn: uid=nserc1-user,ou=NSERC_Users,dc=nserc,dc=ca
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
-cn: NSERC User
-sn: NSERC
-uid: nserc-user
+cn: NSERC1 User
+sn: NSERC1
+uid: nserc-user1
 userPassword: password
 
 dn: uid=sshrc-user,ou=NSERC_Users,dc=nserc,dc=ca

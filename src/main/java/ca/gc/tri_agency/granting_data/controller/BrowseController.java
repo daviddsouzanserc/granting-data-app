@@ -93,6 +93,8 @@ public class BrowseController {
 	@GetMapping(value = "editProgramLead")
 	public String editProgramLead(@RequestParam("id") long id, Model model) {
 		model.addAttribute("originalId", id);
+		List<User> matchingUsers = userRepo.getAllPersons();
+		model.addAttribute("matchingUsers", matchingUsers);
 		return "browse/editProgramLead";
 	}
 

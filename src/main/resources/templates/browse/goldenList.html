@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-<meta charset="ISO-8859-1">
-<title>Granting Data - Golden List</title>
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+	<meta charset="ISO-8859-1">
+	<title>Granting Data - Golden List</title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function () {
+			var table = $('#goldenListTable').DataTable({});
+		});
+	</script>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	<div class="container">
 		
 			<h1>Golden List</h1>
-			<table id="goldenListTable" class="table table-bordered">
+			<table id="goldenListTable" class="display">
 				<thead>
 		            <tr>
 		                <th>Funding Opportunity Name</th>

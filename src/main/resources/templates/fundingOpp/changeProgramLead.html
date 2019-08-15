@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+	<meta charset="ISO-8859-1">
+	<title>Granting Data - Edit Program Lead</title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function () {
+			var table = $('#dataTable').DataTable({});
+		});
+	</script>
+</head>
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
+	<div class="section">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			<h1>Search User</h1> <!--  th:utext="${fundingOpp.searchUser}" --> 
+			
+			<form th:if="${matchingUsers != null}" action="#" th:action="@{editProgramLead}" method="post">
+				<table id="dataTable" class="display">
+		   			<thead>
+		       			<tr>
+		       				<th></th>
+		           			<th> Username </th>
+		           			<th> Surname </th>
+		           			<th> Distinguished Name </th>
+		       			</tr>
+		   			</thead>
+		  			<tbody>
+		   				<tr th:if="${matchingUsers.empty}">
+		           			<td colspan="4"> No Matching Users </td>
+		       			</tr>
+		       			<tr th:each="user : ${matchingUsers}">
+		       				<td><input name="leadUserDn" th:value="${user.dn}" type="radio" /></td>
+		       				<!-- <td><input name="selectedUser" th:value="${user}" type="radio" /></td> -->
+		           			<td><span th:text="${user.username}"></span></td>
+		           			<td><span th:text="${user.sn}"></span></td>
+		           			<td><span th:text="${user.dn}"></span></td>
+		       			</tr>
+		   			</tbody>
+				</table>
+				<input th:if="${!matchingUsers.empty}" type="submit" class="btn btn-primary" role="button" th:value="Submit" />
+			</form>
+		</div>
+		<div class="col-sm-2"></div>
+		
+	</div>
+
+</body>
+</html>

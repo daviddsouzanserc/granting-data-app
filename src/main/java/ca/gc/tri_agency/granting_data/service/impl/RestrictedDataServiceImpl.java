@@ -39,14 +39,11 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 		if (auth == null) {
 			return false;
 		}
-		// securityUser principal = (securityUser) auth.getPrincipal();
 		if (!auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
 			return false;
 		}
 		// Object principal = auth.getPrincipal();
 		LdapUserDetails principal = (LdapUserDetails) auth.getPrincipal();
-		// UserDetails principal = (UserDetails) auth.getPrincipal(); // <- error, not
-		// typecasting
 		Collection<? extends GrantedAuthority> userAuthorities = principal.getAuthorities();
 		for (GrantedAuthority g : userAuthorities) {
 			if (g.getAuthority().equals("ROLE_ADMIN")) { // checks if current logged in user is an admin
@@ -54,7 +51,7 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 			}
 		}
 
-		// todo check is dn is the same as the selected funding opportunity
+		// checks if dn is the same as the selected funding opportunity
 		Optional<FundingOpportunity> fo = foRepo.findById(id);
 		String currentUser = principal.getDn();
 		if (currentUser.equals(fo.get().getProgramLeadDn())) {

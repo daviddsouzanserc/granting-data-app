@@ -33,8 +33,15 @@ public class FundingOpportunityController {
 
 	@GetMapping(value = "/searchUser", params = "username")
 	public String searchUserAction(@RequestParam("username") String username, Model model) {
-		List<User> matchingUsers = userRepo.searchOther(username);
+		String matchingUsers = userRepo.getDnByUsername(username);
 		model.addAttribute("matchingUsers", matchingUsers);
 		return "fundingOpp/searchUser";
+	}
+
+	@GetMapping(value = "editProgramLead")
+	public String editProgramLead(Model model) {
+		List<User> matchingUsers = userRepo.getAllPersons();
+		model.addAttribute("matchingUsers", matchingUsers);
+		return "fundingOpp/changeProgramLead";
 	}
 }

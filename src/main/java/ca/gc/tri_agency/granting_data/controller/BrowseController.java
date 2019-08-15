@@ -90,9 +90,17 @@ public class BrowseController {
 		return "redirect:/browse/viewFo?id=" + command.getId();
 	}
 
+//	@GetMapping(value = "editProgramLead")
+//	public String editProgramLead(@RequestParam("id") long id, Model model) {
+//		model.addAttribute("originalId", id);
+//		return "browse/editProgramLead";
+//	}
+
 	@GetMapping(value = "editProgramLead")
 	public String editProgramLead(@RequestParam("id") long id, Model model) {
 		model.addAttribute("originalId", id);
+		List<User> matchingUsers = userRepo.getAllPersons();
+		model.addAttribute("matchingUsers", matchingUsers);
 		return "browse/editProgramLead";
 	}
 

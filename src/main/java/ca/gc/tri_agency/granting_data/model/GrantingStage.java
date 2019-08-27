@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
-public class CoreFunction implements LocalizedParametersModel {
+public class GrantingStage implements LocalizedParametersModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -33,11 +33,11 @@ public class CoreFunction implements LocalizedParametersModel {
 		ADMIN, APPLY, ASSESS, AWARD, AQUIT
 	}
 
-	public CoreFunction() {
+	public GrantingStage() {
 
 	}
 
-	public CoreFunction(String nameEn, String nameFr, String acronym) {
+	public GrantingStage(String nameEn, String nameFr, String acronym) {
 		this.setNameEn(nameEn);
 		this.setNameFr(nameFr);
 		this.setAcronym(acronym);

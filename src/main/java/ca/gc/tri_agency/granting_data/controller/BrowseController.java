@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
+import ca.gc.tri_agency.granting_data.model.GrantingCapability;
 import ca.gc.tri_agency.granting_data.model.User;
+import ca.gc.tri_agency.granting_data.repo.GrantingStageRepository;
+import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 import ca.gc.tri_agency.granting_data.service.GoldenListService;
@@ -43,6 +46,12 @@ public class BrowseController {
 	@Autowired
 	UserRepo userRepo;
 
+	@Autowired
+	GrantingSystemRepository grantingSystemRepo;
+
+	@Autowired
+	GrantingStageRepository grantingStageRepo;
+
 	@GetMapping("/goldenList")
 	public String goldListDisplay(Model model) {
 		model.addAttribute("goldenList", goldenListService.getGoldenList());
@@ -55,6 +64,7 @@ public class BrowseController {
 	public String viewFundingOpportunity(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fo", dataService.getFundingOpportunity(id));
 		model.addAttribute("fundingCycles", dataService.getSystemFundingCyclesByFoId(id));
+		model.addAttribute("grantingCapabilities", dataService.getGrantingCapabilitiesByFoId(id));
 		return "browse/viewFundingOpportunity";
 	}
 
@@ -141,6 +151,29 @@ public class BrowseController {
 			return "browse/createFundingCycle";
 		}
 		restrictedDataService.createOrUpdateFundingCycle(command);
+
+		return "redirect:/browse/viewFo?id=" + command.getFundingOpportunity().getId();
+	}
+
+	@GetMapping(value = "addGrantingCapabilities")
+	public String addGrantingCapabilities(@RequestParam("id") long id, Model model) {
+		model.addAttribute("foId", id);
+		model.addAttribute("gc", new GrantingCapability());
+		model.addAttribute("grantingSystems", grantingSystemRepo.findAll());
+		model.addAttribute("grantingStages", grantingStageRepo.findAll());
+		return "browse/addGrantingCapabilities";
+	}
+
+	@PostMapping(value = "addGrantingCapabilities")
+	public String addGrantingCapabilitiesPost(@Valid @ModelAttribute("gc") GrantingCapability command,
+			BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			for (ObjectError br : bindingResult.getAllErrors()) {
+				System.out.println(br.toString());
+			}
+			return "browse/addGrantingCapabilities";
+		}
+		restrictedDataService.createGrantingCapability(command);
 
 		return "redirect:/browse/viewFo?id=" + command.getFundingOpportunity().getId();
 	}

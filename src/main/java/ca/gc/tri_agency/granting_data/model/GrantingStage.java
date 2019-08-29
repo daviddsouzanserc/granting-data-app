@@ -20,7 +20,17 @@ public class GrantingStage {
 
 	public enum GrantingFunction {
 		/** Some other format. */
-		ADMIN, APPLY, ASSESS, AWARD, AQUIT
+		ADMIN("admin"), APPLY("apply"), ASSESS("assess"), AWARD("award"), AQUIT("aquit");
+
+		private final String displayValue;
+
+		private GrantingFunction(String displayValue) {
+			this.displayValue = displayValue;
+		}
+
+		public String getDisplayValue() {
+			return displayValue;
+		}
 	}
 
 	public GrantingStage() {

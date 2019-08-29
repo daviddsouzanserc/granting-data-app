@@ -107,8 +107,8 @@
 						<td th:text="${gc.description}" ></td>
 						<td th:text="${gc.url}" ></td>
 						
-						<td th:text="${gc.coreFunction}" ></td>
-						<td th:text="${gc.grantingSystem}" ></td>
+						<td th:text="${gc.grantingStage.grantingFunction.displayValue}" ></td>
+						<td th:text="${gc.grantingSystem.getLocalizedAttribute('name')}" ></td>
 						
 					</tr>
 

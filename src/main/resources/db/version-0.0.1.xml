@@ -70,7 +70,7 @@
             </column>
             <column name="description" type="VARCHAR(255)"/>
             <column name="url" type="VARCHAR(255)"/>
-            <column name="core_function_id" type="BIGINT"/>
+            <column name="granting_stage_id" type="BIGINT"/>
             <column name="funding_opportunity_id" type="BIGINT"/>
             <column name="granting_system_id" type="BIGINT"/>
         </createTable>
@@ -213,7 +213,7 @@
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1566917337178-31">
         <createIndex indexName="FKmbsfg7ovq2k7rjvdveyqwclqi" tableName="granting_capability">
-            <column name="core_function_id"/>
+            <column name="granting_stage_id"/>
         </createIndex>
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1566917337178-32">

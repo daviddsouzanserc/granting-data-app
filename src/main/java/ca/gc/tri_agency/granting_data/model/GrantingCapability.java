@@ -22,8 +22,8 @@ public class GrantingCapability {
 	private FundingOpportunity fundingOpportunity;
 
 	@ManyToOne
-	@JoinColumn(name = "core_function_id")
-	private GrantingStage coreFunction;
+	@JoinColumn(name = "granting_stage_id")
+	private GrantingStage grantingStage;
 
 	@ManyToOne
 	@JoinColumn(name = "granting_system_id")
@@ -41,12 +41,12 @@ public class GrantingCapability {
 		this.fundingOpportunity = program;
 	}
 
-	public GrantingStage getCoreFunction() {
-		return coreFunction;
+	public GrantingStage getGrantingStage() {
+		return grantingStage;
 	}
 
-	public void setCoreFunction(GrantingStage coreFunction) {
-		this.coreFunction = coreFunction;
+	public void setGrantingStage(GrantingStage grantingStage) {
+		this.grantingStage = grantingStage;
 	}
 
 	public GrantingSystem getGrantingSystem() {

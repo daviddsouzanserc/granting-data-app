@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
+import ca.gc.tri_agency.granting_data.model.GrantingCapability;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
+import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
@@ -30,6 +32,8 @@ public class DataAccessServiceImpl implements DataAccessService {
 	AgencyRepository agencyRepo;
 	@Autowired
 	FundingCycleRepository fundingCycleRepo;
+	@Autowired
+	GrantingCapabilityRepository grantingCapabilityRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -71,6 +75,12 @@ public class DataAccessServiceImpl implements DataAccessService {
 			return null;
 		}
 		return systemFundingCycleRepo.findBySystemFundingOpportunityId(systemFoId);
+	}
+
+	@Override
+	public List<GrantingCapability> getGrantingCapabilitiesByFoId(long id) {
+		return grantingCapabilityRepo.findByFundingOpportunityId(id);
+
 	}
 
 }

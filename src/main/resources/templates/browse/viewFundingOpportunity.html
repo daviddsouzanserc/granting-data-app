@@ -87,6 +87,39 @@
 		</div>
 		<a class="btn btn-primary" th:href="@{createFundingCycle(id=${fo.id})}" role="button">Create Funding Cycle</a>
 		
+		<div class="form-group row">
+			<div><h2>Granting Capabilities</h2></div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<table id="grantingCapabilitiesTable" class="table table-bordered">
+				<thead>
+					<tr>
+						<td>Description</td>
+						<td>URL</td>
+						<td>Granting Stage</td>
+						<td>Granting System</td>
+						<td></td>
+					</tr>
+
+				</thead>
+				<tbody th:if="${grantingCapabilities!=null}">
+					<tr th:each="gc : ${grantingCapabilities}">
+						<td th:text="${gc.description}" ></td>
+						<td th:text="${gc.url}" ></td>
+						
+						<td th:text="${gc.grantingStage.getLocalizedAttribute('name')}" ></td>
+						<td th:text="${gc.grantingSystem.getLocalizedAttribute('name')}" ></td>
+						<td><a></a></td>
+						
+					</tr>
+
+				</tbody>
+				</table>
+			</div>
+		</div>
+		<a class="btn btn-primary" th:href="@{addGrantingCapabilities(id=${fo.id})}" role="button">Add Granting Capability</a>
+		
 	</div>
    </body>
 </html>

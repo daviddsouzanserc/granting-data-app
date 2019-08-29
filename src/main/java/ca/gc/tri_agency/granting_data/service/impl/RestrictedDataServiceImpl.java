@@ -3,6 +3,8 @@ package ca.gc.tri_agency.granting_data.service.impl;
 import java.util.Collection;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,10 +14,12 @@ import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
+import ca.gc.tri_agency.granting_data.model.GrantingCapability;
 import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
+import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
@@ -33,6 +37,8 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	AgencyRepository agencyRepo;
 	@Autowired
 	UserRepo userRepo;
+	@Autowired
+	GrantingCapabilityRepository grantingCapabilityRepo;
 
 	private boolean checkCredentials(Long id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -94,6 +100,12 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 			return fcRepo.save(command);
 		}
 		return null; // should throw exception here
+	}
+
+	@Override
+	public GrantingCapability createGrantingCapability(@Valid GrantingCapability command) {
+
+		return grantingCapabilityRepo.save(command);
 	}
 
 }

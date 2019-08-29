@@ -80,7 +80,8 @@
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="granting_function" type="VARCHAR(255)"/>
+            <column name="name_en" type="VARCHAR(255)"/>
+            <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1566917337178-7">

@@ -27,7 +27,7 @@
 				<div><select class="col-sm-2" th:field="*{grantingStage}">
 					<option th:each="stage : ${grantingStages}"
 						th:value="${stage.id}"
-						th:text="${stage.grantingFunction}"></option>
+						th:text="${stage.getLocalizedAttribute('name')}"></option>
 				</select></div>
 				<div th:if="${#fields.hasErrors('grantingStage')}" th:errors="*{grantingStage}">Granting Stage Error</div>
 			</div>

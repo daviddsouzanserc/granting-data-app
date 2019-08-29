@@ -2,8 +2,6 @@ package ca.gc.tri_agency.granting_data.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,23 +13,7 @@ public class GrantingStage {
 	private Long id;
 
 	@Column(name = "granting_function")
-	@Enumerated(EnumType.STRING)
-	private GrantingFunction grantingFunction;
-
-	public enum GrantingFunction {
-		/** Some other format. */
-		ADMIN("admin"), APPLY("apply"), ASSESS("assess"), AWARD("award"), AQUIT("aquit");
-
-		private final String displayValue;
-
-		private GrantingFunction(String displayValue) {
-			this.displayValue = displayValue;
-		}
-
-		public String getDisplayValue() {
-			return displayValue;
-		}
-	}
+	private String grantingFunction;
 
 	public GrantingStage() {
 
@@ -41,11 +23,11 @@ public class GrantingStage {
 		return id;
 	}
 
-	public GrantingFunction getGrantingFunction() {
+	public String getGrantingFunction() {
 		return grantingFunction;
 	}
 
-	public void setGrantingFunction(GrantingFunction grantingFunction) {
+	public void setGrantingFunction(String grantingFunction) {
 		this.grantingFunction = grantingFunction;
 	}
 

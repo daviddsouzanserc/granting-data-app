@@ -1,6 +1,8 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,8 @@ public class DataAccessServiceImpl implements DataAccessService {
 	FundingCycleRepository fundingCycleRepo;
 	@Autowired
 	GrantingCapabilityRepository grantingCapabilityRepo;
+	@Autowired
+	FundingCycleRepository fcRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -81,6 +85,21 @@ public class DataAccessServiceImpl implements DataAccessService {
 	public List<GrantingCapability> getGrantingCapabilitiesByFoId(long id) {
 		return grantingCapabilityRepo.findByFundingOpportunityId(id);
 
+	}
+
+	@Override
+	public List<FundingOpportunity> getFoByNameEn(String nameEn) {
+		return foRepo.findByNameEn(nameEn);
+	}
+
+	@Override
+	public Map<Long, FundingCycle> getFundingCycleByFundingOpportunityMap() {
+		Map<Long, FundingCycle> retval = new HashMap<Long, FundingCycle>();
+		List<FundingCycle> fundingCycles = fcRepo.findAll();
+		for (FundingCycle fc : fundingCycles) {
+			retval.put(fc.getId(), fc);
+		}
+		return retval;
 	}
 
 }

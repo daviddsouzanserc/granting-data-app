@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +24,7 @@ import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
+import ca.gc.tri_agency.granting_data.security.SecurityUtils;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
 
 @Service
@@ -40,43 +43,18 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	@Autowired
 	GrantingCapabilityRepository grantingCapabilityRepo;
 
-	private boolean checkCredentials(Long id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth == null) {
-			return false;
-		}
-		if (!auth.isAuthenticated() || auth.getPrincipal() instanceof String) {
-			return false;
-		}
-		// Object principal = auth.getPrincipal();
-		LdapUserDetails principal = (LdapUserDetails) auth.getPrincipal();
-		Collection<? extends GrantedAuthority> userAuthorities = principal.getAuthorities();
-		for (GrantedAuthority g : userAuthorities) {
-			if (g.getAuthority().equals("ROLE_ADMIN")) { // checks if current logged in user is an admin
-				return true;
-			}
-		}
-
-		// checks if dn is the same as the selected funding opportunity
-		Optional<FundingOpportunity> fo = foRepo.findById(id);
-		String currentUser = principal.getDn();
-		if (currentUser.equals(fo.get().getProgramLeadDn())) {
-			return true;
-		}
-
-		return false;
-
-	}
 
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public FundingOpportunity saveFundingOpportunity(FundingOpportunity targetUpdate) {
 		return foRepo.save(targetUpdate);
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void setFoLeadContributor(long foId, String leadUserDn) {
 		if (leadUserDn == null) {
-			return;
+			// return;??
 		}
 		FundingOpportunity foToUpdate = foRepo.getOne(foId);
 		User person = userRepo.findPerson(leadUserDn);
@@ -95,14 +73,18 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 
 	@Override
 	public FundingCycle createOrUpdateFundingCycle(FundingCycle command) {
-		// todo:: verify ownership, throw exception if user is not authorized
-		if (checkCredentials(command.getFundingOpportunity().getId())) {
-			return fcRepo.save(command);
+		FundingCycle retval = null;
+		if (SecurityUtils.hasRole("ADMIN")
+				|| command.getFundingOpportunity().getProgramLeadDn().compareTo(SecurityUtils.getLdapUserDn()) == 0) {
+			retval = fcRepo.save(command);
+		} else {
+			throw new AccessDeniedException("un-authorized to add cycles to funding opportunity");
 		}
-		return null; // should throw exception here
+		return retval;
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public GrantingCapability createGrantingCapability(@Valid GrantingCapability command) {
 
 		return grantingCapabilityRepo.save(command);

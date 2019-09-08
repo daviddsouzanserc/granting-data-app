@@ -41,7 +41,10 @@
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.programLeadName}">Program Lead Name</div>
-			<div class="col-sm-10" th:text="${fo.programLeadName}"></div>
+			<div class="col-sm-2" th:text="${fo.programLeadName}"></div>
+			<div class="col-sm-2">
+				<a class="btn" th:href="@{editProgramLead(id=${fo.id})}">Change Program Lead</a>
+			</div>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.participatingAgencies}">Agencies</div>
@@ -51,8 +54,41 @@
 				</ul>
 			</div>
 		</div>
+		<a class="btn btn-primary" th:href="@{editFo(id=${fo.id})}" role="button">Edit</a>
+		
 		<div class="form-group row">
-			<div><h3>Granting Capabilities</h3></div>
+			<div><h2>Funding Cycles</h2></div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<table id="fundingCycles" class="table table-bordered">
+				<thead>
+					<tr>
+						<td>Year</td>
+						<td>Start Date</td>
+						<td>End Date</td>
+						<td>Expected # of Applications</td>
+					</tr>
+
+				</thead>
+				<tbody th:if="${fundingCycles!=null}">
+					<tr th:each="fundingCycle : ${fundingCycles}">
+						<td th:text="${fundingCycle.compYear}" ></td>
+						<td></td>
+						<td></td>
+						<!-- <td th:text="${fundingCycle.startDate}" ></td>
+						<td th:text="${fundingCycle.endDate}" ></td>  -->
+						<td th:text="${fundingCycle.numAppsReceived}" ></td>
+					</tr>
+
+				</tbody>
+				</table>
+			</div>
+		</div>
+		<a class="btn btn-primary" th:href="@{createFundingCycle(id=${fo.id})}" role="button">Create Funding Cycle</a>
+		
+		<div class="form-group row">
+			<div><h2>Granting Capabilities</h2></div>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-10">
@@ -82,38 +118,7 @@
 				</table>
 			</div>
 		</div>
-		
-		<div class="form-group row">
-			<div><h3>Funding Cycles</h3></div>
-		</div>
-		<div class="form-group row">
-			<div class="col-sm-10">
-				<table id="fundingCycles" class="table table-bordered">
-				<thead>
-					<tr>
-						<td>Year</td>
-						<td>Start Date</td>
-						<td>End Date</td>
-						<td>Expected # of Applications</td>
-					</tr>
-
-				</thead>
-				<tbody th:if="${fundingCycles!=null}">
-					<tr th:each="fundingCycle : ${fundingCycles}">
-						<td th:text="${fundingCycle.compYear}" ></td>
-						<td></td>
-						<td></td>
-						<!-- <td th:text="${fundingCycle.startDate}" ></td>
-						<td th:text="${fundingCycle.endDate}" ></td>  -->
-						<td th:text="${fundingCycle.numAppsReceived}" ></td>
-					</tr>
-
-				</tbody>
-				</table>
-			</div>
-		</div>
-		
-		<a class="btn btn-primary" th:href="@{/manage/manageFo(id=${fo.id})}" role="button">Manage Funding Opportunity</a>
+		<a class="btn btn-primary" th:href="@{addGrantingCapabilities(id=${fo.id})}" role="button">Add Granting Capability</a>
 		
 	</div>
    </body>

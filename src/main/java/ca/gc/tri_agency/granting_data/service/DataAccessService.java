@@ -1,6 +1,7 @@
 package ca.gc.tri_agency.granting_data.service;
 
 import java.util.List;
+import java.util.Map;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
@@ -25,5 +26,9 @@ public interface DataAccessService {
 	List<SystemFundingCycle> getSystemFundingCyclesByFoId(Long id);
 
 	List<GrantingCapability> getGrantingCapabilitiesByFoId(long id);
+
+	List<FundingOpportunity> getFoByNameEn(String nameEn);
+
+	Map<Long, FundingCycle> getFundingCycleByFundingOpportunityMap();
 
 }

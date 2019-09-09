@@ -1,8 +1,10 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
+import ca.gc.tri_agency.granting_data.model.util.FundingCycleInfo;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
@@ -70,15 +73,38 @@ public class DataAccessServiceImpl implements DataAccessService {
 	}
 
 	@Override
-	public List<SystemFundingCycle> getSystemFundingCyclesByFoId(Long id) {
-		Long systemFoId;
-		try {
-			systemFoId = systemFoRepo.findByLinkedFundingOpportunityId(id).getId();
-
-		} catch (RuntimeException e) {
-			return null;
+	public Map<String, FundingCycleInfo> getFundingCycleDataMapByYear(Long id) {
+		Map<String, FundingCycleInfo> retval = new TreeMap<String, FundingCycleInfo>();
+		List<FundingCycle> fcList = fundingCycleRepo.findByFundingOpportunityId(id);
+		List<SystemFundingCycle> sfcList = getSystemFundingCyclesByFoId(id);
+		for (FundingCycle fc : fcList) {
+			FundingCycleInfo newItem = new FundingCycleInfo();
+			String year = fc.getCompYear().toString().substring(0, 4);
+			newItem.setYear(year);
+			newItem.setFc(fc);
+			retval.put(year, newItem);
 		}
-		return systemFundingCycleRepo.findBySystemFundingOpportunityId(systemFoId);
+		for (SystemFundingCycle sfc : sfcList) {
+			String year = sfc.getCompYear().toString().substring(0, 4);
+			if (retval.containsKey(year)) {
+				retval.get(year).setSfc(sfc);
+			} else {
+				FundingCycleInfo newItem = new FundingCycleInfo();
+				newItem.setYear(year);
+				newItem.setSfc(sfc);
+				retval.put(year, newItem);
+			}
+		}
+		return retval;
+	}
+
+	@Override
+	public List<SystemFundingCycle> getSystemFundingCyclesByFoId(Long id) {
+		SystemFundingOpportunity sysFo = systemFoRepo.findByLinkedFundingOpportunityId(id);
+		if (sysFo == null) {
+			return new ArrayList<SystemFundingCycle>();
+		}
+		return systemFundingCycleRepo.findBySystemFundingOpportunityId(sysFo.getId());
 	}
 
 	@Override
@@ -97,7 +123,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 		Map<Long, FundingCycle> retval = new HashMap<Long, FundingCycle>();
 		List<FundingCycle> fundingCycles = fcRepo.findAll();
 		for (FundingCycle fc : fundingCycles) {
-			retval.put(fc.getId(), fc);
+			retval.put(fc.getFundingOpportunity().getId(), fc);
 		}
 		return retval;
 	}

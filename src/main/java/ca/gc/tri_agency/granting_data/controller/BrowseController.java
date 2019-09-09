@@ -29,8 +29,10 @@ public class BrowseController {
 	@GetMapping(value = "/viewFo")
 	public String viewFundingOpportunity(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fo", dataService.getFundingOpportunity(id));
-		model.addAttribute("fundingCycles", dataService.getSystemFundingCyclesByFoId(id));
+		// model.addAttribute("systemFoCycles",
+		// dataService.getSystemFundingCyclesByFoId(id));
 		model.addAttribute("grantingCapabilities", dataService.getGrantingCapabilitiesByFoId(id));
+		model.addAttribute("fcDataMap", dataService.getFundingCycleDataMapByYear(id));
 		return "browse/viewFundingOpportunity";
 	}
 

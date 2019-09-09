@@ -92,22 +92,20 @@
 				<thead>
 					<tr>
 						<td>Year</td>
-						<td>Start Date</td>
-						<td>End Date</td>
-						<td>Expected # of Applications</td>
+						<td>Start Date (System / Planned)</td>
+						<td>End Date (System / Planned)</td>
+						<td># of Applications (expected / received)</td>
 					</tr>
 
 				</thead>
-				<tbody th:if="${fundingCycles!=null}">
-					<tr th:each="fundingCycle : ${fundingCycles}">
-						<td th:text="${fundingCycle.compYear}" ></td>
-						<td></td>
-						<td></td>
-						<!-- <td th:text="${fundingCycle.startDate}" ></td>
-						<td th:text="${fundingCycle.endDate}" ></td>  -->
-						<td th:text="${fundingCycle.numAppsReceived}" ></td>
+				
+				<tbody th:if="${fcDataMap!=null}">
+					<tr th:each="row : ${fcDataMap}">
+						<td th:text="${row.value.year}" ></td>
+						<td><span th:text="${row.value.fc} ? ${row.value.fc.startDate} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td>
+						<td><span th:text="${row.value.fc} ? ${row.value.fc.endDate} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td>
+						<td><span th:text="${row.value.fc} ? ${row.value.fc.expectedApplications} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.numAppsReceived} : 'N/A'"></span></td>
 					</tr>
-
 				</tbody>
 				</table>
 			</div>

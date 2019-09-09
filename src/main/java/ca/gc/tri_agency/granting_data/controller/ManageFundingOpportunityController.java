@@ -53,7 +53,8 @@ public class ManageFundingOpportunityController {
 	@GetMapping(value = "/manageFo")
 	public String viewFundingOpportunity(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fo", dataService.getFundingOpportunity(id));
-		model.addAttribute("fundingCycles", dataService.getSystemFundingCyclesByFoId(id));
+		model.addAttribute("fundingCycles", dataService.getFundingCyclesByFoId(id));
+		model.addAttribute("systemFundingCycles", dataService.getSystemFundingCyclesByFoId(id));
 		model.addAttribute("grantingCapabilities", dataService.getGrantingCapabilitiesByFoId(id));
 		return "manage/manageFundingOpportunity";
 	}

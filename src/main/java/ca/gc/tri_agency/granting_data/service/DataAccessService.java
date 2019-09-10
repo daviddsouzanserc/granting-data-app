@@ -34,4 +34,8 @@ public interface DataAccessService {
 
 	Map<String, FundingCycleInfo> getFundingCycleDataMapByYear(Long id);
 
+	Agency getAgency(long id);
+
+	List<FundingOpportunity> getAgencyFundingOpportunities(long id);
+
 }

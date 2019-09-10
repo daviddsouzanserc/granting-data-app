@@ -18,6 +18,13 @@ public class BrowseController {
 	@Autowired
 	DataAccessService dataService;
 
+	@GetMapping(value = "/viewAgency")
+	public String viewAgency(@RequestParam("id") long id, Model model) {
+		model.addAttribute("agency", dataService.getAgency(id));
+		model.addAttribute("agencyFos", dataService.getAgencyFundingOpportunities(id));
+		return "browse/viewAgency";
+	}
+
 	@GetMapping("/goldenList")
 	public String goldListDisplay(Model model) {
 		model.addAttribute("goldenList", dataService.getAllFundingOpportunities());

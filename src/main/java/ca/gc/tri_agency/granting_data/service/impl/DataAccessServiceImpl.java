@@ -128,4 +128,14 @@ public class DataAccessServiceImpl implements DataAccessService {
 		return retval;
 	}
 
+	@Override
+	public Agency getAgency(long id) {
+		return agencyRepo.getOne(id);
+	}
+
+	@Override
+	public List<FundingOpportunity> getAgencyFundingOpportunities(long id) {
+		return foRepo.findByLeadAgencyId(id);
+	}
+
 }

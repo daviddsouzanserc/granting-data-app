@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+	<title>Data store - View Agency</title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function () {
+			var table = $('#dataTable').DataTable({});
+		});
+	</script>
+
+</head>
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('entities')}" />
+	<div class="container">
+		<h1>Funding Cycle Calendar</h1>
+		<p>This view shows the opening and closing dates of upcomming funding opportunities</p>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-1" style="text-align: center;"><a th:href="@{viewCalendar(plusMinusMonth=${minusMonth})}"><<</a></div>
+				<div class="col-md-5" style="text-align: center;" th:utext="#{${'cal.' + calGrid.month.monthValue}}"></div>
+				<div class="col-md-1" style="text-align: center;"><a th:href="@{viewCalendar(plusMinusMonth=${plusMonth})}">>></a></div>
+			</div>
+			<div class="row">
+				<div class="col-md-1" style="text-align: center;">Sun</div>
+				<div class="col-md-1" style="text-align: center;">Mon</div>
+				<div class="col-md-1" style="text-align: center;">Tue</div>
+				<div class="col-md-1" style="text-align: center;">Wed</div>
+				<div class="col-md-1" style="text-align: center;">Thu</div>
+				<div class="col-md-1" style="text-align: center;">Fri</div>
+				<div class="col-md-1" style="text-align: center;">Sat</div>	
+			</div>
+			<div th:each="row : ${calGrid.dataGrid}" class="row">
+				<div class="col-md-1" th:each="col : ${row}" style="border: 1px solid #d8d8d8; line-height: 2em; border-spacing 0px 0px; padding: 2px; height: 100px; ">
+					<span style="float:right;" th:text="${col} ? ${col.dayOfMonth} : 'N/A'"></span>
+					<div th:if="${col != null}">
+						<div th:each="fc : ${fcCalEvents.get(col.cellDate)}">
+							<div th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}"></div>
+						</div>
+					</div>	
+				</div>
+			</div>
+   		</div>
+	</div>
+   </body>
+</html>
+

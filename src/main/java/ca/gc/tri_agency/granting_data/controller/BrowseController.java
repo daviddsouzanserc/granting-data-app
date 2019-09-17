@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.gc.tri_agency.granting_data.model.util.CalendarGrid;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @Controller
@@ -43,4 +44,13 @@ public class BrowseController {
 		return "browse/viewFundingOpportunity";
 	}
 
+	@GetMapping(value = "/viewCalendar")
+	public String viewCalendar(@RequestParam(name = "plusMinusMonth", defaultValue = "0") Long plusMinusMonth,
+			Model model) {
+		model.addAttribute("plusMonth", plusMinusMonth + 1);
+		model.addAttribute("minusMonth", plusMinusMonth - 1);
+		model.addAttribute("calGrid", new CalendarGrid(plusMinusMonth));
+		model.addAttribute("fcCalEvents", dataService.getMonthlyFundingCyclesMapByDate(plusMinusMonth));
+		return "browse/viewCalendar";
+	}
 }

@@ -12,6 +12,29 @@
 
 </head>
 <body>
+	<style type="text/css">
+		.cal-weekday-header {
+			text-align: center;
+			border: 1px solid #d8d8d8; 
+		}
+		.cal-day-cell {
+			border: 1px solid #d8d8d8; 
+			line-height: 2em; 
+			border-spacing 0px 0px; 
+			padding: 2px; 
+			min-height: 100px;
+			box-sizing: content-box; 
+		}
+		.cal-day-event {
+			border: 1px solid #d8d8d8; 
+			background-color: rgb(79, 195, 247);
+			color: rgb(255, 255, 255);
+			white-space: nowrap;
+			font-size: 12.2333px;
+			overflow: hidden;
+			font-color: rgb(0, 0, 0);
+		}
+	</style>
 	<div th:insert="~{fragments/general.html :: header_nav('entities')}" />
 	<div class="container">
 		<h1>Funding Cycle Calendar</h1>
@@ -19,24 +42,24 @@
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-1" style="text-align: center;"><a th:href="@{viewCalendar(plusMinusMonth=${minusMonth})}"><<</a></div>
-				<div class="col-md-5" style="text-align: center;" th:utext="#{${'cal.' + calGrid.month.monthValue}}"></div>
+				<div class="col-md-5" style="text-align: center;"> <span th:utext="#{${'cal.' + calGrid.month.monthValue}}"></span> - <span th:text="${calGrid.month.year}"></span></div>
 				<div class="col-md-1" style="text-align: center;"><a th:href="@{viewCalendar(plusMinusMonth=${plusMonth})}">>></a></div>
 			</div>
 			<div class="row">
-				<div class="col-md-1" style="text-align: center;">Sun</div>
-				<div class="col-md-1" style="text-align: center;">Mon</div>
-				<div class="col-md-1" style="text-align: center;">Tue</div>
-				<div class="col-md-1" style="text-align: center;">Wed</div>
-				<div class="col-md-1" style="text-align: center;">Thu</div>
-				<div class="col-md-1" style="text-align: center;">Fri</div>
-				<div class="col-md-1" style="text-align: center;">Sat</div>	
+				<div class="col-md-1 cal-weekday-header">Sun</div>
+				<div class="col-md-1 cal-weekday-header">Mon</div>
+				<div class="col-md-1 cal-weekday-header">Tue</div>
+				<div class="col-md-1 cal-weekday-header">Wed</div>
+				<div class="col-md-1 cal-weekday-header">Thu</div>
+				<div class="col-md-1 cal-weekday-header">Fri</div>
+				<div class="col-md-1 cal-weekday-header">Sat</div>
 			</div>
 			<div th:each="row : ${calGrid.dataGrid}" class="row">
-				<div class="col-md-1" th:each="col : ${row}" style="border: 1px solid #d8d8d8; line-height: 2em; border-spacing 0px 0px; padding: 2px; height: 100px; ">
-					<span style="float:right;" th:text="${col} ? ${col.dayOfMonth} : 'N/A'"></span>
+				<div class="col-md-1 cal-day-cell" th:each="col : ${row}">
+					<div style="text-align:right;" th:text="${col} ? ${col.dayOfMonth} : 'N/A'"></div>
 					<div th:if="${col != null}">
 						<div th:each="fc : ${fcCalEvents.get(col.cellDate)}">
-							<div th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}"></div>
+							<div class="cal-day-event"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
 						</div>
 					</div>	
 				</div>

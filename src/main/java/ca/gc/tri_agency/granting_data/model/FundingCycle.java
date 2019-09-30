@@ -24,8 +24,10 @@ public class FundingCycle implements LocalizedParametersModel {
 	private Long id;
 
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy")
 	private Date compYear;
+
+	private boolean isOpen;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -89,5 +91,21 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	public void setExpectedApplications(Long expectedApplications) {
 		this.expectedApplications = expectedApplications;
+	}
+
+	public boolean isOpen() {
+		return isOpen;
+	}
+
+	public boolean getIsOpen() {
+		return isOpen;
+	}
+
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+
+	public void setIsOpen(boolean isOpen) {
+		this.isOpen = isOpen;
 	}
 }

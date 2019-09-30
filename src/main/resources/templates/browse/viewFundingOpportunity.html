@@ -103,7 +103,7 @@
 					<tr th:each="row : ${fcDataMap}">
 						<td th:text="${row.value.year}" ></td>
 						<td><span th:text="${row.value.fc} ? ${row.value.fc.startDate} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td>
-						<td><span th:text="${row.value.fc} ? ${row.value.fc.endDate} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td>
+						<td><span th:if="${row.value.fc}"><span th:text="${row.value.fc.isOpen} ? 'Open' : ${row.value.fc.endDate}"></span></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td>
 						<td><span th:text="${row.value.fc} ? ${row.value.fc.expectedApplications} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.numAppsReceived} : 'N/A'"></span></td>
 					</tr>
 				</tbody>

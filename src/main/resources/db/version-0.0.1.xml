@@ -29,6 +29,7 @@
             </column>
             <column name="comp_year" type="date"/>
             <column name="end_date" type="date"/>
+            <column name="is_open" type="boolean" />
             <column name="expected_applications" type="BIGINT">
                 <constraints nullable="false"/>
             </column>

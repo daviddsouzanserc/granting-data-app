@@ -40,4 +40,6 @@ public interface DataAccessService {
 
 	Map<String, List<FundingCycle>> getMonthlyFundingCyclesMapByDate(long plusMinusMonth);
 
+	FundingCycle getFundingCycle(long id);
+
 }

@@ -98,6 +98,31 @@ public class ManageFundingOpportunityController {
 		return "redirect:/browse/viewFo?id=" + command.getId();
 	}
 
+	//////////////////////
+
+	@GetMapping(value = "/editFc", params = "id")
+	public String editFc(@RequestParam("id") long id, Model model) {
+		model.addAttribute("fc", dataService.getFundingCycle(id));
+		return "manage/editFundingCycle";
+	}
+
+	@PostMapping(value = "/editFc")
+	public String createFundingCyclePost2(@Valid @ModelAttribute("fc") FundingCycle command,
+			BindingResult bindingResult) {
+		FundingCycle target = dataService.getFundingCycle(command.getId());
+		if (bindingResult.hasErrors()) {
+			for (ObjectError br : bindingResult.getAllErrors()) {
+				System.out.println(br.toString());
+			}
+			return "manage/editFundingCycle";
+		}
+		restrictedDataService.updateFc(command, target);
+
+		return "redirect:/browse/viewFo?id=" + target.getFundingOpportunity().getId();
+	}
+
+/////////////////////////
+
 	@GetMapping(value = "/editProgramLead", params = "id")
 	public String editProgramLead(@RequestParam("id") long id, Model model) {
 		model.addAttribute("originalId", id);
@@ -127,6 +152,7 @@ public class ManageFundingOpportunityController {
 
 	@GetMapping(value = "/createFundingCycle", params = "id")
 	public String createFundingCycle(@RequestParam("id") long id, Model model) {
+
 		model.addAttribute("foId", id);
 		model.addAttribute("fundingCycle", new FundingCycle());
 		return "manage/createFundingCycle";

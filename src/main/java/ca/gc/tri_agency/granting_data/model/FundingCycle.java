@@ -108,4 +108,8 @@ public class FundingCycle implements LocalizedParametersModel {
 	public void setIsOpen(boolean isOpen) {
 		this.isOpen = isOpen;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

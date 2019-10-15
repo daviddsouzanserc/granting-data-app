@@ -177,4 +177,9 @@ public class DataAccessServiceImpl implements DataAccessService {
 		return retval;
 	}
 
+	@Override
+	public FundingCycle getFundingCycle(long id) {
+		return fcRepo.getOne(id);
+	}
+
 }

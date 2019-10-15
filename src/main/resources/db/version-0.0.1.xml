@@ -34,7 +34,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="start_date" type="date"/>
-            <column name="funding_opportunity_id" type="BIGINT"/>
+            <column name="funding_opportunity_id" type="BIGINT" >
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet author="dev_dyd (generated)" id="1566917337178-3">

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
@@ -20,6 +21,7 @@ import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.util.FundingCycleInfo;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
+import ca.gc.tri_agency.granting_data.repo.FiscalYearRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
@@ -44,6 +46,8 @@ public class DataAccessServiceImpl implements DataAccessService {
 	GrantingCapabilityRepository grantingCapabilityRepo;
 	@Autowired
 	FundingCycleRepository fcRepo;
+	@Autowired
+	FiscalYearRepository fyRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -80,13 +84,13 @@ public class DataAccessServiceImpl implements DataAccessService {
 		Map<String, FundingCycleInfo> retval = new TreeMap<String, FundingCycleInfo>();
 		List<FundingCycle> fcList = fundingCycleRepo.findByFundingOpportunityId(id);
 		List<SystemFundingCycle> sfcList = getSystemFundingCyclesByFoId(id);
-		for (FundingCycle fc : fcList) {
-			FundingCycleInfo newItem = new FundingCycleInfo();
-			String year = fc.getCompYear().toString().substring(0, 4);
-			newItem.setYear(year);
-			newItem.setFc(fc);
-			retval.put(year, newItem);
-		}
+//		for (FundingCycle fc : fcList) {
+//			FundingCycleInfo newItem = new FundingCycleInfo();
+//			String year = fc.getCompYear().toString().substring(0, 4);
+//			newItem.setYear(year);
+//			newItem.setFc(fc);
+//			retval.put(year, newItem);
+//		}
 		for (SystemFundingCycle sfc : sfcList) {
 			String year = sfc.getCompYear().toString().substring(0, 4);
 			if (retval.containsKey(year)) {
@@ -182,4 +186,44 @@ public class DataAccessServiceImpl implements DataAccessService {
 		return fcRepo.getOne(id);
 	}
 
+	public List<FundingCycle> getAllFundingCycles() {
+		return fcRepo.findAll();
+	}
+
+	@Override
+	public List<FiscalYear> findAllFiscalYears() {
+		// TODO Auto-generated method stub
+		return fyRepo.findAll();
+	}
+
+	@SuppressWarnings("null")
+	@Override
+	public List<FiscalYear> fiscalYears() {
+		List<FiscalYear> fy = fyRepo.findAll();
+		return fy;
+	}
+
+	@SuppressWarnings("null")
+	@Override
+	public List<FundingCycle> fundingCyclesByFiscalYearId(Long Id) {
+		List<FundingCycle> fc = fcRepo.findAll();
+		List<FundingCycle> fcNew = new ArrayList<FundingCycle>();
+
+		for (FundingCycle e : fc) {
+			if (e.getFiscalYear().getId() == Id) {
+				fcNew.add(e);
+			}
+
+		}
+
+		return fcNew;
+	}
+
+	@Override
+	public void createFy(Long year) {
+		FiscalYear fy = new FiscalYear();
+		fy.setYear(year);
+		fyRepo.save(fy);
+
+	}
 }

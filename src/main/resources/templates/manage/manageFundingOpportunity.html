@@ -64,7 +64,7 @@
 				<table id="fundingCycles" class="table table-bordered">
 				<thead>
 					<tr>
-						<td>Year</td>
+						<td>Fiscal Year</td>
 						<td>Start Date</td>
 						<td>End Date</td>
 						<td>Expected # of Applications</td>
@@ -74,7 +74,7 @@
 				</thead>
 				<tbody th:if="${fundingCycles!=null}">
 					<tr th:each="fundingCycle : ${fundingCycles}">
-						<td th:text="${fundingCycle.compYear}" ></td>
+						<td th:text="${fundingCycle.fiscalYear.year}" ></td>
 						<td th:text="${fundingCycle.startDate}" ></td>
 						<td th:text="${fundingCycle.endDate}" ></td>
 						<td th:text="${fundingCycle.expectedApplications}" ></td>

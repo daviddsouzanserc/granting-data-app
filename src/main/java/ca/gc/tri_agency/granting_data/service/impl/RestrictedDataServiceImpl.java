@@ -77,7 +77,7 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 
 	@Override
 	public FundingCycle updateFc(FundingCycle command, FundingCycle target) {
-		target.setCompYear(command.getCompYear());
+		target.setFiscalYear(command.getFiscalYear());
 		target.setEndDate(command.getEndDate());
 		target.setExpectedApplications(command.getExpectedApplications());
 		target.setIsOpen(command.getIsOpen());
@@ -92,6 +92,5 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 
 		return grantingCapabilityRepo.save(command);
 	}
-
 
 }

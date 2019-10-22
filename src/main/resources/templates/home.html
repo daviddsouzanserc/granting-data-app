@@ -9,9 +9,16 @@
 	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	<div class="container">
 		<p>Welcome to the Granting Data Application. Please select one of the following options</p>
+		
+		<P>  Browsing  </P>
 		<ol>
 			<li><a href="browse/viewCalendar">Funding Cycle Calendar</a></li>
 			<li><a href="browse/goldenList">Browse Funding Opportunities</a></li>
+			<li><a href="browse/viewFiscalYear"> Browse Funding Cycles </a></li>
+		</ol>
+		
+		<p> Admin Zone </p>
+		<ol>
 			<li><a href="fundingOpp/editProgramLead">Search User</a></li>
 			<li><a href="admin/home">Admin Home</a></li>
 		</ol>

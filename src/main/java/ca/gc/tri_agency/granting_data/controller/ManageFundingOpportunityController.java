@@ -152,9 +152,9 @@ public class ManageFundingOpportunityController {
 
 	@GetMapping(value = "/createFundingCycle", params = "id")
 	public String createFundingCycle(@RequestParam("id") long id, Model model) {
-
 		model.addAttribute("foId", id);
 		model.addAttribute("fundingCycle", new FundingCycle());
+		model.addAttribute("fy", dataService.findAllFiscalYears());
 		return "manage/createFundingCycle";
 	}
 

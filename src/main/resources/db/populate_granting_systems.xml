@@ -13,6 +13,7 @@ author="dev_dyd">
           INSERT INTO `agency` VALUES (1, 'SSHRC', 'CRSH', 'Social Sciences and Humanities Research Council', 'Conseil de recherches en sciences humaines'), (2, 'NSERC', 'CRSNG', 'Natural Sciences and Engineering Research Council ', 'Conseil de recherches en sciences naturelles et en génie'), (3, 'CIHR', 'IRSC', 'Canadian Institutes of Health Research ', 'Instituts de recherche en santé');
           INSERT INTO `hibernate_sequence` VALUES (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18);
           INSERT INTO `granting_stage` VALUES (1,'ADMIN',''),(2,'APPLY',''),(3,'ASSESS',''),(4,'AWARD',''),(5,'AQUIT','');
+          INSERT INTO `fiscal_year` VALUES (1,2017), (2,2018), (3,2019);
       </sql>
       <rollback>
           <sql>

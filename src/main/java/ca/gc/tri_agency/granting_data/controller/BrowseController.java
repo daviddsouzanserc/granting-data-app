@@ -1,12 +1,21 @@
 package ca.gc.tri_agency.granting_data.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.util.CalendarGrid;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
@@ -53,4 +62,44 @@ public class BrowseController {
 		model.addAttribute("fcCalEvents", dataService.getMonthlyFundingCyclesMapByDate(plusMinusMonth));
 		return "browse/viewCalendar";
 	}
+
+	@GetMapping(value = "/viewFiscalYear")
+	public String viewFundingCycles(Model model) {
+		model.addAttribute("fiscalYear", dataService.findAllFiscalYears());
+		model.addAttribute("fy", new FiscalYear());
+		return "browse/viewFiscalYear";
+	}
+
+	@GetMapping(value = "/viewFcFromFy")
+	public String viewFundingCyclesFromFiscalYear(@RequestParam("id") long id, Model model) {
+		model.addAttribute("fc", dataService.fundingCyclesByFiscalYearId(id));
+		return "browse/viewFcFromFy";
+	}
+
+	@PostMapping(value = "/viewFiscalYear")
+	public String addFiscalYearPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			for (ObjectError br : bindingResult.getAllErrors()) {
+				System.out.println(br.toString());
+			}
+			return "redirect:/browse/viewFiscalYear";
+		}
+
+		List<FiscalYear> fy = dataService.findAllFiscalYears();
+		Long year = command.getYear();
+		boolean exist = false;
+
+		for (FiscalYear f : fy) {
+			if (f.getYear().equals(year)) {
+				exist = true;
+				break;
+			}
+		}
+
+		if (!exist) {
+			dataService.createFy(year);
+		}
+		return "redirect:/browse/viewFiscalYear";
+	}
+
 }

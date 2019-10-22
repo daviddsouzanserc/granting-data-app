@@ -1,8 +1,6 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -133,11 +131,11 @@ public class AdminServiceImpl implements AdminService {
 
 				}
 				SystemFundingCycle newCycle = new SystemFundingCycle();
-				try {
-					newCycle.setCompYear(new SimpleDateFormat("yyyy").parse(row.getCompetition_Year()));
-				} catch (ParseException e) {
-					LOG.log(Level.WARN, "Invalid year:" + row.getCompetition_Year());
-				}
+//				try {
+//					newCycle.setCompYear(new SimpleDateFormat("yyyy").parse(row.getCompetition_Year()));
+//				} catch (ParseException e) {
+//					LOG.log(Level.WARN, "Invalid year:" + row.getCompetition_Year());
+//				}
 				newCycle.setExtId(row.getFoCycle());
 				newCycle.setSystemFundingOpportunity(targetFo);
 				newCycle.setNumAppsReceived(row.getNumReceivedApps());

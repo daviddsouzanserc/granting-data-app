@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
@@ -39,5 +40,17 @@ public interface DataAccessService {
 	List<FundingOpportunity> getAgencyFundingOpportunities(long id);
 
 	Map<String, List<FundingCycle>> getMonthlyFundingCyclesMapByDate(long plusMinusMonth);
+
+	FundingCycle getFundingCycle(long id);
+
+	List<FundingCycle> getAllFundingCycles();
+
+	List<FiscalYear> findAllFiscalYears();
+
+	List<FiscalYear> fiscalYears();
+
+	List<FundingCycle> fundingCyclesByFiscalYearId(Long Id);
+
+	void createFy(Long year);
 
 }

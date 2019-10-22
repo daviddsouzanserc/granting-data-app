@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{::script})}">
 <meta charset="ISO-8859-1">
-<title>Granting Data - Create Funding Cycle</title>
+<title>Granting Data - Edit Funding Cycle</title>
 <script>
       $(document).ready(function() { 
        $("#isOpen").click(function() {
@@ -15,15 +15,8 @@
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
 	<div class="container">
-		<form action="#" th:action="@{createFundingCycle}" th:object="${fundingCycle}" method="post">            		
-        	<!-- <input type="hidden" th:field="*{id}" />  -->
-			<h1>Create Funding Cycle</h1>
-				<div class="form-group row">
-			<div class="col-sm-2 col-form-label">Fiscal Year</div>
-			<select  th:field="*{fiscalYear}">
-				<option th:each="i : ${fy}" th:value="${i.id}" th:text= "${i.getYear()}">Fiscal Year</option>
-			</select>
-			</div>
+		<form action="#" th:action="@{editFc}" th:object="${fc}" method="post">            		
+			<h1>Edit Funding Cycle</h1>
 <!-- 			<div class="form-group row"> -->
 <!-- 				<div class="col-sm-2 col-form-label">Competition Year</div> -->
 <!-- 				<div><input type="date" th:field="*{compYear}" class="col-sm-2"  /></div> -->
@@ -48,7 +41,7 @@
 				<div><input th:field="*{expectedApplications}" class="col-sm-2"  /></div>
 				<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}">Expected Applications Error</div>
 			</div>
-			<input type="hidden" name="fundingOpportunity" th:value="${foId}" />
+        	<input type="hidden" th:field="*{id}" /> 
 			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
 		</form>
 		

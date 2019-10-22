@@ -23,9 +23,17 @@ public class FundingCycle implements LocalizedParametersModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy")
-	private Date compYear;
+	@ManyToOne
+	@JoinColumn(name = "fiscal_year_id")
+	private FiscalYear fiscalYear;
+
+	public FiscalYear getFiscalYear() {
+		return fiscalYear;
+	}
+
+	public void setFiscalYear(FiscalYear fiscalYear) {
+		this.fiscalYear = fiscalYear;
+	}
 
 	private boolean isOpen;
 
@@ -59,14 +67,6 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	public void setFundingOpportunity(FundingOpportunity program) {
 		this.fundingOpportunity = program;
-	}
-
-	public Date getCompYear() {
-		return compYear;
-	}
-
-	public void setCompYear(Date compYear) {
-		this.compYear = compYear;
 	}
 
 	public Date getStartDate() {
@@ -107,5 +107,9 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	public void setIsOpen(boolean isOpen) {
 		this.isOpen = isOpen;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

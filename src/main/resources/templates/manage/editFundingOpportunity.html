@@ -3,7 +3,13 @@
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
 <meta charset="ISO-8859-1">
 <title>Granting Data - View Funding Opportunity</title>
-
+<script>
+      $(document).ready(function() { 
+       $("#isJointInitiative").click(function() {
+         $("#partnerOrg").attr('disabled', !$("partnerOrg").attr('disabled'));
+       }); 
+      }); 
+</script>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
@@ -12,23 +18,30 @@
         	<input type="hidden" th:field="*{id}" />
         	<input type="hidden" th:field="*{programLeadName}" />
 			<h1>Edit Funding Opportunity</h1>
+			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:utext="#{form.name}">Name</div>
 				<div><input th:field="*{nameEn}" class="col-sm-2"  /></div>
 				<div th:if="${#fields.hasErrors('nameEn')}" th:errors="*{nameEn}">Name Error</div>
 			</div>
+			
+			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:utext="#{form.name}">Name</div>
 				<div><input th:field="*{nameFr}" class="col-sm-2"  /></div>
 				<div th:if="${#fields.hasErrors('nameFr')}" th:errors="*{nameFr}">Name Error</div>
 			</div>
+			
+			
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label" th:utext="#{form.leadAgency}">Lead Agency</div>
+			<div class="col-sm-2 col-form-label" th:utext="#{form.leadAgency}">Lead Agency</div>
 				<div><select class="col-sm-2" th:field="*{leadAgency}">
 					<option th:each="agency : ${allAgencies}"
 						th:value="${agency.id}"
-						th:text="${agency.getLocalizedAttribute('acronym')}"></option>
-				</select></div>
+						th:text="${agency.getLocalizedAttribute('acronym')}">
+					</option>
+				</select>
+			</div>
 				<div th:if="${#fields.hasErrors('leadAgency')}" th:errors="*{leadAgency}">Lead Agency Error</div>
 			</div>
 			<div class="form-group row">
@@ -36,6 +49,27 @@
 				<div><input  class="col-sm-2" th:field="*{division}"  /></div>
 				<div th:if="${#fields.hasErrors('division')}" th:errors="*{division}">Division Error</div>
 			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label">Is Joint Initiative? </div>
+				<div><input id="isJointInitiative" type="checkbox" th:field="*{isJointInitiative}" class="col-sm-2" ></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label">Participating Organization </div>
+				<div><input id="partnerOrg" type="text" th:field="*{partnerOrg}" class="col-sm-2" ></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label">Participant Complex? </div>
+				<div><input id="isComplex" type="checkbox" th:field="*{isComplex}" class="col-sm-2" ></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label">Is EDI Required? </div>
+				<div><input id="isEdiRequired" type="checkbox" th:field="*{isEdiRequired}" class="col-sm-2"  ></div>  
+			</div>
+				
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:utext="#{form.fundingType}">Funding Type</div>
 				<div><input class="col-sm-2" th:field="*{fundingType}" /></div>
@@ -78,6 +112,8 @@
 								th:text="${agency.getLocalizedAttribute('acronym')}"></option>
 		            </select>
 	            </div>
+		
+	            
 				<div th:if="${#fields.hasErrors('participatingAgencies')}" th:errors="*{participatingAgencies}">Agencies Error</div>
 			</div>
 			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />

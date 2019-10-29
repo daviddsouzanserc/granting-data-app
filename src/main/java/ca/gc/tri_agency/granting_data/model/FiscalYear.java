@@ -1,5 +1,6 @@
 package ca.gc.tri_agency.granting_data.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class FiscalYear implements LocalizedParametersModel {
 	@NotNull(message = "The year should not be Null")
 	@Min(1999)
 	@Max(2050)
+	@Column(name = "year", unique = true)
 	private Long Year;
 
 	public Long getId() {

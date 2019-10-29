@@ -35,11 +35,28 @@
 			</table>
 		 
 	</div>
-		<form action="#" th:action="@{viewFiscalYear}" th:object="${fy}" method="post">
+	
+         <div th:if="${#request.isUserInRole('ROLE_ADMIN')}"> 
+		<form action="#" th:action="@{viewFiscalYear}" th:object="${fy}"  method="post">
 		<span style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;">
 		<input type="text" th:field="*{year}" />
 		<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
 		</span>
 		</form>
+ 		</div> 
+		
+		<table id="error" class="display" style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;color:red">
+				<thead>
+		            <tr>
+		                <th></th>
+		            </tr>
+				</thead>
+				
+				<tbody>
+	       			<tr>
+	           			<td th:text="${error}"> </td>	           		
+	       			</tr>
+   				</tbody>
+			</table>
 </body>
 </html>

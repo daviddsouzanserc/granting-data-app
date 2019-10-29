@@ -1,14 +1,12 @@
 package ca.gc.tri_agency.granting_data.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,29 +74,29 @@ public class BrowseController {
 		return "browse/viewFcFromFy";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping(value = "/viewFiscalYear")
-	public String addFiscalYearPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult) {
+	public String addFiscalYearPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
+			Model model) throws Exception {
+
 		if (bindingResult.hasErrors()) {
-			for (ObjectError br : bindingResult.getAllErrors()) {
-				System.out.println(br.toString());
-			}
-			return "redirect:/browse/viewFiscalYear";
+			System.out.println(bindingResult.getFieldError().toString());
+
 		}
 
-		List<FiscalYear> fy = dataService.findAllFiscalYears();
-		Long year = command.getYear();
-		boolean exist = false;
-
-		for (FiscalYear f : fy) {
-			if (f.getYear().equals(year)) {
-				exist = true;
-				break;
-			}
+		try {
+			dataService.createFy(command.getYear());
 		}
 
-		if (!exist) {
-			dataService.createFy(year);
+		catch (Exception e) {
+			model.addAttribute("fiscalYear", dataService.findAllFiscalYears());
+			model.addAttribute("fy", new FiscalYear());
+			model.addAttribute("error", "Your input is not valid!"
+					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
+			return "browse/viewFiscalYear";
+
 		}
+
 		return "redirect:/browse/viewFiscalYear";
 	}
 

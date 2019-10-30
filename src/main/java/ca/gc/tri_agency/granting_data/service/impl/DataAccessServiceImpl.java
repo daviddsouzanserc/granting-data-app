@@ -20,6 +20,7 @@ import ca.gc.tri_agency.granting_data.model.GrantingCapability;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.util.FundingCycleInfo;
+import ca.gc.tri_agency.granting_data.repo.ADUserRepository;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FiscalYearRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
@@ -48,6 +49,8 @@ public class DataAccessServiceImpl implements DataAccessService {
 	FundingCycleRepository fcRepo;
 	@Autowired
 	FiscalYearRepository fyRepo;
+	@Autowired
+	ADUserRepository userRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -224,6 +227,12 @@ public class DataAccessServiceImpl implements DataAccessService {
 		FiscalYear fy = new FiscalYear();
 		fy.setYear(year);
 		fyRepo.save(fy);
+
+	}
+
+	public String getEmail(String dn) {
+		// String x = userRepo.g
+		return null;
 
 	}
 }

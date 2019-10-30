@@ -1,4 +1,5 @@
-    <changeSet author="dev_yab (generated)" id="1571335642121-1">
+
+    <changeSet author="dev_yab (generated)" id="1572369098992-1">
         <createTable tableName="agency">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -9,23 +10,24 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-2">
+    <changeSet author="dev_yab (generated)" id="1572369098992-2">
         <createTable tableName="fiscal_year">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="year" type="BIGINT"/>
+            <column name="year" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-3">
+    <changeSet author="dev_yab (generated)" id="1572369098992-3">
         <createTable tableName="funding_cycle">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="comp_year" type="date"/>
             <column name="end_date" type="date"/>
             <column name="expected_applications" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique = "true"/>
             </column>
             <column name="is_open" type="BIT(1)">
                 <constraints nullable="false"/>
@@ -35,7 +37,7 @@
             <column name="funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-4">
+    <changeSet author="dev_yab (generated)" id="1572369098992-4">
         <createTable tableName="funding_opportunity">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -45,14 +47,24 @@
             <column name="division" type="VARCHAR(255)"/>
             <column name="frequency" type="VARCHAR(255)"/>
             <column name="funding_type" type="VARCHAR(255)"/>
+            <column name="is_complex" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_edi_required" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_joint_initiative" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
+            <column name="partner_org" type="VARCHAR(255)"/>
             <column name="program_lead_dn" type="VARCHAR(255)"/>
             <column name="program_lead_name" type="VARCHAR(255)"/>
             <column name="lead_agency_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-5">
+    <changeSet author="dev_yab (generated)" id="1572369098992-5">
         <createTable tableName="funding_opportunity_participating_agencies">
             <column name="funding_opportunity_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -62,7 +74,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-6">
+    <changeSet author="dev_yab (generated)" id="1572369098992-6">
         <createTable tableName="granting_capability">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -74,7 +86,7 @@
             <column name="granting_system_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-7">
+    <changeSet author="dev_yab (generated)" id="1572369098992-7">
         <createTable tableName="granting_stage">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -83,7 +95,7 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-8">
+    <changeSet author="dev_yab (generated)" id="1572369098992-8">
         <createTable tableName="granting_system">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -93,12 +105,12 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-9">
+    <changeSet author="dev_yab (generated)" id="1572369098992-9">
         <createTable tableName="hibernate_sequence">
             <column name="next_val" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-10">
+    <changeSet author="dev_yab (generated)" id="1572369098992-10">
         <createTable tableName="lead_contributor">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -109,7 +121,7 @@
             <column name="funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-11">
+    <changeSet author="dev_yab (generated)" id="1572369098992-11">
         <createTable tableName="system_action">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -120,7 +132,7 @@
             <column name="user_dn" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-12">
+    <changeSet author="dev_yab (generated)" id="1572369098992-12">
         <createTable tableName="system_funding_cycle">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -131,7 +143,7 @@
             <column name="system_funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-13">
+    <changeSet author="dev_yab (generated)" id="1572369098992-13">
         <createTable tableName="system_funding_opportunity">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -143,93 +155,96 @@
             <column name="linked_funding_opportunity_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-14">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="agency"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-14">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY0" tableName="agency"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-15">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="fiscal_year"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-15">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY1" tableName="fiscal_year"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-16">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_cycle"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-16">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY2" tableName="funding_cycle"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-17">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_opportunity"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-17">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY3" tableName="funding_opportunity"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-18">
-        <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY" tableName="funding_opportunity_participating_agencies"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-18">
+        <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY4" tableName="funding_opportunity_participating_agencies"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-19">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_capability"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-19">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY5" tableName="granting_capability"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-20">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_stage"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-20">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY6" tableName="granting_stage"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-21">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_system"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-21">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY7" tableName="granting_system"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-22">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="lead_contributor"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-22">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY8" tableName="lead_contributor"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-23">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_action"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-23">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY9" tableName="system_action"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-24">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_funding_cycle"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-24">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY10" tableName="system_funding_cycle"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-25">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_funding_opportunity"/>
+    <changeSet author="dev_yab (generated)" id="1572369098992-25">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY11" tableName="system_funding_opportunity"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-26">
+    <changeSet author="dev_yab (generated)" id="1572369098992-26">
+        <addUniqueConstraint columnNames="year" constraintName="UK_b8kivk0q21ddg7c8uyyrppgp3" tableName="fiscal_year"/>
+    </changeSet>
+    <changeSet author="dev_yab (generated)" id="1572369098992-27">
         <createIndex indexName="FK14tr15getkq8fb5kjrrjptvjr" tableName="system_funding_opportunity">
             <column name="linked_funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-27">
+    <changeSet author="dev_yab (generated)" id="1572369098992-28">
         <createIndex indexName="FK528n91tiwm42hbh9296moiphq" tableName="funding_opportunity">
             <column name="lead_agency_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-28">
+    <changeSet author="dev_yab (generated)" id="1572369098992-29">
         <createIndex indexName="FK63indjk5hvfqt20nl6yjhe4qi" tableName="granting_capability">
             <column name="funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-29">
+    <changeSet author="dev_yab (generated)" id="1572369098992-30">
         <createIndex indexName="FK6bwbn2qevrkb0xtgfw7372cy" tableName="funding_cycle">
             <column name="funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-30">
+    <changeSet author="dev_yab (generated)" id="1572369098992-31">
         <createIndex indexName="FK9n4a2q2pki6vjp6ghsv02ngv3" tableName="granting_capability">
             <column name="granting_stage_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-31">
+    <changeSet author="dev_yab (generated)" id="1572369098992-32">
         <createIndex indexName="FKbsasob7skpngyxtdeg9j9ierw" tableName="system_funding_opportunity">
             <column name="granting_system_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-32">
+    <changeSet author="dev_yab (generated)" id="1572369098992-33">
         <createIndex indexName="FKhigr6os32l974jwtwgojgohhv" tableName="funding_cycle">
             <column name="fiscal_year_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-33">
+    <changeSet author="dev_yab (generated)" id="1572369098992-34">
         <createIndex indexName="FKhq04tuapjciro02x3knac3hlt" tableName="granting_capability">
             <column name="granting_system_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-34">
+    <changeSet author="dev_yab (generated)" id="1572369098992-35">
         <createIndex indexName="FKikhvk8ji466d7w30b6wqhmees" tableName="system_funding_cycle">
             <column name="system_funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-35">
+    <changeSet author="dev_yab (generated)" id="1572369098992-36">
         <createIndex indexName="FKmnm9gjqoedc34m9wb3nevyqa5" tableName="lead_contributor">
             <column name="funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1571335642121-36">
+    <changeSet author="dev_yab (generated)" id="1572369098992-37">
         <createIndex indexName="FKuip0ni018fonghd8p7e326g8" tableName="funding_opportunity_participating_agencies">
             <column name="participating_agencies_id"/>
         </createIndex>

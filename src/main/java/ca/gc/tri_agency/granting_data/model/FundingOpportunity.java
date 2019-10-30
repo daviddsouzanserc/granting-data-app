@@ -163,4 +163,48 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		this.programLeadDn = programLeadDn;
 	}
 
+	private boolean isJointInitiative;
+
+	public boolean isJointInitiative() {
+		return isJointInitiative;
+	}
+
+	public boolean getIsJointInitiative() {
+		return isJointInitiative;
+	}
+
+	public void setJointInitiative(boolean isJointInitiative) {
+		this.isJointInitiative = isJointInitiative;
+	}
+
+	public String getPartnerOrg() {
+		return partnerOrg;
+	}
+
+	public void setPartnerOrg(String partnerOrg) {
+		this.partnerOrg = partnerOrg;
+	}
+
+	public boolean getIsEdiRequired() {
+		return isEdiRequired;
+	}
+
+	public void setEdiRequired(boolean isEdiRequired) {
+		this.isEdiRequired = isEdiRequired;
+	}
+
+	private String partnerOrg;
+
+	private boolean isEdiRequired;
+
+	private boolean isComplex;
+
+	public boolean getIsComplex() {
+		return isComplex;
+	}
+
+	public void setComplex(boolean isComplex) {
+		this.isComplex = isComplex;
+	}
+
 }

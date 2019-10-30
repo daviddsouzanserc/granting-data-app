@@ -47,6 +47,7 @@ objectclass: inetOrgPerson
 cn: SSHRC User
 sn: SSHRC
 uid: sshrc-user
+mail:cn@sshrc-crsh.gc.ca
 userPassword: password
 
 dn: uid=nserc-user-edi,ou=NSERC_Users,dc=nserc,dc=ca

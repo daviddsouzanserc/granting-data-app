@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{::script})}">
 <meta charset="ISO-8859-1">
 <title>Granting Data - View Funding Opportunity</title>
 <script>
-      $(document).ready(function() { 
-       $("#isJointInitiative").click(function() {
-         $("#partnerOrg").attr('disabled', !$("partnerOrg").attr('disabled'));
-       }); 
-      }); 
+$(document).ready(function(){
+	  $('#isJointInitiative').click(function(){
+	    if($(this).is(":checked"))
+	       $("#partnerOrg").removeAttr("disabled");
+	    else
+	       $("#partnerOrg").attr("disabled" , "disabled");
+	});
+	});  
 </script>
 </head>
 <body>
@@ -52,12 +55,12 @@
 			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label">Is Joint Initiative? </div>
-				<div><input id="isJointInitiative" type="checkbox" th:field="*{isJointInitiative}" class="col-sm-2" ></div>
+				<div><input id="isJointInitiative" type="checkbox" th:field="*{isJointInitiative}" class="col-sm-2"	></div>
 			</div>
 			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label">Participating Organization </div>
-				<div><input id="partnerOrg" type="text" th:field="*{partnerOrg}" class="col-sm-2" ></div>
+				<div><input id="partnerOrg" type="text" th:field="*{partnerOrg}" class="col-sm-2" disabled ></div>
 			</div>
 			
 			<div class="form-group row">
@@ -116,6 +119,7 @@
 	            
 				<div th:if="${#fields.hasErrors('participatingAgencies')}" th:errors="*{participatingAgencies}">Agencies Error</div>
 			</div>
+			
 			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
 		</form>
 	</div>

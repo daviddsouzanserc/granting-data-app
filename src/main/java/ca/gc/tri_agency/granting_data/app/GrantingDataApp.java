@@ -1,7 +1,6 @@
 package ca.gc.tri_agency.granting_data.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -27,23 +26,13 @@ public class GrantingDataApp {
 	@Autowired
 	private Environment env;
 
-	@Value("${use.active.directory}")
-	private String useActiveDirectory;
-
 	@Bean
 	public LdapContextSource contextSource() {
 		LdapContextSource contextSource = new LdapContextSource();
 
-		if (Boolean.parseBoolean(useActiveDirectory)) {
-			contextSource.setUrl(env.getRequiredProperty("ldap.url.nserc"));
-			// contextSource.setBase(env.getRequiredProperty("ldap.base.dn.nserc"));
-			// contextSource.setUrls(new String[] { "ldap.url.nserc", "ldap.url.sshrc" });
-		} else {
-			contextSource.setUrl(env.getRequiredProperty("ldap.urls"));
-			// contextSource.setBase(env.getRequiredProperty("ldap.base.dn"));
-//			contextSource.setUserDn(env.getRequiredProperty("ldap.principal"));
-//			contextSource.setPassword(env.getRequiredProperty("ldap.password"));
-		}
+		contextSource.setUrl(env.getRequiredProperty("ldap.url.nserc"));
+		// contextSource.setBase(env.getRequiredProperty("ldap.base.dn.nserc"));
+		// contextSource.setUrls(new String[] { "ldap.url.nserc", "ldap.url.sshrc" });
 
 		return contextSource;
 	}

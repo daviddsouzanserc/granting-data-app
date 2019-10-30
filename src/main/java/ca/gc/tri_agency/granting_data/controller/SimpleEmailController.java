@@ -18,12 +18,15 @@ public class SimpleEmailController {
 	@RequestMapping("/viewFiscalYear")
 	@ResponseBody
 	String home() {
-		try {
-			sendEmail();
-			return "Email Sent!";
-		} catch (Exception ex) {
-			return "Error in sending email: " + ex;
-		}
+//		try {
+//			sendEmail();
+//			return "Email Sent!";
+//		} catch (Exception ex) {
+//			return "Error in sending email: " + ex;
+//		}
+		// UserRepo
+		return null;
+		// UserRepo.getAllPersons().toString();
 	}
 
 	private void sendEmail() throws Exception {

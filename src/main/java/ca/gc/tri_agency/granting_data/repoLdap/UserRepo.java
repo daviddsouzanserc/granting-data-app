@@ -123,6 +123,11 @@ public class UserRepo {
 				user.setDn(dn);
 			}
 
+			Attribute mail = attributes.get("mail");
+			if (mail != null) {
+				user.setMail((String) mail.get());
+			}
+
 			return user;
 		}
 

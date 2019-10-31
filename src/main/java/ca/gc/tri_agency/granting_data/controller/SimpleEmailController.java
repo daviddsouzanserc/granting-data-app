@@ -9,8 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ca.gc.tri_agency.granting_data.service.DataAccessService;
+
 @Controller
 public class SimpleEmailController {
+
+	@Autowired
+	DataAccessService dataService;
 
 	@Autowired
 	private JavaMailSender sender;
@@ -25,8 +30,9 @@ public class SimpleEmailController {
 //			return "Error in sending email: " + ex;
 //		}
 		// UserRepo
+		System.out.println(
+				dataService.getEmailofThePerson("CN=Cooper\\,Gillian,OU=NSERC_Users,DC=nserc,DC=ca").toString());
 		return null;
-		// UserRepo.getAllPersons().toString();
 	}
 
 	private void sendEmail() throws Exception {

@@ -53,4 +53,6 @@ public interface DataAccessService {
 
 	void createFy(Long year);
 
+	public String getEmailofThePerson(String dn);
+
 }

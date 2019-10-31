@@ -230,9 +230,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	}
 
-	public String getEmail(String dn) {
-		// String x = userRepo.g
-		return null;
-
+	public String getEmailofThePerson(String dn) {
+		return userRepo.findPerson(dn).getEmail();
 	}
 }

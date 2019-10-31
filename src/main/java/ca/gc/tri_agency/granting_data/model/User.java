@@ -16,6 +16,11 @@ public final class User {
 	private @Attribute(name = "sAMAccountName") String accountName;
 	private @Attribute(name = "dn") String dn;
 	private @Attribute(name = "uid") String uid;
+	private @Attribute(name = "mail") String mail;
+
+	public String getMail() {
+		return mail;
+	}
 
 	public Name getId() {
 		return id;
@@ -69,4 +74,7 @@ public final class User {
 		return username + "\t" + accountName;
 	}
 
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
 }

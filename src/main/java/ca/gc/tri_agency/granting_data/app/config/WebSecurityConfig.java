@@ -35,31 +35,32 @@ public class WebSecurityConfig {
 	@Value("${ldap.domain.sshrc}")
 	private String ldapDomainSSHRC;
 
-	@Value("${use.active.directory}")
-	private String useActiveDirectory;
-
 	@Value("${ldap.group.search.base}")
 	private String ldapGroupSearchBase;
 
 	@Value("${ldap.user.dn.pattern}")
 	private String ldapUserDnPattern;
 
-	@Value("${ldap.base.dn}")
-	private String ldapBaseDn;
-
-	@Value("${ldap.urls}")
-	private String ldapUrls;
-
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		if (Boolean.parseBoolean(useActiveDirectory)) {
-			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
-			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
-		} else {
-			auth.ldapAuthentication().userDnPatterns(ldapUserDnPattern).groupSearchBase(ldapGroupSearchBase)
-					.contextSource().url(ldapUrls + ldapBaseDn).and().passwordCompare()
-					.passwordAttribute("userPassword");
-		}
+		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
+		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
+		auth.ldapAuthentication().userDnPatterns(ldapUserDnPattern).groupSearchBase(ldapGroupSearchBase).contextSource()
+				.url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare().passwordAttribute("userPassword");
+
+//		BaseLdapPathContextSource contextSource = getContextSource();
+//		LdapAuthenticator ldapAuthenticator = createLdapAuthenticator(contextSource);
+//
+//		LdapAuthoritiesPopulator authoritiesPopulator = getLdapAuthoritiesPopulator();
+//
+//		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
+//				ldapAuthenticator, authoritiesPopulator);
+//		ldapAuthenticationProvider.setAuthoritiesMapper(getAuthoritiesMapper());
+//		if (userDetailsContextMapper != null) {
+//			ldapAuthenticationProvider
+//					.setUserDetailsContextMapper(userDetailsContextMapper);
+//		}
+//		return ldapAuthenticationProvider;
 
 	}
 
@@ -116,5 +117,20 @@ public class WebSecurityConfig {
 		sshrcProvider.setAuthoritiesMapper(authMapper);
 
 		return sshrcProvider;
+
+//		ContextSourceBuilder contextSourceBuilder = new ContextSourceBuilder();
+//		BaseLdapPathContextSource contextSource = getContextSource();
+//		LdapAuthenticator ldapAuthenticator = createLdapAuthenticator(contextSource);
+//
+//		LdapAuthoritiesPopulator authoritiesPopulator = getLdapAuthoritiesPopulator();
+//
+//		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
+//				ldapAuthenticator, authoritiesPopulator);
+//		ldapAuthenticationProvider.setAuthoritiesMapper(getAuthoritiesMapper());
+//		if (userDetailsContextMapper != null) {
+//			ldapAuthenticationProvider
+//					.setUserDetailsContextMapper(userDetailsContextMapper);
+//		}
+//		return ldapAuthenticationProvider;
 	}
 }

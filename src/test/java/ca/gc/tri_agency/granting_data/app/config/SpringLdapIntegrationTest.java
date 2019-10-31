@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
 import ca.gc.tri_agency.granting_data.model.ldap.ADUser;
-import ca.gc.tri_agency.granting_data.repo.ADUserRepository;
+import ca.gc.tri_agency.granting_data.repoLdap.ADUserRepository;
 
 @SpringBootTest(classes = GrantingDataApp.class)
 @ActiveProfiles("test")

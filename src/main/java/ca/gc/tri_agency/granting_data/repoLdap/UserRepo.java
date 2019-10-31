@@ -9,7 +9,6 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.DirContextOperations;
@@ -35,7 +34,7 @@ public class UserRepo {
 	private String nsercOu = "NSERC_Users";
 	private String sshrcOu = "SSHRC1_Users";
 
-	@Autowired
+	// @Autowired
 	private LdapTemplate ldapTemplate;
 
 	public String getDnByUsername(String username) {

@@ -18,14 +18,12 @@ public class SimpleEmailController {
 	@RequestMapping("/viewFiscalYear")
 	@ResponseBody
 	String home() {
-//		try {
-//			sendEmail();
-//			return "Email Sent!";
-//		} catch (Exception ex) {
-//			return "Error in sending email: " + ex;
-//		}
-		// UserRepo
-		return null;
+		try {
+			sendEmail();
+			return "Email Sent!";
+		} catch (Exception ex) {
+			return "Error in sending email: " + ex;
+		}
 		// UserRepo.getAllPersons().toString();
 	}
 
@@ -39,6 +37,7 @@ public class SimpleEmailController {
 			helper.setSubject("Hi");
 
 			sender.send(message);
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}

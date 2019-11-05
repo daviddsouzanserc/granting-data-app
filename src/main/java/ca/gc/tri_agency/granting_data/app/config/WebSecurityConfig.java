@@ -38,17 +38,28 @@ public class WebSecurityConfig {
 	@Value("${ldap.group.search.base}")
 	private String ldapGroupSearchBase;
 
-	@Value("${ldap.user.dn.pattern}")
-	private String ldapUserDnPattern;
+	@Value("${ldap.user.dn.pattern.nserc}")
+	private String ldapUserDnPatternNSERC;
+
+	@Value("${ldap.user.dn.pattern.sshrc}")
+	private String ldapUserDnPatternSSHRC;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
 		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
-		auth.ldapAuthentication().userDnPatterns(ldapUserDnPattern).groupSearchBase(ldapGroupSearchBase).contextSource()
-				.url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare().passwordAttribute("userPassword");
+//		auth.ldapAuthentication().userDnPatterns(ldapUserDnPattern).groupSearchBase(ldapGroupSearchBase).contextSource()
+//				.url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare().passwordAttribute("userPassword");
 
-//		BaseLdapPathContextSource contextSource = getContextSource();
+		auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternNSERC).groupSearchBase(ldapGroupSearchBase)
+				.contextSource().url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare()
+				.passwordAttribute("userPassword");
+
+//		auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternSSHRC).groupSearchBase(ldapGroupSearchBase)
+//				.contextSource().url(ldapUrlSSHRC + ldapBaseDnSSHRC).and().passwordCompare()
+//				.passwordAttribute("userPassword");
+
+		// BaseLdapPathContextSource contextSource = getContextSource();
 //		LdapAuthenticator ldapAuthenticator = createLdapAuthenticator(contextSource);
 //
 //		LdapAuthoritiesPopulator authoritiesPopulator = getLdapAuthoritiesPopulator();

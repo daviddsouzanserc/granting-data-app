@@ -27,6 +27,17 @@ objectclass: inetOrgPerson
 cn: SSHRC User
 sn: SSHRC
 uid: sshrc-user
+mail:cn@sshrc-crsh.gc.ca
+userPassword: password
+
+dn: uid=sshrc-admin,ou=SSHRC_Users,dc=sshrc1,dc=ca
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: SSHRC Admin
+sn: SSHRC
+uid: sshrc-admin
 userPassword: password
 
 dn: uid=sshrc-user-edi,ou=SSHRC_Users,dc=sshrc1,dc=ca
@@ -42,9 +53,9 @@ userPassword: password
 dn: cn=admin,ou=groups,dc=sshrc1,dc=ca
 objectclass: top
 objectclass: groupOfUniqueNames
-cn: admin
-ou: admin
-uniqueMember: uid=admin,ou=SSHRC_Users,dc=sshrc1,dc=ca
+cn: Admin
+ou: Admin
+uniqueMember: uid=sshrc-admin,ou=SSHRC_Users,dc=sshrc1,dc=ca
 
 dn: cn=agency_user,ou=groups,dc=sshrc1,dc=ca
 objectclass: top

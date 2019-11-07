@@ -2,8 +2,11 @@ package ca.gc.tri_agency.granting_data.app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -43,6 +46,32 @@ public class WebSecurityConfig {
 
 	@Value("${ldap.user.dn.pattern.sshrc}")
 	private String ldapUserDnPatternSSHRC;
+
+	@Bean
+	public LdapContextSource contextSource() {
+		LdapContextSource contextSource = new LdapContextSource();
+		contextSource.setUrl(ldapUrlNSERC);
+		contextSource.setBase(ldapBaseDnNSERC);
+		return contextSource;
+	}
+
+	@Bean(name = "ldapTemplateNSERC")
+	public LdapTemplate ldapTemplateNSERC() {
+		LdapTemplate retval = new LdapTemplate(contextSource());
+		retval.setIgnorePartialResultException(true);
+		return retval;
+	}
+
+	@Bean(name = "ldapTemplateSSHRC")
+	public LdapTemplate ldapTemplateSSHRC() {
+		LdapContextSource contextSource = new LdapContextSource();
+		contextSource.setUrl(ldapUrlSSHRC);
+		contextSource.setBase(ldapBaseDnSSHRC);
+
+		LdapTemplate retval = new LdapTemplate(contextSource);
+		retval.setIgnorePartialResultException(true);
+		return retval;
+	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -85,12 +114,6 @@ public class WebSecurityConfig {
 		}
 	}
 
-	/*
-	 * @Bean public ProviderManager authenticationManager() { return new
-	 * ProviderManager(Arrays.asList(
-	 * activeDirectoryLdapAuthenticationProviderNSERC(),
-	 * activeDirectoryLdapAuthenticationProviderSSHRC())); }
-	 */
 	private AuthenticationProvider activeDirectoryLdapAuthenticationProviderSSHRC() {
 		ActiveDirectoryLdapAuthenticationProvider nsercProvider = new ActiveDirectoryLdapAuthenticationProvider(
 				ldapDomainNSERC, ldapUrlNSERC, ldapBaseDnNSERC);

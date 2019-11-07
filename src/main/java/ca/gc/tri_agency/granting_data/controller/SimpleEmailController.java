@@ -2,6 +2,7 @@ package ca.gc.tri_agency.granting_data.controller;
 
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -11,20 +12,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SimpleEmailController {
 
-//	@Autowired
+	@Autowired
 	private JavaMailSender sender;
 
 	@RequestMapping("/viewFiscalYear")
 	@ResponseBody
 	String home() {
-//		try {
-//			sendEmail();
-//			return "Email Sent!";
-//		} catch (Exception ex) {
-//			return "Error in sending email: " + ex;
-//		}
-		// UserRepo
-		return null;
+		try {
+			sendEmail();
+			return "Email Sent!";
+		} catch (Exception ex) {
+			return "Error in sending email: " + ex;
+		}
 		// UserRepo.getAllPersons().toString();
 	}
 
@@ -38,6 +37,7 @@ public class SimpleEmailController {
 			helper.setSubject("Hi");
 
 			sender.send(message);
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}

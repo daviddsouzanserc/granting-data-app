@@ -74,7 +74,7 @@ public class BrowseController {
 		return "browse/viewFcFromFy";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	@PostMapping(value = "/viewFiscalYear")
 	public String addFiscalYearPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
 			Model model) throws Exception {

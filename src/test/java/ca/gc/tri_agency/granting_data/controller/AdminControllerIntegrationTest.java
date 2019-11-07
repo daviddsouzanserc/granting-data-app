@@ -46,7 +46,7 @@ public class AdminControllerIntegrationTest {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML)).andExpect(status().isForbidden());
 	}
 
-	@WithMockUser(username = "admin", roles = { "ADMIN" })
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	public void givenAdminAuthRequestOnAdminUrl_shouldSucceedWith200() throws Exception {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML)).andExpect(status().isOk());

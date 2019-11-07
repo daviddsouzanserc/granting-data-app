@@ -46,33 +46,17 @@ public class WebSecurityConfig {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
-		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
-//		auth.ldapAuthentication().userDnPatterns(ldapUserDnPattern).groupSearchBase(ldapGroupSearchBase).contextSource()
-//				.url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare().passwordAttribute("userPassword");
-
-		auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternNSERC).groupSearchBase(ldapGroupSearchBase)
-				.contextSource().url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare()
-				.passwordAttribute("userPassword");
-
-//		auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternSSHRC).groupSearchBase(ldapGroupSearchBase)
-//				.contextSource().url(ldapUrlSSHRC + ldapBaseDnSSHRC).and().passwordCompare()
-//				.passwordAttribute("userPassword");
-
-		// BaseLdapPathContextSource contextSource = getContextSource();
-//		LdapAuthenticator ldapAuthenticator = createLdapAuthenticator(contextSource);
-//
-//		LdapAuthoritiesPopulator authoritiesPopulator = getLdapAuthoritiesPopulator();
-//
-//		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
-//				ldapAuthenticator, authoritiesPopulator);
-//		ldapAuthenticationProvider.setAuthoritiesMapper(getAuthoritiesMapper());
-//		if (userDetailsContextMapper != null) {
-//			ldapAuthenticationProvider
-//					.setUserDetailsContextMapper(userDetailsContextMapper);
-//		}
-//		return ldapAuthenticationProvider;
-
+		if (ldapUrlNSERC.contains("localhost")) {
+			auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternNSERC).groupSearchBase(ldapGroupSearchBase)
+					.contextSource().url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare()
+					.passwordAttribute("userPassword");
+			auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternSSHRC).groupSearchBase(ldapGroupSearchBase)
+					.contextSource().url(ldapUrlSSHRC + ldapBaseDnSSHRC).and().passwordCompare()
+					.passwordAttribute("userPassword");
+		} else {
+			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
+			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
+		}
 	}
 
 	@Configuration
@@ -93,10 +77,11 @@ public class WebSecurityConfig {
 
 			http.authorizeRequests()
 					.antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**", "/browse/**")
-					.permitAll().and().authorizeRequests().antMatchers("/admin/**", "/fundingOpp/**").hasRole("ADMIN")
-					.antMatchers("/entities/**", "/reports/**").hasAnyRole("NSERC_USER", "SSHRC_USER", "AGENCY_USER")
-					.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
-					.permitAll().and().exceptionHandling().accessDeniedPage("/exception/forbiden-by-role");
+					.permitAll().and().authorizeRequests().antMatchers("/admin/**", "/fundingOpp/**")
+					.hasRole("MDM ADMIN").antMatchers("/entities/**", "/reports/**")
+					.hasAnyRole("NSERC_USER", "SSHRC_USER", "AGENCY_USER").anyRequest().authenticated().and()
+					.formLogin().loginPage("/login").permitAll().and().logout().permitAll().and().exceptionHandling()
+					.accessDeniedPage("/exception/forbiden-by-role");
 		}
 	}
 
@@ -129,19 +114,5 @@ public class WebSecurityConfig {
 
 		return sshrcProvider;
 
-//		ContextSourceBuilder contextSourceBuilder = new ContextSourceBuilder();
-//		BaseLdapPathContextSource contextSource = getContextSource();
-//		LdapAuthenticator ldapAuthenticator = createLdapAuthenticator(contextSource);
-//
-//		LdapAuthoritiesPopulator authoritiesPopulator = getLdapAuthoritiesPopulator();
-//
-//		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
-//				ldapAuthenticator, authoritiesPopulator);
-//		ldapAuthenticationProvider.setAuthoritiesMapper(getAuthoritiesMapper());
-//		if (userDetailsContextMapper != null) {
-//			ldapAuthenticationProvider
-//					.setUserDetailsContextMapper(userDetailsContextMapper);
-//		}
-//		return ldapAuthenticationProvider;
 	}
 }

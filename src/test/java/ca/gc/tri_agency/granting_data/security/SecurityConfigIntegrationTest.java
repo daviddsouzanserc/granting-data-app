@@ -48,7 +48,7 @@ public class SecurityConfigIntegrationTest {
 				.andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
 	}
 
-	@WithMockUser(username = "admin", roles = { "ADMIN" })
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	public void givenAdminAuthRequestOnAdminUrl_shouldSucceedWith200() throws Exception {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML)).andExpect(status().isOk());

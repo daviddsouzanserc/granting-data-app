@@ -48,27 +48,33 @@ public class WebSecurityConfig {
 	private String ldapUserDnPatternSSHRC;
 
 	@Bean
-	public LdapContextSource contextSource() {
+	public LdapContextSource contextSourceNSERC() {
 		LdapContextSource contextSource = new LdapContextSource();
 		contextSource.setUrl(ldapUrlNSERC);
 		contextSource.setBase(ldapBaseDnNSERC);
+//		contextSource.setAnonymousReadOnly(true);
+		return contextSource;
+	}
+
+	@Bean
+	public LdapContextSource contextSourceSSHRC() {
+		LdapContextSource contextSource = new LdapContextSource();
+		contextSource.setUrl(ldapUrlSSHRC);
+		contextSource.setBase(ldapBaseDnSSHRC);
+//		contextSource.setAnonymousReadOnly(true);
 		return contextSource;
 	}
 
 	@Bean(name = "ldapTemplateNSERC")
 	public LdapTemplate ldapTemplateNSERC() {
-		LdapTemplate retval = new LdapTemplate(contextSource());
+		LdapTemplate retval = new LdapTemplate(contextSourceNSERC());
 		retval.setIgnorePartialResultException(true);
 		return retval;
 	}
 
 	@Bean(name = "ldapTemplateSSHRC")
 	public LdapTemplate ldapTemplateSSHRC() {
-		LdapContextSource contextSource = new LdapContextSource();
-		contextSource.setUrl(ldapUrlSSHRC);
-		contextSource.setBase(ldapBaseDnSSHRC);
-
-		LdapTemplate retval = new LdapTemplate(contextSource);
+		LdapTemplate retval = new LdapTemplate(contextSourceSSHRC());
 		retval.setIgnorePartialResultException(true);
 		return retval;
 	}

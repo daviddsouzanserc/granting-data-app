@@ -36,7 +36,7 @@
 		 
 	</div>
 	
-         <div th:if="${#request.isUserInRole('ROLE_ADMIN')}"> 
+         <div th:if="${#request.isUserInRole('ROLE_MDM ADMIN')}"> 
 		<form action="#" th:action="@{viewFiscalYear}" th:object="${fy}"  method="post">
 		<span style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;">
 		<input type="text" th:field="*{year}" />

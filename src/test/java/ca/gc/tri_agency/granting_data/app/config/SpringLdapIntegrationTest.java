@@ -49,7 +49,7 @@ public class SpringLdapIntegrationTest {
 	public void testFindSSHRCPerson() {
 		ADUser user = userRepository.findPerson("uid=sshrc-admin,ou=SSHRC_Users");
 		assertNotNull(user);
-		assertEquals(user.getFullName(), "Admin Admin");
+		assertEquals("SSHRC Admin", user.getFullName());
 	}
 
 }

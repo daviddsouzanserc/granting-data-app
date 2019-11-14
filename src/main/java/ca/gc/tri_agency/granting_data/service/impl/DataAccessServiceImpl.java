@@ -235,4 +235,11 @@ public class DataAccessServiceImpl implements DataAccessService {
 		return null;
 
 	}
+
+	@Override
+	public void createFo(FundingOpportunity fo) {
+		// TODO Auto-generated method stub
+		foRepo.save(fo);
+
+	}
 }

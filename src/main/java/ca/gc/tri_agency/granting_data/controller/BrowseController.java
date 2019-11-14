@@ -1,15 +1,9 @@
 package ca.gc.tri_agency.granting_data.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -63,7 +57,7 @@ public class BrowseController {
 
 	@GetMapping(value = "/viewFiscalYear")
 	public String viewFundingCycles(Model model) {
-		model.addAttribute("fiscalYear", dataService.findAllFiscalYears());
+		model.addAttribute("fiscalYears", dataService.findAllFiscalYears());
 		model.addAttribute("fy", new FiscalYear());
 		return "browse/viewFiscalYear";
 	}
@@ -72,32 +66,6 @@ public class BrowseController {
 	public String viewFundingCyclesFromFiscalYear(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fc", dataService.fundingCyclesByFiscalYearId(id));
 		return "browse/viewFcFromFy";
-	}
-
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping(value = "/viewFiscalYear")
-	public String addFiscalYearPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
-			Model model) throws Exception {
-
-		if (bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getFieldError().toString());
-
-		}
-
-		try {
-			dataService.createFy(command.getYear());
-		}
-
-		catch (Exception e) {
-			model.addAttribute("fiscalYear", dataService.findAllFiscalYears());
-			model.addAttribute("fy", new FiscalYear());
-			model.addAttribute("error", "Your input is not valid!"
-					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
-			return "browse/viewFiscalYear";
-
-		}
-
-		return "redirect:/browse/viewFiscalYear";
 	}
 
 }

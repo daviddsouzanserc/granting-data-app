@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
@@ -193,6 +195,67 @@ public class ManageFundingOpportunityController {
 		restrictedDataService.createGrantingCapability(command);
 
 		return "redirect:/browse/viewFo?id=" + command.getFundingOpportunity().getId();
+	}
+
+	@GetMapping(value = "/addFiscalYears", params = "id")
+	public String addFiscalYears(Model model) {
+		model.addAttribute("fiscalYears", dataService.findAllFiscalYears());
+		model.addAttribute("fy", new FiscalYear());
+		return "manage/addFiscalYears";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping(value = "/addFiscalYears")
+	public String addFiscalYearsPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
+			Model model) throws Exception {
+		if (bindingResult.hasErrors()) {
+			System.out.println(bindingResult.getFieldError().toString());
+
+		}
+
+		try {
+			dataService.createFy(command.getYear());
+		}
+
+		catch (Exception e) {
+			model.addAttribute("error", "Your input is not valid!"
+					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
+			return "manage/addFiscalYears";
+
+		}
+
+		return "redirect:/browse/viewFiscalYear";
+	}
+
+	@GetMapping(value = "/addFo")
+	public String addFo(Model model) {
+		List<Agency> allAgencies = dataService.getAllAgencies();
+		model.addAttribute("fo", new FundingOpportunity());
+		model.addAttribute("allAgencies", allAgencies);
+		return "manage/addFo";
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping(value = "/addFo", params = "id")
+	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
+			Model model) throws Exception {
+		if (bindingResult.hasErrors()) {
+			System.out.println(bindingResult.getFieldError().toString());
+
+		}
+
+		try {
+			dataService.createFo(command);
+		}
+
+		catch (Exception e) {
+			model.addAttribute("error", "Your input is not valid!"
+					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
+			return "manage/addFo";
+
+		}
+
+		return "redirect:/browse/goldenList";
 	}
 
 }

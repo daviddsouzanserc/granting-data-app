@@ -15,25 +15,43 @@
 	<style type="text/css">
 		.cal-weekday-header {
 			text-align: center;
-			border: 1px solid #d8d8d8; 
+			border: 1px solid #d8d8d8;
+			width: 150px;
+			border-spacing 0px 0px;
+			padding: 2px; 
+			box-sizing: content-box; 
 		}
 		.cal-day-cell {
 			border: 1px solid #d8d8d8; 
 			line-height: 2em; 
-			border-spacing 0px 0px; 
+			border-spacing 0px 0px;
 			padding: 2px; 
 			min-height: 100px;
 			box-sizing: content-box; 
+			width: 150px;
 		}
-		.cal-day-event {
+		.cal-day-event-nserc {
 			border: 1px solid #d8d8d8; 
-			background-color: rgb(79, 195, 247);
-			color: rgb(255, 255, 255);
 			white-space: nowrap;
 			font-size: 12.2333px;
 			overflow: hidden;
 			font-color: rgb(0, 0, 0);
+			background-color: red;
+
+		
 		}
+		
+		.cal-day-event-sshrc {
+			border: 1px solid #d8d8d8; 
+			white-space: nowrap;
+			font-size: 12.2333px;
+			overflow: hidden;
+			font-color: rgb(0, 0, 0);
+			background-color: blue;
+
+		
+		}
+				
 	</style>
 	<div th:insert="~{fragments/general.html :: header_nav('entities')}" />
 	<div class="container">
@@ -59,8 +77,13 @@
 					<div style="text-align:right;" th:text="${col} ? ${col.dayOfMonth} : 'N/A'"></div>
 					<div th:if="${col != null}">
 						<div th:each="fc : ${fcCalEvents.get(col.cellDate)}">
-							<div class="cal-day-event"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
+						  <div th:if="${fc.fundingOpportunity.leadAgency.id == 2}" >
+							<div class="cal-day-event-nserc"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
 						</div>
+						 <div th:if="${fc.fundingOpportunity.leadAgency.id == 1}" >
+							<div class="cal-day-event-sshrc"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
+							
+							</div>
 					</div>	
 				</div>
 			</div>

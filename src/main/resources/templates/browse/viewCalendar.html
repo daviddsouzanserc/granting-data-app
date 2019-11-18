@@ -51,6 +51,28 @@
 
 		
 		}
+		.startingDates
+		{
+		   width:10px;
+		   height:10px;
+		   background-color:green;
+		   border:1px solid black;
+		   top: 0%;
+		   right: 0%;
+		   
+		}
+		
+		.endDates
+		{
+		   width:10px;
+		   height:10px;
+		   background-color:Orange;
+		   border:1px solid black;
+		   top: 0%;
+		   right: 0%;
+		   
+		}
+		
 				
 	</style>
 	<div th:insert="~{fragments/general.html :: header_nav('entities')}" />
@@ -85,6 +107,22 @@
 							
 							</div>
 					</div>	
+					<div th:if="${col != null}">
+					<div th:each="fc : ${startingDates.get(col.cellDate)}">					
+					<div class= "startingDates"> Start</div>
+					
+					
+					</div>									
+					</div>
+					
+					<div th:if="${col != null}">
+					<div th:each="fc : ${endDates.get(col.cellDate)}">					
+					<div class= "endDates"> End </div>
+					
+					
+					</div>									
+					</div>
+					
 				</div>
 			</div>
    		</div>

@@ -52,6 +52,8 @@ public class BrowseController {
 		model.addAttribute("minusMonth", plusMinusMonth - 1);
 		model.addAttribute("calGrid", new CalendarGrid(plusMinusMonth));
 		model.addAttribute("fcCalEvents", dataService.getMonthlyFundingCyclesMapByDate(plusMinusMonth));
+		model.addAttribute("startingDates", dataService.getAllStartingDates(plusMinusMonth));
+		model.addAttribute("endDates", dataService.getAllEndingDates(plusMinusMonth));
 		return "browse/viewCalendar";
 	}
 

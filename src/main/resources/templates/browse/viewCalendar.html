@@ -30,50 +30,45 @@
 			box-sizing: content-box; 
 			width: 150px;
 		}
-		.cal-day-event-nserc {
+		.cal-day-event-nserc-startDates {
+			border: 1px solid #d8d8d8; 
+			white-space: nowrap;
+			font-size: 12.2333px;
+			overflow: hidden;
+			font-color: white;
+			background: linear-gradient(-70deg, green 30%, red 30%);
+		
+		}
+		
+		.cal-day-event-nserc-endDates {
 			border: 1px solid #d8d8d8; 
 			white-space: nowrap;
 			font-size: 12.2333px;
 			overflow: hidden;
 			font-color: rgb(0, 0, 0);
-			background-color: red;
-
+			background: linear-gradient(-70deg, orange 30%, red 30%);
 		
 		}
 		
-		.cal-day-event-sshrc {
+		.cal-day-event-sshrc-startDates {
 			border: 1px solid #d8d8d8; 
 			white-space: nowrap;
 			font-size: 12.2333px;
 			overflow: hidden;
 			font-color: rgb(0, 0, 0);
-			background-color: blue;
-
+			background: linear-gradient(-70deg, green 30%, blue 30%);
 		
 		}
-		.startingDates
-		{
-		   width:10px;
-		   height:10px;
-		   background-color:green;
-		   border:1px solid black;
-		   top: 0%;
-		   right: 0%;
-		   
-		}
 		
-		.endDates
-		{
-		   width:10px;
-		   height:10px;
-		   background-color:Orange;
-		   border:1px solid black;
-		   top: 0%;
-		   right: 0%;
-		   
-		}
+		.cal-day-event-sshrc-endDates {
+			border: 1px solid #d8d8d8; 
+			white-space: nowrap;
+			font-size: 12.2333px;
+			overflow: hidden;
+			font-color: rgb(0, 0, 0);
+			background: linear-gradient(-70deg, orange 30%, blue 30%);
 		
-				
+		}				
 	</style>
 	<div th:insert="~{fragments/general.html :: header_nav('entities')}" />
 	<div class="container">
@@ -94,39 +89,74 @@
 				<div class="col-md-1 cal-weekday-header">Fri</div>
 				<div class="col-md-1 cal-weekday-header">Sat</div>
 			</div>
-			<div th:each="row : ${calGrid.dataGrid}" class="row">
+			
+			
+<!-- 			<div th:each="row : ${calGrid.dataGrid}" class="row"> -->
+<!-- 				<div class="col-md-1 cal-day-cell" th:each="col : ${row}"> -->
+<!-- 					<div style="text-align:right;" th:text="${col} ? ${col.dayOfMonth} : 'N/A'"></div> -->
+<!-- 					<div th:if="${col != null}"> -->
+<!-- 						<div th:each="fc : ${fcCalEvents.get(col.cellDate)}"> -->
+<!-- 						  <div th:if="${fc.fundingOpportunity.leadAgency.id == 2}" > -->
+<!-- 							<div class="cal-day-event-nserc"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div> -->
+<!-- 						</div> -->
+<!-- 						 <div th:if="${fc.fundingOpportunity.leadAgency.id == 1}" > -->
+<!-- 							<div class="cal-day-event-sshrc"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div> -->
+							
+<!-- 							</div> -->
+<!-- 					</div>	 -->
+<!-- 					<div th:if="${col != null}"> -->
+<!-- 					<div th:each="fc : ${startingDates.get(col.cellDate)}">					 -->
+<!-- 					<div class= "startingDates"> Start</div> -->
+					
+					
+<!-- 					</div>									 -->
+<!-- 					</div> -->
+					
+<!-- 					<div th:if="${col != null}"> -->
+<!-- 					<div th:each="fc : ${endDates.get(col.cellDate)}">					 -->
+<!-- 					<div class= "endDates"> End </div> -->
+					
+					
+<!-- 					</div>									 -->
+<!-- 					</div> -->
+					
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!--    		</div> -->
+<!-- 	</div> -->
+	
+	
+	
+	<div th:each="row : ${calGrid.dataGrid}" class="row">
 				<div class="col-md-1 cal-day-cell" th:each="col : ${row}">
 					<div style="text-align:right;" th:text="${col} ? ${col.dayOfMonth} : 'N/A'"></div>
 					<div th:if="${col != null}">
-						<div th:each="fc : ${fcCalEvents.get(col.cellDate)}">
+					
+					<div th:each="fc : ${startingDates.get(col.cellDate)}">
 						  <div th:if="${fc.fundingOpportunity.leadAgency.id == 2}" >
-							<div class="cal-day-event-nserc"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
+							<div class="cal-day-event-nserc-startDates"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
 						</div>
 						 <div th:if="${fc.fundingOpportunity.leadAgency.id == 1}" >
-							<div class="cal-day-event-sshrc"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
+							<div class="cal-day-event-sshrc-startDates"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
 							
 							</div>
 					</div>	
-					<div th:if="${col != null}">
-					<div th:each="fc : ${startingDates.get(col.cellDate)}">					
-					<div class= "startingDates"> Start</div>
 					
-					
-					</div>									
+					<div th:each="fc : ${endDates.get(col.cellDate)}">
+						  <div th:if="${fc.fundingOpportunity.leadAgency.id == 2}" >
+							<div class="cal-day-event-nserc-endDates"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
+						</div>
+						 <div th:if="${fc.fundingOpportunity.leadAgency.id == 1}" >
+							<div class="cal-day-event-sshrc-endDates"><a th:text="${fc.fundingOpportunity.getLocalizedAttribute('name')}" th:href="@{viewFo(id=${fc.fundingOpportunity.id})}"></a></div>
+							
 					</div>
-					
-					<div th:if="${col != null}">
-					<div th:each="fc : ${endDates.get(col.cellDate)}">					
-					<div class= "endDates"> End </div>
-					
-					
-					</div>									
-					</div>
-					
 				</div>
+				
+				
 			</div>
    		</div>
 	</div>
+	
+	
    </body>
 </html>
-

@@ -24,7 +24,7 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 	private Long numAppsReceived;
 
 	@Temporal(TemporalType.DATE)
-	private Date compYear;
+	private Date fiscalYear;
 
 	@ManyToOne
 	@JoinColumn(name = "system_funding_opportunity_id")
@@ -46,12 +46,12 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 		this.extId = extId;
 	}
 
-	public Date getCompYear() {
-		return compYear;
+	public Date getFiscalYear() {
+		return fiscalYear;
 	}
 
-	public void setCompYear(Date compYear) {
-		this.compYear = compYear;
+	public void setF(Date compYear) {
+		this.fiscalYear = compYear;
 	}
 
 	public SystemFundingOpportunity getSystemFundingOpportunity() {

@@ -87,24 +87,24 @@ public class DataAccessServiceImpl implements DataAccessService {
 		Map<String, FundingCycleInfo> retval = new TreeMap<String, FundingCycleInfo>();
 		List<FundingCycle> fcList = fundingCycleRepo.findByFundingOpportunityId(id);
 		List<SystemFundingCycle> sfcList = getSystemFundingCyclesByFoId(id);
-//		for (FundingCycle fc : fcList) {
-//			FundingCycleInfo newItem = new FundingCycleInfo();
-//			String year = fc.getCompYear().toString().substring(0, 4);
-//			newItem.setYear(year);
-//			newItem.setFc(fc);
-//			retval.put(year, newItem);
-//		}
-		for (SystemFundingCycle sfc : sfcList) {
-			String year = sfc.getCompYear().toString().substring(0, 4);
-			if (retval.containsKey(year)) {
-				retval.get(year).setSfc(sfc);
-			} else {
-				FundingCycleInfo newItem = new FundingCycleInfo();
-				newItem.setYear(year);
-				newItem.setSfc(sfc);
-				retval.put(year, newItem);
-			}
+		for (FundingCycle fc : fcList) {
+			FundingCycleInfo newItem = new FundingCycleInfo();
+			String year = fc.getFiscalYear().toString().substring(0, 4);
+			newItem.setYear(year);
+			newItem.setFc(fc);
+			retval.put(year, newItem);
 		}
+//		for (SystemFundingCycle sfc : sfcList) {
+//			String year = sfc.getFiscalYear().toString().substring(0, 4);
+//			if (retval.containsKey(year)) {
+//				retval.get(year).setSfc(sfc);
+//			} else {
+//				FundingCycleInfo newItem = new FundingCycleInfo();
+//				newItem.setYear(year);
+//				newItem.setSfc(sfc);
+//				retval.put(year, newItem);
+//			}
+//		}
 		return retval;
 	}
 

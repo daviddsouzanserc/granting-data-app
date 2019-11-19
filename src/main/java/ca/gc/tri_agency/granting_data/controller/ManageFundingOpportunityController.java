@@ -227,6 +227,7 @@ public class ManageFundingOpportunityController {
 		return "redirect:/browse/viewFiscalYear";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/addFo")
 	public String addFo(Model model) {
 		List<Agency> allAgencies = dataService.getAllAgencies();

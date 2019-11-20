@@ -2,8 +2,11 @@ package ca.gc.tri_agency.granting_data.app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,30 +41,57 @@ public class WebSecurityConfig {
 	@Value("${ldap.group.search.base}")
 	private String ldapGroupSearchBase;
 
-	@Value("${ldap.user.dn.pattern}")
-	private String ldapUserDnPattern;
+	@Value("${ldap.user.dn.pattern.nserc}")
+	private String ldapUserDnPatternNSERC;
+
+	@Value("${ldap.user.dn.pattern.sshrc}")
+	private String ldapUserDnPatternSSHRC;
+
+	@Bean
+	public LdapContextSource contextSourceNSERC() {
+		LdapContextSource contextSource = new LdapContextSource();
+		contextSource.setUrl(ldapUrlNSERC);
+		contextSource.setBase(ldapBaseDnNSERC);
+//		contextSource.setAnonymousReadOnly(true);
+		return contextSource;
+	}
+
+	@Bean
+	public LdapContextSource contextSourceSSHRC() {
+		LdapContextSource contextSource = new LdapContextSource();
+		contextSource.setUrl(ldapUrlSSHRC);
+		contextSource.setBase(ldapBaseDnSSHRC);
+//		contextSource.setAnonymousReadOnly(true);
+		return contextSource;
+	}
+
+	@Bean(name = "ldapTemplateNSERC")
+	public LdapTemplate ldapTemplateNSERC() {
+		LdapTemplate retval = new LdapTemplate(contextSourceNSERC());
+		retval.setIgnorePartialResultException(true);
+		return retval;
+	}
+
+	@Bean(name = "ldapTemplateSSHRC")
+	public LdapTemplate ldapTemplateSSHRC() {
+		LdapTemplate retval = new LdapTemplate(contextSourceSSHRC());
+		retval.setIgnorePartialResultException(true);
+		return retval;
+	}
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
-		// auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
-		auth.ldapAuthentication().userDnPatterns(ldapUserDnPattern).groupSearchBase(ldapGroupSearchBase).contextSource()
-				.url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare().passwordAttribute("userPassword");
-
-//		BaseLdapPathContextSource contextSource = getContextSource();
-//		LdapAuthenticator ldapAuthenticator = createLdapAuthenticator(contextSource);
-//
-//		LdapAuthoritiesPopulator authoritiesPopulator = getLdapAuthoritiesPopulator();
-//
-//		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
-//				ldapAuthenticator, authoritiesPopulator);
-//		ldapAuthenticationProvider.setAuthoritiesMapper(getAuthoritiesMapper());
-//		if (userDetailsContextMapper != null) {
-//			ldapAuthenticationProvider
-//					.setUserDetailsContextMapper(userDetailsContextMapper);
-//		}
-//		return ldapAuthenticationProvider;
-
+		if (ldapUrlNSERC.contains("localhost")) {
+			auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternNSERC).groupSearchBase(ldapGroupSearchBase)
+					.contextSource().url(ldapUrlNSERC + ldapBaseDnNSERC).and().passwordCompare()
+					.passwordAttribute("userPassword");
+			auth.ldapAuthentication().userDnPatterns(ldapUserDnPatternSSHRC).groupSearchBase(ldapGroupSearchBase)
+					.contextSource().url(ldapUrlSSHRC + ldapBaseDnSSHRC).and().passwordCompare()
+					.passwordAttribute("userPassword");
+		} else {
+			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderNSERC());
+			auth.authenticationProvider(activeDirectoryLdapAuthenticationProviderSSHRC());
+		}
 	}
 
 //	@Configuration
@@ -86,16 +116,9 @@ public class WebSecurityConfig {
 					.hasAnyRole("NSERC_USER", "SSHRC_USER", "AGENCY_USER").anyRequest().authenticated().and()
 					.formLogin().loginPage("/login").permitAll().and().logout().permitAll().and().exceptionHandling()
 					.accessDeniedPage("/exception/forbiden-by-role");
-
 		}
 	}
 
-	/*
-	 * @Bean public ProviderManager authenticationManager() { return new
-	 * ProviderManager(Arrays.asList(
-	 * activeDirectoryLdapAuthenticationProviderNSERC(),
-	 * activeDirectoryLdapAuthenticationProviderSSHRC())); }
-	 */
 	private AuthenticationProvider activeDirectoryLdapAuthenticationProviderSSHRC() {
 		ActiveDirectoryLdapAuthenticationProvider nsercProvider = new ActiveDirectoryLdapAuthenticationProvider(
 				ldapDomainNSERC, ldapUrlNSERC, ldapBaseDnNSERC);
@@ -119,19 +142,5 @@ public class WebSecurityConfig {
 
 		return sshrcProvider;
 
-//		ContextSourceBuilder contextSourceBuilder = new ContextSourceBuilder();
-//		BaseLdapPathContextSource contextSource = getContextSource();
-//		LdapAuthenticator ldapAuthenticator = createLdapAuthenticator(contextSource);
-//
-//		LdapAuthoritiesPopulator authoritiesPopulator = getLdapAuthoritiesPopulator();
-//
-//		LdapAuthenticationProvider ldapAuthenticationProvider = new LdapAuthenticationProvider(
-//				ldapAuthenticator, authoritiesPopulator);
-//		ldapAuthenticationProvider.setAuthoritiesMapper(getAuthoritiesMapper());
-//		if (userDetailsContextMapper != null) {
-//			ldapAuthenticationProvider
-//					.setUserDetailsContextMapper(userDetailsContextMapper);
-//		}
-//		return ldapAuthenticationProvider;
 	}
 }

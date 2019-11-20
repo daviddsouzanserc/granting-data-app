@@ -50,11 +50,11 @@ sn: NSERC EDI
 uid: nserc-user-edi
 userPassword: password
 
-dn: cn=admin,ou=groups,dc=nserc,dc=ca
+dn: cn=MDM Admin,ou=groups,dc=nserc,dc=ca
 objectclass: top
 objectclass: groupOfUniqueNames
-cn: admin
-ou: admin
+cn: MDM Admin
+ou: MDM Admin
 uniqueMember: uid=admin,ou=NSERC_Users,dc=nserc,dc=ca
 
 dn: cn=agency_user,ou=groups,dc=nserc,dc=ca

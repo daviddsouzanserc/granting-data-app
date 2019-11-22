@@ -50,7 +50,7 @@ public class AdminController {
 		return "redirect:/admin/home";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	@GetMapping("/home")
 	public String home(Model model) {
 

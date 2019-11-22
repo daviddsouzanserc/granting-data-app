@@ -9,7 +9,7 @@
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	
-	<div th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+	<div th:if="${#request.isUserInRole('ROLE_MDM ADMIN')}">
 		<div><font size="6"> Add a Fiscal Year </font></div><br> 
 		<form action="#" th:action="@{addFiscalYears}" th:object="${fy}"  method="post">
 		<span style="display:flex; justify-content:flex; width:100%; margin-top:10px;">

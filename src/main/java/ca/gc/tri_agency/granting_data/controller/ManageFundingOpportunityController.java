@@ -204,7 +204,7 @@ public class ManageFundingOpportunityController {
 		return "manage/addFiscalYears";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	@PostMapping(value = "/addFiscalYears")
 	public String addFiscalYearsPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
 			Model model) throws Exception {
@@ -227,7 +227,7 @@ public class ManageFundingOpportunityController {
 		return "redirect:/browse/viewFiscalYear";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	@GetMapping(value = "/addFo")
 	public String addFo(Model model) {
 		List<Agency> allAgencies = dataService.getAllAgencies();
@@ -236,7 +236,7 @@ public class ManageFundingOpportunityController {
 		return "manage/addFo";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	@PostMapping(value = "/addFo", params = "id")
 	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
 			Model model) throws Exception {

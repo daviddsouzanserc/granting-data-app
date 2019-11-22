@@ -87,24 +87,24 @@ public class DataAccessServiceImpl implements DataAccessService {
 		Map<String, FundingCycleInfo> retval = new TreeMap<String, FundingCycleInfo>();
 		List<FundingCycle> fcList = fundingCycleRepo.findByFundingOpportunityId(id);
 		List<SystemFundingCycle> sfcList = getSystemFundingCyclesByFoId(id);
-//		for (FundingCycle fc : fcList) {
-//			FundingCycleInfo newItem = new FundingCycleInfo();
-//			String year = fc.getCompYear().toString().substring(0, 4);
-//			newItem.setYear(year);
-//			newItem.setFc(fc);
-//			retval.put(year, newItem);
-//		}
-		for (SystemFundingCycle sfc : sfcList) {
-			String year = sfc.getCompYear().toString().substring(0, 4);
-			if (retval.containsKey(year)) {
-				retval.get(year).setSfc(sfc);
-			} else {
-				FundingCycleInfo newItem = new FundingCycleInfo();
-				newItem.setYear(year);
-				newItem.setSfc(sfc);
-				retval.put(year, newItem);
-			}
+		for (FundingCycle fc : fcList) {
+			FundingCycleInfo newItem = new FundingCycleInfo();
+			String year = fc.getFiscalYear().toString().substring(0, 4);
+			newItem.setYear(year);
+			newItem.setFc(fc);
+			retval.put(year, newItem);
 		}
+//		for (SystemFundingCycle sfc : sfcList) {
+//			String year = sfc.getFiscalYear().toString().substring(0, 4);
+//			if (retval.containsKey(year)) {
+//				retval.get(year).setSfc(sfc);
+//			} else {
+//				FundingCycleInfo newItem = new FundingCycleInfo();
+//				newItem.setYear(year);
+//				newItem.setSfc(sfc);
+//				retval.put(year, newItem);
+//			}
+//		}
 		return retval;
 	}
 
@@ -235,4 +235,80 @@ public class DataAccessServiceImpl implements DataAccessService {
 		return null;
 
 	}
+
+	@Override
+	public void createFo(FundingOpportunity fo) {
+		// TODO Auto-generated method stub
+		foRepo.save(fo);
+
+	}
+
+	@Override
+	public Map<String, List<FundingCycle>> getAllStartingDates(Long plusMinusMonth) {
+
+		Map<String, List<FundingCycle>> retval = new HashMap<String, List<FundingCycle>>();
+		LocalDate now = LocalDate.now();
+		Date startDate, endDate;
+		if (plusMinusMonth == 0) {
+			startDate = java.sql.Date.valueOf(now);
+			endDate = java.sql.Date.valueOf(now.plusMonths(1));
+		} else if (plusMinusMonth < 0) {
+			startDate = java.sql.Date.valueOf(now.minusMonths(plusMinusMonth * -1));
+			endDate = java.sql.Date.valueOf(now.minusMonths((plusMinusMonth * -1) + 1));
+		} else {
+			startDate = java.sql.Date.valueOf(now.plusMonths(plusMinusMonth));
+			endDate = java.sql.Date.valueOf(now.plusMonths(plusMinusMonth + 1));
+		}
+
+		// GET FCs THAT HAVE A START OR END DATE WITHIN THE RANGE (TARGET MONTH)
+		List<FundingCycle> fcList = fcRepo
+				.findAllByStartDateGreaterThanEqualAndStartDateLessThanOrEndDateGreaterThanEqualAndEndDateLessThan(
+						startDate, endDate, startDate, endDate);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		for (FundingCycle fc : fcList) {
+			String startDateKey = formatter.format(fc.getStartDate());
+			if (retval.get(startDateKey) == null) {
+				retval.put(startDateKey, new ArrayList<FundingCycle>());
+			}
+			retval.get(startDateKey).add(fc);
+
+		}
+		return retval;
+	}
+
+	@Override
+	public Map<String, List<FundingCycle>> getAllEndingDates(Long plusMinusMonth) {
+
+		Map<String, List<FundingCycle>> retval = new HashMap<String, List<FundingCycle>>();
+		LocalDate now = LocalDate.now();
+		Date startDate, endDate;
+		if (plusMinusMonth == 0) {
+			startDate = java.sql.Date.valueOf(now);
+			endDate = java.sql.Date.valueOf(now.plusMonths(1));
+		} else if (plusMinusMonth < 0) {
+			startDate = java.sql.Date.valueOf(now.minusMonths(plusMinusMonth * -1));
+			endDate = java.sql.Date.valueOf(now.minusMonths((plusMinusMonth * -1) + 1));
+		} else {
+			startDate = java.sql.Date.valueOf(now.plusMonths(plusMinusMonth));
+			endDate = java.sql.Date.valueOf(now.plusMonths(plusMinusMonth + 1));
+		}
+
+		List<FundingCycle> fcList = fcRepo
+				.findAllByStartDateGreaterThanEqualAndStartDateLessThanOrEndDateGreaterThanEqualAndEndDateLessThan(
+						startDate, endDate, startDate, endDate);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		for (FundingCycle fc : fcList) {
+			String startDateKey = formatter.format(fc.getStartDate());
+			String endDateKey = formatter.format(fc.getEndDate());
+			if (retval.get(startDateKey) == null) {
+				retval.put(startDateKey, new ArrayList<FundingCycle>());
+			}
+			if (retval.get(endDateKey) == null) {
+				retval.put(endDateKey, new ArrayList<FundingCycle>());
+			}
+			retval.get(endDateKey).add(fc);
+		}
+		return retval;
+	}
+
 }

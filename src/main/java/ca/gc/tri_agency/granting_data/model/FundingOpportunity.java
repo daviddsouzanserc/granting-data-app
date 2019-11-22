@@ -46,6 +46,12 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	private String awardManagementSystem;
 
+	public boolean isNOI;
+
+	private boolean isLOI;
+
+	private boolean isFullApplication;
+
 	private String programLeadName;
 
 	private String programLeadDn;
@@ -93,6 +99,12 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	public String getApplyMethod() {
 		return applyMethod;
 	}
+
+	private String partnerOrg;
+
+	private boolean isEdiRequired;
+
+	private boolean isComplex;
 
 	public void setApplyMethod(String applyMethod) {
 		this.applyMethod = applyMethod;
@@ -193,18 +205,36 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		this.isEdiRequired = isEdiRequired;
 	}
 
-	private String partnerOrg;
-
-	private boolean isEdiRequired;
-
-	private boolean isComplex;
-
 	public boolean getIsComplex() {
 		return isComplex;
 	}
 
 	public void setComplex(boolean isComplex) {
 		this.isComplex = isComplex;
+	}
+
+	public boolean getIsNOI() {
+		return isNOI;
+	}
+
+	public void setIsNOI(boolean nOI) {
+		isNOI = nOI;
+	}
+
+	public boolean getIsLOI() {
+		return isLOI;
+	}
+
+	public void setIsLOI(boolean islOI) {
+		isLOI = islOI;
+	}
+
+	public boolean getIsFullApplication() {
+		return isFullApplication;
+	}
+
+	public void setIsFullApplication(boolean fullApplication) {
+		isFullApplication = fullApplication;
 	}
 
 }

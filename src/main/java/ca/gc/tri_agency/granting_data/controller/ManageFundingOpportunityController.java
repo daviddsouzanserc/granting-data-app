@@ -105,6 +105,7 @@ public class ManageFundingOpportunityController {
 	@GetMapping(value = "/editFc", params = "id")
 	public String editFc(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fc", dataService.getFundingCycle(id));
+		model.addAttribute("fy", dataService.findAllFiscalYears());
 		return "manage/editFundingCycle";
 	}
 
@@ -157,6 +158,7 @@ public class ManageFundingOpportunityController {
 		model.addAttribute("foId", id);
 		model.addAttribute("fundingCycle", new FundingCycle());
 		model.addAttribute("fy", dataService.findAllFiscalYears());
+		model.addAttribute("fo", dataService.getFundingOpportunity(id));
 		return "manage/createFundingCycle";
 	}
 

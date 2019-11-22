@@ -43,6 +43,30 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDateNOI;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDateLOI;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDateFullApplication;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDateNOI;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDateLOI;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDateFullApplication;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 
 	@Min(1)
@@ -111,5 +135,53 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Date getStartDateNOI() {
+		return startDateNOI;
+	}
+
+	public void setStartDateNOI(Date startDateNOI) {
+		this.startDateNOI = startDateNOI;
+	}
+
+	public Date getStartDateLOI() {
+		return startDateLOI;
+	}
+
+	public void setStartDateLOI(Date startDateLOI) {
+		this.startDateLOI = startDateLOI;
+	}
+
+	public Date getStartDateFullApplication() {
+		return startDateFullApplication;
+	}
+
+	public void setStartDateFullApplication(Date startDateFullApplication) {
+		this.startDateFullApplication = startDateFullApplication;
+	}
+
+	public Date getEndDateNOI() {
+		return endDateNOI;
+	}
+
+	public void setEndDateNOI(Date endDateNOI) {
+		this.endDateNOI = endDateNOI;
+	}
+
+	public Date getEndDateLOI() {
+		return endDateLOI;
+	}
+
+	public void setEndDateLOI(Date endDateLOI) {
+		this.endDateLOI = endDateLOI;
+	}
+
+	public Date getEndDateFullApplication() {
+		return endDateFullApplication;
+	}
+
+	public void setEndDateFullApplication(Date endDateFullApplication) {
+		this.endDateFullApplication = endDateFullApplication;
 	}
 }

@@ -7,13 +7,44 @@
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
+		
+		
 		  $('#isJointInitiative').click(function(){
 		    if($(this).is(":checked"))
 		       $("#partnerOrg").removeAttr("disabled");
 		    else
 		       $("#partnerOrg").attr("disabled" , "disabled");
 		});
-		}); 
+		  
+		  
+		  $("#isNOI").click(function(){
+			  
+			  if($(this).is(":checked"))
+			       $("#isNOI").set("true");
+			    else
+			       $("#isNOI").set("false");  
+		  });
+		  
+		  
+			  $("#isLOI").click(function(){
+				  
+				  if($(this).is(":checked"))
+				       $("#isLOI").set("true");
+				    else
+				       $("#isLOI").set("false");  
+			  });
+			  
+			  
+				  $("#isFullApplication").click(function(){
+					  
+					  
+					  if($(this).is(":checked"))
+					       $("#isFullApplication").set("true");
+					    else
+					       $("#isFullApplication").set("false");  
+				  });
+		  
+		}); 	
 	</script>
 </head>
 <body>
@@ -101,6 +132,15 @@
 				<div class="col-sm-2 col-form-label">Program Lead Name</div>
 				<div> <input class="col-sm-2" th:text="*{programLeadName}"/></div>
 			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label">Stages: </div>
+				<br>
+				<div><input id="isNOI" type="checkbox" th:field="*{isNOI}" class="col-sm-2"	value="isNOI" > NOI </div>
+				<div><input id="isLOI" type="checkbox" th:field="*{isLOI}" class="col-sm-2" value= "isLOI"> LOI </div>
+				<div><input id="isFullApplication" type="checkbox" th:field="*{isFullApplication}" class="col-sm-2" value="isFullApplication"> Full Application </div>
+			</div>
+			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label">Agencies</div>
 			

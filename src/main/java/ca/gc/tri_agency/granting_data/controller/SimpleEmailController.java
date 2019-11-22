@@ -15,7 +15,7 @@ public class SimpleEmailController {
 	@Autowired
 	private JavaMailSender sender;
 
-	@RequestMapping("/viewFiscalYear")
+	@RequestMapping("/viewFy")
 	@ResponseBody
 	String home() {
 		try {

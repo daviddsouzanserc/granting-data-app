@@ -53,4 +53,10 @@ public interface DataAccessService {
 
 	void createFy(Long year);
 
+	void createFo(FundingOpportunity fo);
+
+	Map<String, List<FundingCycle>> getAllStartingDates(Long plusMinusMonth);
+
+	Map<String, List<FundingCycle>> getAllEndingDates(Long plusMinusMonth);
+
 }

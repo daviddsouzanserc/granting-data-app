@@ -26,7 +26,7 @@
 				</thead>
 				
 				<tbody>
-	       			<tr th:each="fo : ${fiscalYear}">
+	       			<tr th:each="fo : ${fiscalYears}">
 	       				<td><span th:text="${fo.year}"></span></td>
 	       				<td> <a class="btn btn-primary" th:href="@{viewFcFromFy(id=${fo.id})}" role="button">View</a> </td>
 	           			   <!-- add expected applications -->
@@ -36,15 +36,13 @@
 		 
 	</div>
 	
-         <div th:if="${#request.isUserInRole('ROLE_MDM ADMIN')}"> 
-		<form action="#" th:action="@{viewFiscalYear}" th:object="${fy}"  method="post">
-		<span style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;">
-		<input type="text" th:field="*{year}" />
-		<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
-		</span>
-		</form>
- 		</div> 
-		
+         <div th:if="${#request.isUserInRole('ROLE_ADMIN')}"> 
+         <br>
+       
+      	 <div style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;color:red">
+      	 <a href="http://localhost:8090/manage/addFiscalYears"> Add a Fiscal Year</a>
+      	 </div> 
+		</div>
 		<table id="error" class="display" style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;color:red">
 				<thead>
 		            <tr>

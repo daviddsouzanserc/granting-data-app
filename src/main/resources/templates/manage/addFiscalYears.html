@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+	<meta charset="ISO-8859-1">
+	<title>Adding Fiscal Years </title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
+	
+	<div th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+		<div><font size="6"> Add a Fiscal Year </font></div><br> 
+		<form action="#" th:action="@{addFiscalYears}" th:object="${fy}"  method="post">
+		<span style="display:flex; justify-content:flex; width:100%; margin-top:10px;">
+		<input type="text" th:field="*{year}" />
+		<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
+		</span>
+		</form>
+ 		</div>
+
+</body>
+</html>

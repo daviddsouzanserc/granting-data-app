@@ -1,0 +1,5 @@
+INSERT INTO granting_system VALUES (20,'RP1','Research Portal','Portail de Recherche'),(21,'CRM','CRM','CRM'),(22,'SSHRC Online','SSHRC Online','SSHRC Online'),(23,'AMIS','AMIS','AMIS'),(24,'NSERC Online','NSERC Online','NSERC Online'),(25,'NAMIS','NAMIS','NAMIS');
+INSERT INTO agency VALUES (1, 'SSHRC', 'CRSH', 'Social Sciences and Humanities Research Council', 'Conseil de recherches en sciences humaines'), (2, 'NSERC', 'CRSNG', 'Natural Sciences and Engineering Research Council ', 'Conseil de recherches en sciences naturelles et en génie'), (3, 'CIHR', 'IRSC', 'Canadian Institutes of Health Research ', 'Instituts de recherche en santé');
+INSERT INTO hibernate_sequence VALUES (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18), (18);
+INSERT INTO granting_stage VALUES (1,'ADMIN',''),(2,'APPLY',''),(3,'ASSESS',''),(4,'AWARD',''),(5,'AQUIT','');
+INSERT INTO fiscal_year VALUES (1,2017), (2,2018), (3,2019);

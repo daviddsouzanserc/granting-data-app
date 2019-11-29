@@ -6,7 +6,7 @@
 	<groupId>ca.gc.tri-agency</groupId>
 	<artifactId>granting-data-app</artifactId>
 	<version>0.0.3-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>granting-data</name>
 
@@ -164,6 +164,13 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+            	<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceDirectory>WebContent</warSourceDirectory>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

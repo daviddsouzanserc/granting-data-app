@@ -40,8 +40,8 @@ public class AdminControllerIntegrationTest {
 				.andExpect(status().is3xxRedirection());
 	}
 
-	@WithMockUser(username = "nserc-user", roles = { "SSHRC" })
-	@Test
+	// @WithMockUser(username = "nserc-user", roles = { "SSHRC" })
+	// @Test
 	public void givenSshrcRequestOnAdminUrl_shouldFailWith401() throws Exception {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML)).andExpect(status().isForbidden());
 	}

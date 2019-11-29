@@ -7,7 +7,10 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
-     <changeSet author="dev_yab (generated)" id="1572369098992-1">
+	<changeSet id="00000000000001" author="jfs">
+        <createSequence sequenceName="hibernate_sequence" />
+    </changeSet>
+    <changeSet author="dev_yab (generated)" id="1572369098992-1">
         <createTable tableName="agency">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -41,6 +44,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="start_date" type="date"/>
+            <column name="end_datenoi	" type="date"/>
+            <column name="start_datenoi	" type="date"/>
+            <column name="end_dateloi	" type="date"/>
+            <column name="start_dateloi	" type="date"/>
+            <column name="end_date_full_application	" type="date"/>
+            <column name="start_date_full_application	" type="date"/>
             <column name="fiscal_year_id" type="BIGINT"/>
             <column name="funding_opportunity_id" type="BIGINT"/>
         </createTable>
@@ -59,6 +68,15 @@
                 <constraints nullable="false"/>
             </column>
             <column name="is_edi_required" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_full_application" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isnoi" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isloi" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
             <column name="is_joint_initiative" type="BIT(1)">
@@ -145,7 +163,7 @@
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="comp_year" type="date"/>
+            <column name="fiscal_year" type="date"/>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="num_apps_received" type="BIGINT"/>
             <column name="system_funding_opportunity_id" type="BIGINT"/>

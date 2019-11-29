@@ -37,7 +37,7 @@ public class EnvConfig {
 
 	@Profile("local")
 	@Bean
-	public void setupLocalActiveDirectories() {
+	public int setupLocalActiveDirectories() {
 		// Create the configuration to use for the server.
 		InMemoryDirectoryServerConfig config;
 		InMemoryDirectoryServer sshrcDS;
@@ -74,6 +74,7 @@ public class EnvConfig {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return 1;
 	}
 
 }

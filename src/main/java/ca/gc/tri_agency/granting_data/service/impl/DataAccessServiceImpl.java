@@ -247,7 +247,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 	public Map<String, List<FundingCycle>> getAllStartingDates(Long plusMinusMonth) {
 
 		Map<String, List<FundingCycle>> retval = new HashMap<String, List<FundingCycle>>();
-		LocalDate now = LocalDate.now();
+		LocalDate now = LocalDate.now().withDayOfMonth(1);
 		Date startDate, endDate;
 		if (plusMinusMonth == 0) {
 			startDate = java.sql.Date.valueOf(now);

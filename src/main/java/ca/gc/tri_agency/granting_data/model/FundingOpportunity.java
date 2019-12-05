@@ -48,6 +48,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	private String applyMethod;
 
 	private String awardManagementSystem;
+	
 
 	public boolean isNOI;
 

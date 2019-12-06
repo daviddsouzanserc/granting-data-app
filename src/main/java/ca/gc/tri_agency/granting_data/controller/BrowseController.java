@@ -54,8 +54,10 @@ public class BrowseController {
 		model.addAttribute("fcCalEvents", dataService.getMonthlyFundingCyclesMapByDate(plusMinusMonth));
 		model.addAttribute("startingDates", dataService.getAllStartingDates(plusMinusMonth));
 		model.addAttribute("endDates", dataService.getAllEndingDates(plusMinusMonth));
-		model.addAttribute("datesNoi", dataService.getAllDatesNOI(plusMinusMonth));
-		model.addAttribute("datesLoi", dataService.getAllDatesLOI(plusMinusMonth));
+		model.addAttribute("datesNoiStart", dataService.getAllDatesNOIStart(plusMinusMonth));
+		model.addAttribute("datesLoiEnd", dataService.getAllDatesLOIEnd(plusMinusMonth));
+		model.addAttribute("datesNoiEnd", dataService.getAllDatesNOIEnd(plusMinusMonth));
+		model.addAttribute("datesLoiStart", dataService.getAllDatesLOIStart(plusMinusMonth));
 		return "browse/viewCalendar";
 	}
 

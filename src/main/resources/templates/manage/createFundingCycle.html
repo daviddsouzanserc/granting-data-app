@@ -82,30 +82,15 @@
 		</div>
 			
 			
-			<div th:if="${fo.isFullApplication}">	
-			
-			<b>Full Application </b> <br> <br>
-			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Start Date</div>
-				<div><input id="startDateFullApplication" type="date" th:field="*{startDateFullApplication}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('startDateFullApplication')}" th:errors="*{startDateFullApplication}">Start Date Error</div>
-			</div>
-			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">End Date</div>
-				<div><input id="endDateFullApplication" type="date" th:field="*{endDateFullApplication}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('endDateFullApplication')}" th:errors="*{endDateFullApplication}">End Date Error</div>
-			</div>
-			</div>
-			
-			
-			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Number of Expected Applications</div>
-				<div><input th:field="*{expectedApplications}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}">Expected Applications Error</div>
-			</div>
-			<input type="hidden" name="fundingOpportunity" th:value="${foId}" />
-			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
-		</form>
+		
+		<div class="form-group row">
+			<div class="col-sm-2 col-form-label">Number of Expected Applications</div>
+			<div><input th:field="*{expectedApplications}" class="col-sm-2"  /></div>
+			<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}">Expected Applications Error</div>
+		</div>
+		<input type="hidden" name="fundingOpportunity" th:value="${foId}" />
+		<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
+	</form>
 		
 		
 		

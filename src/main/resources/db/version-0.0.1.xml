@@ -6,6 +6,9 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
     
+	<changeSet id="00000000000001" author="jfs">
+        <createSequence sequenceName="hibernate_sequence" />
+    </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-1">
         <createTable tableName="agency">
             <column name="id" type="BIGINT">
@@ -42,10 +45,8 @@
             <column name="start_date" type="date"/>
             <column name="fiscal_year_id" type="BIGINT"/>
             <column name="funding_opportunity_id" type="BIGINT"/>
-            <column name="end_date_full_application" type="date"/>
             <column name="end_dateloi" type="date"/>
             <column name="end_datenoi" type="date"/>
-            <column name="start_date_full_application" type="date"/>
             <column name="start_dateloi" type="date"/>
             <column name="start_datenoi" type="date"/>
         </createTable>
@@ -75,9 +76,6 @@
             <column name="program_lead_dn" type="VARCHAR(255)"/>
             <column name="program_lead_name" type="VARCHAR(255)"/>
             <column name="lead_agency_id" type="BIGINT"/>
-            <column name="is_full_application" type="BIT(1)">
-                <constraints nullable="false"/>
-            </column>
             <column name="isloi" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
@@ -179,40 +177,40 @@
         </createTable>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-14">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="agency"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY1" tableName="agency"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-15">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="fiscal_year"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY2" tableName="fiscal_year"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-16">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_cycle"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY3" tableName="funding_cycle"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-17">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="funding_opportunity"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY4" tableName="funding_opportunity"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-18">
-        <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY" tableName="funding_opportunity_participating_agencies"/>
+        <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY5" tableName="funding_opportunity_participating_agencies"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-19">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_capability"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY6" tableName="granting_capability"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-20">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_stage"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY7" tableName="granting_stage"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-21">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="granting_system"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY8" tableName="granting_system"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-22">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="lead_contributor"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY9" tableName="lead_contributor"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-23">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_action"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY10" tableName="system_action"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-24">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_funding_cycle"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY11" tableName="system_funding_cycle"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-25">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="system_funding_opportunity"/>
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY12" tableName="system_funding_opportunity"/>
     </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-26">
         <addUniqueConstraint columnNames="year" constraintName="UK_b8kivk0q21ddg7c8uyyrppgp3" tableName="fiscal_year"/>

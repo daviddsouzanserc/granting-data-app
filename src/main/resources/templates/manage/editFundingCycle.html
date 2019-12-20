@@ -82,18 +82,6 @@
 
 
 			
-			<b>Full Application </b> <br> <br>
-			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Start Date</div>
-				<div><input id="startDateFullApplication" type="date" th:field="*{startDateFullApplication}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('startDateFullApplication')}" th:errors="*{startDateFullApplication}">Start Date Error</div>
-			</div>
-			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">End Date</div>
-				<div><input id="endDateFullApplication" type="date" th:field="*{endDateFullApplication}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('endDateFullApplication')}" th:errors="*{endDateFullApplication}">End Date Error</div>
-			</div>
-
 			<input type="hidden" th:field="*{id}" /> 
 			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
 		</form>

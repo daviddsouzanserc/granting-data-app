@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
@@ -19,10 +20,10 @@ import com.unboundid.ldif.LDIFReader;
 public class EnvConfig {
 
 	@Value("${ldap.testDataFile.nserc}")
-	private Resource ldapTestDataFileNSERC;
+	private String ldapTestDataFileNSERC;
 
 	@Value("${ldap.testDataFile.sshrc}")
-	private Resource ldapTestDataFileSSHRC;
+	private String ldapTestDataFileSSHRC;
 
 	@Value("${ldap.url.sshrc}")
 	private String ldapUrlSSHRC;
@@ -52,10 +53,14 @@ public class EnvConfig {
 			config = new InMemoryDirectoryServerConfig(ldapBaseDnNSERC);
 			nsercListenerConfig = new InMemoryListenerConfig("test", null, 8389, null, null, null);
 			config.setListenerConfigs(nsercListenerConfig);
-			sshrcDS = new InMemoryDirectoryServer(config);
-			file = ldapTestDataFileNSERC.getInputStream();
-			sshrcDS.importFromLDIF(true, new LDIFReader(file));
-			sshrcDS.startListening();
+			nsercDS = new InMemoryDirectoryServer(config);
+			// LDIFReader reader = new LDIFReader(reader)
+			Resource resource = new ClassPathResource(ldapTestDataFileNSERC);
+			file = resource.getInputStream();
+			// file = new File(classLoader.getResource(ldapTestDataFileSSHRC).getFile());
+			nsercDS.importFromLDIF(true, new LDIFReader(file));
+			nsercDS.startListening();
+
 		} catch (LDAPException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,12 +70,11 @@ public class EnvConfig {
 			config = new InMemoryDirectoryServerConfig(ldapBaseDnSSHRC);
 			sshrcListenerConfig = new InMemoryListenerConfig("test", null, 9389, null, null, null);
 			config.setListenerConfigs(sshrcListenerConfig);
-			nsercDS = new InMemoryDirectoryServer(config);
-			// LDIFReader reader = new LDIFReader(reader)
-			file = ldapTestDataFileSSHRC.getInputStream();
-			// file = new File(classLoader.getResource(ldapTestDataFileSSHRC).getFile());
-			nsercDS.importFromLDIF(true, new LDIFReader(file));
-			nsercDS.startListening();
+			sshrcDS = new InMemoryDirectoryServer(config);
+			Resource resource = new ClassPathResource(ldapTestDataFileSSHRC);
+			file = resource.getInputStream();
+			sshrcDS.importFromLDIF(true, new LDIFReader(file));
+			sshrcDS.startListening();
 
 		} catch (LDAPException | IOException e) {
 			// TODO Auto-generated catch block

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{::script})}">
 <meta charset="ISO-8859-1">
-<title>Granting Data - Create Funding Cycle</title>
+<title>Granting Data - Edit Funding Cycle</title>
 <script>
       $(document).ready(function() { 
        $("#isOpen").click(function() {
@@ -15,26 +15,26 @@
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
 	<div class="container">
-		<form action="#" th:action="@{createFundingCycle}" th:object="${fundingCycle}" method="post">            		
-        	<!-- <input type="hidden" th:field="*{id}" />  -->
-			<h1>Create Funding Cycle</h1>
-				<div class="form-group row">
-			<div class="col-sm-2 col-form-label">Fiscal Year</div>
-			<select  th:field="*{fiscalYear}">
-				<option th:each="i : ${fy}" th:value="${i.id}" th:text= "${i.getYear()}">Fiscal Year</option>
-			</select>
-			</div>
+		<form action="#" th:action="@{editFc}" th:object="${fc}" method="post">            		
+			<h1>Edit Funding Cycle</h1>
 <!-- 			<div class="form-group row"> -->
 <!-- 				<div class="col-sm-2 col-form-label">Competition Year</div> -->
 <!-- 				<div><input type="date" th:field="*{compYear}" class="col-sm-2"  /></div> -->
 <!-- 				<div th:if="${#fields.hasErrors('compYear')}" th:errors="*{compYear}">Comp Year Error</div> -->
 <!-- 			</div> -->
+
+			<div class="form-group row">
+			<div class="col-sm-2 col-form-label">Fiscal Year</div>
+			<select  th:field="*{fiscalYear}">
+				<option th:each="i : ${fy}" th:value="${i.id}" th:text= "${i.getYear()}">Fiscal Year</option>
+			</select>
+			</div>
+			
+			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label">Is Open Ended?</div>
 				<div><input id="isOpen" type="checkbox" th:field="*{open}" class="col-sm-2"  /></div>
 			</div>
-			
-			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label">Start Date</div>
 				<div><input id="startDate" type="date" th:field="*{startDate}" class="col-sm-2"  /></div>
@@ -45,11 +45,12 @@
 				<div><input id="endDate" type="date" th:field="*{endDate}" class="col-sm-2"  /></div>
 				<div th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">End Date Error</div>
 			</div>
-			
-			
-			
-			
-		<div th:if="${fo.isNOI}" >
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label">Number of Expected Applications</div>
+				<div><input th:field="*{expectedApplications}" class="col-sm-2"  /></div>
+				<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}">Expected Applications Error</div>
+			</div>
+
 			<b>NOI </b> <br> <br>
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label">Start Date</div>
@@ -64,10 +65,9 @@
 				<div th:if="${#fields.hasErrors('endDateNOI')}" th:errors="*{endDateNOI}">End Date Error</div>
 			</div>
 		
-		</div>	
+
 		
-		
-		<div th:if="${fo.isLOI}">
+
 			<b> LOI </b> <br> <br>
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label">Start Date</div>
@@ -79,18 +79,12 @@
 				<div><input id="endDateLOI" type="date" th:field="*{endDateLOI}" class="col-sm-2"  /></div>
 				<div th:if="${#fields.hasErrors('endDateLOI')}" th:errors="*{endDateLOI}">End Date Error</div>
 			</div>
-		</div>
+
+
 			
-			
-		
-		<div class="form-group row">
-			<div class="col-sm-2 col-form-label">Number of Expected Applications</div>
-			<div><input th:field="*{expectedApplications}" class="col-sm-2"  /></div>
-			<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}">Expected Applications Error</div>
-		</div>
-		<input type="hidden" name="fundingOpportunity" th:value="${foId}" />
-		<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
-	</form>
+			<input type="hidden" th:field="*{id}" /> 
+			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
+		</form>
 		
 		
 		

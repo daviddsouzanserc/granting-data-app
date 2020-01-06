@@ -4,7 +4,7 @@
 <title>Granting Data - View Funding Opportunity</title>
 </head>
 <body>
-	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
+	<div th:insert="~{fragments/general.html :: header_nav('programs')}" > </div> 
 	<div class="container">
 		<h1>View Funding Opportunity</h1>
 		<div class="form-group row">
@@ -110,10 +110,11 @@
 				</table>
 			</div>
 		</div>
-		
+	
 		<a class="btn btn-primary" th:href="@{/manage/manageFo(id=${fo.id})}" role="button">Manage Funding Opportunity</a>
-		
 	</div>
+	
+	
    </body>
 </html>
 

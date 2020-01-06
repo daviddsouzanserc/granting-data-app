@@ -1,8 +1,6 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -133,11 +131,11 @@ public class AdminServiceImpl implements AdminService {
 
 				}
 				SystemFundingCycle newCycle = new SystemFundingCycle();
-				try {
-					newCycle.setCompYear(new SimpleDateFormat("yyyy").parse(row.getCompetition_Year()));
-				} catch (ParseException e) {
-					LOG.log(Level.WARN, "Invalid year:" + row.getCompetition_Year());
-				}
+//				try {
+//					newCycle.setCompYear(new SimpleDateFormat("yyyy").parse(row.getCompetition_Year()));
+//				} catch (ParseException e) {
+//					LOG.log(Level.WARN, "Invalid year:" + row.getCompetition_Year());
+//				}
 				newCycle.setExtId(row.getFoCycle());
 				newCycle.setSystemFundingOpportunity(targetFo);
 				newCycle.setNumAppsReceived(row.getNumReceivedApps());
@@ -227,12 +225,25 @@ public class AdminServiceImpl implements AdminService {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(filename).getFile());
 		xcelite = new Xcelite(file);
+		// xcelite.
 		XceliteSheet sheet = xcelite.getSheet(0);
 		SheetReader<ProgramFromFile> reader = sheet.getBeanReader(ProgramFromFile.class);
 		programs = reader.read();
 
-		return programs;
+		/*
+		 * URI newFile = null; xcelite = new Xcelite();
+		 * 
+		 * File file = new File() final ClassLoader loader =
+		 * Thread.currentThread().getContextClassLoader(); InputStream is =
+		 * loader.getResourceAsStream(filename); final InputStreamReader isr = new
+		 * InputStreamReader(is, StandardCharsets.UTF_8); xcelite = new Xcelite(is);
+		 * final InputStreamReader isr = new InputStreamReader(is,
+		 * StandardCharsets.UTF_8); final BufferedReader br = new BufferedReader(isr)) {
+		 * return br.lines().map(l -> path + "/" + l).map(r ->
+		 * loader.getResource(r)).collect(toList()); }
+		 */
 
+		return programs;
 	}
 
 	@Override

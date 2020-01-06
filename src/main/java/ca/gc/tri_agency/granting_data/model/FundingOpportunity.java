@@ -15,13 +15,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
 public class FundingOpportunity implements LocalizedParametersModel {
+//	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "test_sequence")
+	@SequenceGenerator(name = "test_sequence", sequenceName = "hibernate_sequence", allocationSize = 1)
 	private Long id;
 
 	private String nameEn;
@@ -45,6 +48,10 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	private String applyMethod;
 
 	private String awardManagementSystem;
+
+	public boolean isNOI;
+
+	private boolean isLOI;
 
 	private String programLeadName;
 
@@ -93,6 +100,12 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	public String getApplyMethod() {
 		return applyMethod;
 	}
+
+	private String partnerOrg;
+
+	private boolean isEdiRequired;
+
+	private boolean isComplex;
 
 	public void setApplyMethod(String applyMethod) {
 		this.applyMethod = applyMethod;
@@ -161,6 +174,60 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	public void setProgramLeadDn(String programLeadDn) {
 		this.programLeadDn = programLeadDn;
+	}
+
+	private boolean isJointInitiative;
+
+	public boolean isJointInitiative() {
+		return isJointInitiative;
+	}
+
+	public boolean getIsJointInitiative() {
+		return isJointInitiative;
+	}
+
+	public void setJointInitiative(boolean isJointInitiative) {
+		this.isJointInitiative = isJointInitiative;
+	}
+
+	public String getPartnerOrg() {
+		return partnerOrg;
+	}
+
+	public void setPartnerOrg(String partnerOrg) {
+		this.partnerOrg = partnerOrg;
+	}
+
+	public boolean getIsEdiRequired() {
+		return isEdiRequired;
+	}
+
+	public void setEdiRequired(boolean isEdiRequired) {
+		this.isEdiRequired = isEdiRequired;
+	}
+
+	public boolean getIsComplex() {
+		return isComplex;
+	}
+
+	public void setComplex(boolean isComplex) {
+		this.isComplex = isComplex;
+	}
+
+	public boolean getIsNOI() {
+		return isNOI;
+	}
+
+	public void setIsNOI(boolean nOI) {
+		isNOI = nOI;
+	}
+
+	public boolean getIsLOI() {
+		return isLOI;
+	}
+
+	public void setIsLOI(boolean islOI) {
+		isLOI = islOI;
 	}
 
 }

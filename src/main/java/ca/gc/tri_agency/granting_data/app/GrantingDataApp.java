@@ -1,18 +1,12 @@
 package ca.gc.tri_agency.granting_data.app;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.ldap.repository.config.EnableLdapRepositories;
-import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.core.support.LdapContextSource;
 
 //import ca.gc.tri_agency.granting_data.service.ImportService;
 
@@ -24,36 +18,8 @@ import org.springframework.ldap.core.support.LdapContextSource;
 @PropertySource("classpath:application.properties")
 public class GrantingDataApp {
 
-	@Autowired
-	private Environment env;
-
-	@Value("${use.active.directory}")
-	private String useActiveDirectory;
-
-	@Bean
-	public LdapContextSource contextSource() {
-		LdapContextSource contextSource = new LdapContextSource();
-
-		if (Boolean.parseBoolean(useActiveDirectory)) {
-			contextSource.setUrl(env.getRequiredProperty("ldap.url.nserc"));
-			// contextSource.setBase(env.getRequiredProperty("ldap.base.dn.nserc"));
-			// contextSource.setUrls(new String[] { "ldap.url.nserc", "ldap.url.sshrc" });
-		} else {
-			contextSource.setUrl(env.getRequiredProperty("ldap.urls"));
-			// contextSource.setBase(env.getRequiredProperty("ldap.base.dn"));
-//			contextSource.setUserDn(env.getRequiredProperty("ldap.principal"));
-//			contextSource.setPassword(env.getRequiredProperty("ldap.password"));
-		}
-
-		return contextSource;
-	}
-
-	@Bean
-	public LdapTemplate ldapTemplate() {
-		LdapTemplate l = new LdapTemplate(contextSource());
-		l.setIgnorePartialResultException(true);
-		return l;
-	}
+//	@Autowired
+//	private Environment env;
 
 	public static void main(String[] args) {
 		SpringApplication.run(GrantingDataApp.class, args);

@@ -23,15 +23,39 @@ public class FundingCycle implements LocalizedParametersModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy")
-	private Date compYear;
+	@ManyToOne
+	@JoinColumn(name = "fiscal_year_id")
+	private FiscalYear fiscalYear;
+
+	public FiscalYear getFiscalYear() {
+		return fiscalYear;
+	}
+
+	public void setFiscalYear(FiscalYear fiscalYear) {
+		this.fiscalYear = fiscalYear;
+	}
 
 	private boolean isOpen;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDateNOI;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDateLOI;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDateNOI;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDateLOI;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -59,14 +83,6 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	public void setFundingOpportunity(FundingOpportunity program) {
 		this.fundingOpportunity = program;
-	}
-
-	public Date getCompYear() {
-		return compYear;
-	}
-
-	public void setCompYear(Date compYear) {
-		this.compYear = compYear;
 	}
 
 	public Date getStartDate() {
@@ -108,4 +124,41 @@ public class FundingCycle implements LocalizedParametersModel {
 	public void setIsOpen(boolean isOpen) {
 		this.isOpen = isOpen;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getStartDateNOI() {
+		return startDateNOI;
+	}
+
+	public void setStartDateNOI(Date startDateNOI) {
+		this.startDateNOI = startDateNOI;
+	}
+
+	public Date getStartDateLOI() {
+		return startDateLOI;
+	}
+
+	public void setStartDateLOI(Date startDateLOI) {
+		this.startDateLOI = startDateLOI;
+	}
+
+	public Date getEndDateNOI() {
+		return endDateNOI;
+	}
+
+	public void setEndDateNOI(Date endDateNOI) {
+		this.endDateNOI = endDateNOI;
+	}
+
+	public Date getEndDateLOI() {
+		return endDateLOI;
+	}
+
+	public void setEndDateLOI(Date endDateLOI) {
+		this.endDateLOI = endDateLOI;
+	}
+
 }

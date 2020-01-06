@@ -18,4 +18,6 @@ public interface RestrictedDataService {
 
 	GrantingCapability createGrantingCapability(@Valid GrantingCapability command);
 
+	FundingCycle updateFc(FundingCycle command, FundingCycle target);
+
 }

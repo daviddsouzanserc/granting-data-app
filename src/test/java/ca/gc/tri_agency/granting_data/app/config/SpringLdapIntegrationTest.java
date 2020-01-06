@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
 import ca.gc.tri_agency.granting_data.model.ldap.ADUser;
-import ca.gc.tri_agency.granting_data.repo.ADUserRepository;
+import ca.gc.tri_agency.granting_data.repoLdap.ADUserRepository;
 
 @SpringBootTest(classes = GrantingDataApp.class)
 @ActiveProfiles("test")
@@ -28,20 +28,28 @@ public class SpringLdapIntegrationTest {
 	public void testGetAllPersons() {
 		List<ADUser> users = userRepository.getAllPersons();
 		assertNotNull(users);
-		assertEquals(users.size(), 5);
+		assertEquals(6, users.size());
 	}
 
 	@Test
 	public void testGetAllPersonsNames() {
 		List<String> persons = userRepository.getAllPersonNames();
 		assertNotNull(persons);
-		assertEquals(persons.size(), 5);
+		assertEquals(6, persons.size());
 	}
 
 	@Test
-	public void testFindPerson() {
-		ADUser user = userRepository.findPerson("uid=admin,ou=NSERC_Users,dc=nserc,dc=ca");
+	public void testFindNSERCPerson() {
+		ADUser user = userRepository.findPerson("uid=admin,ou=NSERC_Users");
 		assertNotNull(user);
 		assertEquals(user.getFullName(), "Admin User");
 	}
+
+	@Test
+	public void testFindSSHRCPerson() {
+		ADUser user = userRepository.findPerson("uid=sshrc-admin,ou=SSHRC_Users");
+		assertNotNull(user);
+		assertEquals("SSHRC Admin", user.getFullName());
+	}
+
 }

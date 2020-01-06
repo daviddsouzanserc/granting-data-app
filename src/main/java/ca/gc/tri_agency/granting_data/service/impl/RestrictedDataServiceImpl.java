@@ -1,17 +1,10 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
-import java.util.Collection;
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
@@ -43,15 +36,14 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	@Autowired
 	GrantingCapabilityRepository grantingCapabilityRepo;
 
-
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	public FundingOpportunity saveFundingOpportunity(FundingOpportunity targetUpdate) {
 		return foRepo.save(targetUpdate);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	public void setFoLeadContributor(long foId, String leadUserDn) {
 		if (leadUserDn == null) {
 			// return;??
@@ -74,7 +66,7 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	@Override
 	public FundingCycle createOrUpdateFundingCycle(FundingCycle command) {
 		FundingCycle retval = null;
-		if (SecurityUtils.hasRole("ADMIN")
+		if (SecurityUtils.hasRole("MDM ADMIN")
 				|| command.getFundingOpportunity().getProgramLeadDn().compareTo(SecurityUtils.getLdapUserDn()) == 0) {
 			retval = fcRepo.save(command);
 		} else {
@@ -84,7 +76,18 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public FundingCycle updateFc(FundingCycle command, FundingCycle target) {
+		target.setFiscalYear(command.getFiscalYear());
+		target.setEndDate(command.getEndDate());
+		target.setExpectedApplications(command.getExpectedApplications());
+		target.setIsOpen(command.getIsOpen());
+		target.setStartDate(command.getStartDate());
+		return fcRepo.save(target);
+
+	}
+
+	@Override
+	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	public GrantingCapability createGrantingCapability(@Valid GrantingCapability command) {
 
 		return grantingCapabilityRepo.save(command);

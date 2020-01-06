@@ -225,12 +225,25 @@ public class AdminServiceImpl implements AdminService {
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource(filename).getFile());
 		xcelite = new Xcelite(file);
+		// xcelite.
 		XceliteSheet sheet = xcelite.getSheet(0);
 		SheetReader<ProgramFromFile> reader = sheet.getBeanReader(ProgramFromFile.class);
 		programs = reader.read();
 
-		return programs;
+		/*
+		 * URI newFile = null; xcelite = new Xcelite();
+		 * 
+		 * File file = new File() final ClassLoader loader =
+		 * Thread.currentThread().getContextClassLoader(); InputStream is =
+		 * loader.getResourceAsStream(filename); final InputStreamReader isr = new
+		 * InputStreamReader(is, StandardCharsets.UTF_8); xcelite = new Xcelite(is);
+		 * final InputStreamReader isr = new InputStreamReader(is,
+		 * StandardCharsets.UTF_8); final BufferedReader br = new BufferedReader(isr)) {
+		 * return br.lines().map(l -> path + "/" + l).map(r ->
+		 * loader.getResource(r)).collect(toList()); }
+		 */
 
+		return programs;
 	}
 
 	@Override

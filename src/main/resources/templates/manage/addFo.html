@@ -35,15 +35,6 @@
 			  });
 			  
 			  
-				  $("#isFullApplication").click(function(){
-					  
-					  
-					  if($(this).is(":checked"))
-					       $("#isFullApplication").set("true");
-					    else
-					       $("#isFullApplication").set("false");  
-				  });
-		  
 		}); 	
 	</script>
 </head>
@@ -138,7 +129,6 @@
 				<br>
 				<div><input id="isNOI" type="checkbox" th:field="*{isNOI}" class="col-sm-2"	value="isNOI" > NOI </div>
 				<div><input id="isLOI" type="checkbox" th:field="*{isLOI}" class="col-sm-2" value= "isLOI"> LOI </div>
-				<div><input id="isFullApplication" type="checkbox" th:field="*{isFullApplication}" class="col-sm-2" value="isFullApplication"> Full Application </div>
 			</div>
 			
 			<div class="form-group row">

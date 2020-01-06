@@ -48,13 +48,10 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	private String applyMethod;
 
 	private String awardManagementSystem;
-	
 
 	public boolean isNOI;
 
 	private boolean isLOI;
-
-	private boolean isFullApplication;
 
 	private String programLeadName;
 
@@ -231,14 +228,6 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	public void setIsLOI(boolean islOI) {
 		isLOI = islOI;
-	}
-
-	public boolean getIsFullApplication() {
-		return isFullApplication;
-	}
-
-	public void setIsFullApplication(boolean fullApplication) {
-		isFullApplication = fullApplication;
 	}
 
 }

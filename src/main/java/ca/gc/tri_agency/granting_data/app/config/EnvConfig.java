@@ -1,12 +1,14 @@
 package ca.gc.tri_agency.granting_data.app.config;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
 import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
@@ -35,7 +37,7 @@ public class EnvConfig {
 	@Value("${ldap.base.dn.sshrc}")
 	private String ldapBaseDnSSHRC;
 
-	@Profile("local")
+	@Profile({ "local", "test" })
 	@Bean
 	public int setupLocalActiveDirectories() {
 		// Create the configuration to use for the server.
@@ -44,17 +46,21 @@ public class EnvConfig {
 		InMemoryDirectoryServer nsercDS;
 		InMemoryListenerConfig nsercListenerConfig;
 		InMemoryListenerConfig sshrcListenerConfig;
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file;
+		// ClassLoader classLoader = getClass().getClassLoader();
+		InputStream file;
 		try {
 			// config.addAdditionalBindCredentials("cn=Directory Manager", "password");
 			config = new InMemoryDirectoryServerConfig(ldapBaseDnNSERC);
 			nsercListenerConfig = new InMemoryListenerConfig("test", null, 8389, null, null, null);
 			config.setListenerConfigs(nsercListenerConfig);
-			sshrcDS = new InMemoryDirectoryServer(config);
-			file = new File(classLoader.getResource(ldapTestDataFileNSERC).getFile());
-			sshrcDS.importFromLDIF(true, new LDIFReader(file));
-			sshrcDS.startListening();
+			nsercDS = new InMemoryDirectoryServer(config);
+			// LDIFReader reader = new LDIFReader(reader)
+			Resource resource = new ClassPathResource(ldapTestDataFileNSERC);
+			file = resource.getInputStream();
+			// file = new File(classLoader.getResource(ldapTestDataFileSSHRC).getFile());
+			nsercDS.importFromLDIF(true, new LDIFReader(file));
+			nsercDS.startListening();
+
 		} catch (LDAPException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,11 +70,11 @@ public class EnvConfig {
 			config = new InMemoryDirectoryServerConfig(ldapBaseDnSSHRC);
 			sshrcListenerConfig = new InMemoryListenerConfig("test", null, 9389, null, null, null);
 			config.setListenerConfigs(sshrcListenerConfig);
-			nsercDS = new InMemoryDirectoryServer(config);
-			// LDIFReader reader = new LDIFReader(reader)
-			file = new File(classLoader.getResource(ldapTestDataFileSSHRC).getFile());
-			nsercDS.importFromLDIF(true, new LDIFReader(file));
-			nsercDS.startListening();
+			sshrcDS = new InMemoryDirectoryServer(config);
+			Resource resource = new ClassPathResource(ldapTestDataFileSSHRC);
+			file = resource.getInputStream();
+			sshrcDS.importFromLDIF(true, new LDIFReader(file));
+			sshrcDS.startListening();
 
 		} catch (LDAPException | IOException e) {
 			// TODO Auto-generated catch block

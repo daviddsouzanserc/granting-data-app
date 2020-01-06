@@ -51,19 +51,11 @@ public class FundingCycle implements LocalizedParametersModel {
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date startDateFullApplication;
-
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDateNOI;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDateLOI;
-
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date endDateFullApplication;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -153,14 +145,6 @@ public class FundingCycle implements LocalizedParametersModel {
 		this.startDateLOI = startDateLOI;
 	}
 
-	public Date getStartDateFullApplication() {
-		return startDateFullApplication;
-	}
-
-	public void setStartDateFullApplication(Date startDateFullApplication) {
-		this.startDateFullApplication = startDateFullApplication;
-	}
-
 	public Date getEndDateNOI() {
 		return endDateNOI;
 	}
@@ -177,11 +161,4 @@ public class FundingCycle implements LocalizedParametersModel {
 		this.endDateLOI = endDateLOI;
 	}
 
-	public Date getEndDateFullApplication() {
-		return endDateFullApplication;
-	}
-
-	public void setEndDateFullApplication(Date endDateFullApplication) {
-		this.endDateFullApplication = endDateFullApplication;
-	}
 }

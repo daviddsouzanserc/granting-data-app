@@ -12,5 +12,6 @@
 	<include file="db/version-0.0.1.xml"/>
 	<include file="db/populate_granting_systems-0.0.1.xml"/>
 	<include file="db/version-0.0.3.xml"/>
+	<include file="db/PopulateGoldenList.xml"/>
      
 </databaseChangeLog>

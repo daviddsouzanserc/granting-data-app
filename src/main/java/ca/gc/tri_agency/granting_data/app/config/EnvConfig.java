@@ -37,7 +37,7 @@ public class EnvConfig {
 	@Value("${ldap.base.dn.sshrc}")
 	private String ldapBaseDnSSHRC;
 
-	@Profile({ "local", "test" })
+	@Profile({ "local", "test"})
 	@Bean
 	public int setupLocalActiveDirectories() {
 		// Create the configuration to use for the server.

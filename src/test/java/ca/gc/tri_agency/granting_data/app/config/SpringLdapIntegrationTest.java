@@ -17,7 +17,6 @@ import ca.gc.tri_agency.granting_data.model.ldap.ADUser;
 import ca.gc.tri_agency.granting_data.repoLdap.ADUserRepository;
 
 @SpringBootTest(classes = GrantingDataApp.class)
-@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 public class SpringLdapIntegrationTest {
 

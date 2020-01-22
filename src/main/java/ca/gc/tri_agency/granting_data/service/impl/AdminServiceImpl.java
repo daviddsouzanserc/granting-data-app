@@ -1,6 +1,11 @@
 package ca.gc.tri_agency.granting_data.service.impl;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +17,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ebay.xcelite.Xcelite;
@@ -53,15 +59,23 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	GrantingSystemRepository grantingSystemRepo;
 
+	@Value("${dataset.analysis.folder}")
+	private String datasetAnalysisFolder;
+
 	@Override
 	public List<File> getDatasetFiles() {
-		String datasetsFolder = "datasets";
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(datasetsFolder).getFile());
+		Path dir = Paths.get(datasetAnalysisFolder);
 		List<File> list = new ArrayList<File>();
-		for (File l : file.listFiles()) {
-			list.add(l);
+		try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(dir)) {
+			dirStream.forEach(path -> list.add(path.toFile()));
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
+//		ClassLoader classLoader = getClass().getClassLoader();
+//		File file = new File(classLoader.getResource(datasetAnalysisFolder).getFile());
+//		for (File l : file.listFiles()) {
+//			list.add(l);
+//		}
 		return list;
 	}
 
@@ -70,9 +84,9 @@ public class AdminServiceImpl implements AdminService {
 		Collection<FundingCycleDatasetRow> rows = null;
 
 		Xcelite xcelite;
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("datasets/" + filename).getFile());
-		xcelite = new Xcelite(file);
+//		ClassLoader classLoader = getClass().getClassLoader();
+//		File file = new File(classLoader.getResource(datasetAnalysisFolder + filename).getFile());
+		xcelite = new Xcelite(new File(datasetAnalysisFolder + filename));
 		XceliteSheet sheet = xcelite.getSheet(0);
 		SheetReader<FundingCycleDatasetRow> reader = sheet.getBeanReader(FundingCycleDatasetRow.class);
 		rows = reader.read();

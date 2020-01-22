@@ -1,5 +1,6 @@
 package ca.gc.tri_agency.granting_data.security;
 
+import static org.junit.Assert.assertFalse;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,5 +53,15 @@ public class SecurityConfigIntegrationTest {
 	@Test
 	public void givenAdminAuthRequestOnAdminUrl_shouldSucceedWith200() throws Exception {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML)).andExpect(status().isOk());
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
+	@Test
+	public void editProgramLeadLinkNotVisibleForNonAminUsers() throws Exception {
+		String mockResponse = mvc.perform(get("/manage/manageFo").param("id", "26")).andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		System.out.println(mockResponse);
+		assertFalse("Non-admin users should not see link: \"Change Program Lead\"",
+				mockResponse.contains("href=\"editProgramLead?id=26\""));
 	}
 }

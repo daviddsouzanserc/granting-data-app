@@ -34,7 +34,6 @@ public class SecurityConfigIntegrationTest {
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
-
 	}
 
 	@Test
@@ -74,6 +73,19 @@ public class SecurityConfigIntegrationTest {
 	@Test
 	public void nonAdminUsersCannotAccessEditProgramLeadPageWithItsURL_shouldRedirectToLogin302() throws Exception {
 		mvc.perform(get("/manage/editProgramLead").param("id", "26")).andExpect(status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/login"));
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
+	@Test
+	public void nonAdminUserCannotAccessEditFOPage_shouldBeUnauthorized401() throws Exception {
+		mvc.perform(get("/manage/editFo").param("id", "26")).andExpect(status().isUnauthorized());
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
+	@Test
+	public void nonAdminUserCannotAccessEditFOPage_shouldRedirectToLogin302() throws Exception {
+		mvc.perform(get("/manage/editFo").param("id", "26")).andExpect(status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/login"));
 	}
 

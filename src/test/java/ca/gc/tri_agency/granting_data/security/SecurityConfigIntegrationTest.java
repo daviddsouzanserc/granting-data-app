@@ -69,4 +69,12 @@ public class SecurityConfigIntegrationTest {
 	public void nonAdminUsersCannotAccessEditProgramLeadPageWithItsURL() throws Exception {
 		mvc.perform(get("/manage/editProgramLead").param("id", "26")).andExpect(status().isUnauthorized());
 	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
+	@Test
+	public void nonAdminUsersCannotAccessEditProgramLeadPageWithItsURL_shouldRedirectToLogin302() throws Exception {
+		mvc.perform(get("/manage/editProgramLead").param("id", "26")).andExpect(status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/login"));
+	}
+
 }

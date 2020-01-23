@@ -63,4 +63,10 @@ public class SecurityConfigIntegrationTest {
 		assertFalse("Non-admin users should not see link: \"Change Program Lead\"",
 				mockResponse.contains("href=\"editProgramLead?id=26\""));
 	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
+	@Test
+	public void nonAdminUsersCannotAccessEditProgramLeadPageWithItsURL() throws Exception {
+		mvc.perform(get("/manage/editProgramLead").param("id", "26")).andExpect(status().isUnauthorized());
+	}
 }

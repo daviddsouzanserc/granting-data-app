@@ -60,7 +60,6 @@ public class SecurityConfigIntegrationTest {
 	public void editProgramLeadLinkNotVisibleForNonAminUsers() throws Exception {
 		String mockResponse = mvc.perform(get("/manage/manageFo").param("id", "26")).andExpect(status().isOk())
 				.andReturn().getResponse().getContentAsString();
-		System.out.println(mockResponse);
 		assertFalse("Non-admin users should not see link: \"Change Program Lead\"",
 				mockResponse.contains("href=\"editProgramLead?id=26\""));
 	}

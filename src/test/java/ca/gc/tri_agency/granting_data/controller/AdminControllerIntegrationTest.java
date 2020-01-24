@@ -44,9 +44,9 @@ public class AdminControllerIntegrationTest {
 
 	@WithMockUser(username = "nserc-user", roles = { "SSHRC" })
 	@Test
-	public void givenSshrcRequestOnAdminUrl_shouldFailWithManagedError() throws Exception {
+	public void givenSshrcRequestOnAdminUrl_shouldFailWithForbiddenByRoleError() throws Exception {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML))
-				.andExpect(content().string(containsString("managedError")));
+				.andExpect(content().string(containsString("forbiddenByRoleError")));
 	}
 
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })

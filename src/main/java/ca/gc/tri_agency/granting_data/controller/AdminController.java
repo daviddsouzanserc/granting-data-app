@@ -3,7 +3,6 @@ package ca.gc.tri_agency.granting_data.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +49,6 @@ public class AdminController {
 		return "redirect:/admin/home";
 	}
 
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	@GetMapping("/home")
 	public String home(Model model) {
 

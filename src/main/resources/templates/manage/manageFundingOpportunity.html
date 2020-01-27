@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
 <title>Granting Data - View Funding Opportunity</title>
 </head>
@@ -42,7 +42,7 @@
 		<div class="form-group row">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.programLeadName}">Program Lead Name</div>
 			<div class="col-sm-2" th:text="${fo.programLeadName}"></div>
-			<div class="col-sm-2">
+			<div sec:authorize="hasRole('MDM ADMIN')" class="col-sm-2">
 				<a class="btn" th:href="@{editProgramLead(id=${fo.id})}">Change Program Lead</a>
 			</div>
 		</div>

@@ -126,6 +126,7 @@ public class ManageFundingOpportunityController {
 
 /////////////////////////
 
+	@PreAuthorize("hasRole('MDM ADMIN')")
 	@GetMapping(value = "/editProgramLead", params = "id")
 	public String editProgramLead(@RequestParam("id") long id, Model model) {
 		model.addAttribute("originalId", id);
@@ -134,6 +135,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editProgramLead";
 	}
 
+	@PreAuthorize("hasRole('MDM ADMIN')")
 	@GetMapping(value = "/editProgramLead", params = { "id", "username" })
 	public String editProgramLeadSearchUser(@RequestParam("id") long id, @RequestParam("username") String username,
 			Model model) {
@@ -143,6 +145,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editProgramLead";
 	}
 
+	@PreAuthorize("hasRole('MDM ADMIN')")
 	@PostMapping(value = "/editProgramLead")
 	public String editProgramLeadPost(@RequestParam long foId, @RequestParam String leadUserDn) {
 		// get the FO based on the ID

@@ -6,6 +6,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -71,21 +73,13 @@ public class AdminServiceImpl implements AdminService {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
-//		ClassLoader classLoader = getClass().getClassLoader();
-//		File file = new File(classLoader.getResource(datasetAnalysisFolder).getFile());
-//		for (File l : file.listFiles()) {
-//			list.add(l);
-//		}
 		return list;
 	}
 
 	@Override
 	public List<FundingCycleDatasetRow> getFundingCyclesFromFile(String filename) {
 		Collection<FundingCycleDatasetRow> rows = null;
-
 		Xcelite xcelite;
-//		ClassLoader classLoader = getClass().getClassLoader();
-//		File file = new File(classLoader.getResource(datasetAnalysisFolder + filename).getFile());
 		xcelite = new Xcelite(new File(datasetAnalysisFolder + filename));
 		XceliteSheet sheet = xcelite.getSheet(0);
 		SheetReader<FundingCycleDatasetRow> reader = sheet.getBeanReader(FundingCycleDatasetRow.class);
@@ -96,6 +90,8 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public List<String> generateActionableFoCycleIds(List<FundingCycleDatasetRow> foCycles) {
+		// SYSTEM FCs HAVE UNIQUE IDENTIFIER THAT INCLUDES THE PROGRAM IDENTIFIER. USING
+		// THAT AS DETERMINATION FACTOR
 		List<SystemFundingCycle> dbFundingCycles = systemFundingCycleRepo.findAll();
 		List<String> retval = new ArrayList<String>();
 		for (FundingCycleDatasetRow row : foCycles) {
@@ -109,6 +105,35 @@ public class AdminServiceImpl implements AdminService {
 				retval.add(row.getFoCycle());
 			}
 		}
+		return retval;
+	}
+
+	@Override
+	public SystemFundingOpportunity registerSystemFundingOpportunity(FundingCycleDatasetRow row,
+			GrantingSystem targetSystem) {
+		SystemFundingOpportunity retval = new SystemFundingOpportunity();
+		retval.setExtId(row.getProgram_ID());
+		retval.setNameEn(row.getProgramNameEn());
+		retval.setNameFr(row.getProgramNameFr());
+		retval.setGrantingSystem(targetSystem);
+		retval = systemFoRepo.save(retval);
+		return retval;
+
+	}
+
+	@Override
+	public SystemFundingCycle registerSystemFundingCycle(FundingCycleDatasetRow row,
+			SystemFundingOpportunity targetSfo) {
+		SystemFundingCycle retval = new SystemFundingCycle();
+		try {
+			retval.setFiscalYear(new SimpleDateFormat("yyyy").parse("" + row.getCompetitionYear()));
+		} catch (ParseException e) {
+			LOG.log(Level.WARN, "Invalid year:" + row.getCompetitionYear());
+		}
+		retval.setExtId(row.getFoCycle());
+		retval.setSystemFundingOpportunity(targetSfo);
+		retval.setNumAppsReceived(row.getNumReceivedApps());
+		retval = systemFundingCycleRepo.save(retval);
 		return retval;
 	}
 
@@ -135,25 +160,11 @@ public class AdminServiceImpl implements AdminService {
 				if (foIdList.contains(row.getProgram_ID())) {
 					targetFo = map.get(row.getProgram_ID());
 				} else {
-					targetFo = new SystemFundingOpportunity();
-					targetFo.setExtId(row.getProgram_ID());
-					targetFo.setNameEn(row.getProgramNameEn());
-					targetFo.setNameFr(row.getProgramNameFr());
-					targetFo.setGrantingSystem(targetSystem);
-					targetFo = systemFoRepo.save(targetFo);
+					targetFo = registerSystemFundingOpportunity(row, targetSystem);
 					map.put(targetFo.getExtId(), targetFo);
 
 				}
-				SystemFundingCycle newCycle = new SystemFundingCycle();
-//				try {
-//					newCycle.setCompYear(new SimpleDateFormat("yyyy").parse(row.getCompetition_Year()));
-//				} catch (ParseException e) {
-//					LOG.log(Level.WARN, "Invalid year:" + row.getCompetition_Year());
-//				}
-				newCycle.setExtId(row.getFoCycle());
-				newCycle.setSystemFundingOpportunity(targetFo);
-				newCycle.setNumAppsReceived(row.getNumReceivedApps());
-				newCycle = systemFundingCycleRepo.save(newCycle);
+				SystemFundingCycle newCycle = registerSystemFundingCycle(row, targetFo);
 				newIdList.add(newCycle.getId());
 			}
 

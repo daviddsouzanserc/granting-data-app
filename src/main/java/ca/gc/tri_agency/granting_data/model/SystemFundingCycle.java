@@ -50,7 +50,7 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 		return fiscalYear;
 	}
 
-	public void setF(Date compYear) {
+	public void setFiscalYear(Date compYear) {
 		this.fiscalYear = compYear;
 	}
 

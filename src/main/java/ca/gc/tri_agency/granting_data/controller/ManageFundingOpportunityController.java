@@ -68,6 +68,7 @@ public class ManageFundingOpportunityController {
 		return "manage/searchUser";
 	}
 
+	@PreAuthorize("hasRole('MDM ADMIN')")
 	@GetMapping(value = "/editFo", params = "id")
 	public String editFo(@RequestParam("id") long id, Model model) {
 		FundingOpportunity fo = dataService.getFundingOpportunity(id);
@@ -86,6 +87,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editFundingOpportunity";
 	}
 
+	@PreAuthorize("hasRole('MDM ADMIN')")
 	@PostMapping(value = "/editFo")
 	public String editFoPost(@Valid @ModelAttribute("programForm") FundingOpportunity command,
 			BindingResult bindingResult) {

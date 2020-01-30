@@ -37,6 +37,13 @@ public class UserRedirectionIntegrationTest {
 
 	@WithAnonymousUser
 	@Test
+	public void testManageFOControllerAccess_withNonLoggedInUser_shouldRedirectToLogin302() throws Exception {
+		mvc.perform(get("/manage/editFo").param("id", "26")).andExpect(status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
+	}
+
+	@WithAnonymousUser
+	@Test
 	public void testAdminControllerAccess_withNonLoggedInUser_shouldRedirectToLogin302() throws Exception {
 		mvc.perform(get("/admin/home")).andExpect(status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));

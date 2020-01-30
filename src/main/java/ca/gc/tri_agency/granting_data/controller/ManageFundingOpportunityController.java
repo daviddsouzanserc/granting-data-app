@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +26,7 @@ import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.repo.GrantingStageRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
+import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
 
@@ -68,7 +68,7 @@ public class ManageFundingOpportunityController {
 		return "manage/searchUser";
 	}
 
-	@PreAuthorize("hasRole('MDM ADMIN')")
+	@AdminOnly
 	@GetMapping(value = "/editFo", params = "id")
 	public String editFo(@RequestParam("id") long id, Model model) {
 		FundingOpportunity fo = dataService.getFundingOpportunity(id);
@@ -87,7 +87,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editFundingOpportunity";
 	}
 
-	@PreAuthorize("hasRole('MDM ADMIN')")
+	@AdminOnly
 	@PostMapping(value = "/editFo")
 	public String editFoPost(@Valid @ModelAttribute("programForm") FundingOpportunity command,
 			BindingResult bindingResult) {
@@ -128,7 +128,7 @@ public class ManageFundingOpportunityController {
 
 /////////////////////////
 
-	@PreAuthorize("hasRole('MDM ADMIN')")
+	@AdminOnly
 	@GetMapping(value = "/editProgramLead", params = "id")
 	public String editProgramLead(@RequestParam("id") long id, Model model) {
 		model.addAttribute("originalId", id);
@@ -137,7 +137,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editProgramLead";
 	}
 
-	@PreAuthorize("hasRole('MDM ADMIN')")
+	@AdminOnly
 	@GetMapping(value = "/editProgramLead", params = { "id", "username" })
 	public String editProgramLeadSearchUser(@RequestParam("id") long id, @RequestParam("username") String username,
 			Model model) {
@@ -147,7 +147,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editProgramLead";
 	}
 
-	@PreAuthorize("hasRole('MDM ADMIN')")
+	@AdminOnly
 	@PostMapping(value = "/editProgramLead")
 	public String editProgramLeadPost(@RequestParam long foId, @RequestParam String leadUserDn) {
 		// get the FO based on the ID
@@ -181,6 +181,7 @@ public class ManageFundingOpportunityController {
 		return "redirect:/browse/viewFo?id=" + command.getFundingOpportunity().getId();
 	}
 
+	@AdminOnly
 	@GetMapping(value = "/addGrantingCapabilities", params = "id")
 	public String addGrantingCapabilities(@RequestParam("id") long id, Model model) {
 		model.addAttribute("foId", id);
@@ -190,6 +191,7 @@ public class ManageFundingOpportunityController {
 		return "manage/addGrantingCapabilities";
 	}
 
+	@AdminOnly
 	@PostMapping(value = "/addGrantingCapabilities")
 	public String addGrantingCapabilitiesPost(@Valid @ModelAttribute("gc") GrantingCapability command,
 			BindingResult bindingResult) {
@@ -211,7 +213,6 @@ public class ManageFundingOpportunityController {
 		return "manage/addFiscalYears";
 	}
 
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
 	@PostMapping(value = "/addFiscalYears")
 	public String addFiscalYearsPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
 			Model model) throws Exception {
@@ -234,7 +235,7 @@ public class ManageFundingOpportunityController {
 		return "redirect:/browse/viewFiscalYear";
 	}
 
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
+	@AdminOnly
 	@GetMapping(value = "/addFo")
 	public String addFo(Model model) {
 		List<Agency> allAgencies = dataService.getAllAgencies();
@@ -243,7 +244,7 @@ public class ManageFundingOpportunityController {
 		return "manage/addFo";
 	}
 
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
+	@AdminOnly
 	@PostMapping(value = "/addFo", params = "id")
 	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
 			Model model) throws Exception {

@@ -37,6 +37,14 @@ public class UserRedirectionIntegrationTest {
 
 	@WithAnonymousUser
 	@Test
+	public void testBadUrlArgs_shouldDirectToManagedErrorPage404() throws Exception {
+		String responseStr = mvc.perform(get("/browse/viewFo").param("id", "-999999")).andExpect(status().isNotFound())
+				.andReturn().getRequest().getContentAsString();
+		assertTrue(responseStr.contains("id=\"generalErrorPage\""));
+	}
+
+	@WithAnonymousUser
+	@Test
 	public void testManageFOControllerAccess_withNonLoggedInUser_shouldRedirectToLogin302() throws Exception {
 		mvc.perform(get("/manage/editFo").param("id", "26")).andExpect(status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
@@ -58,13 +66,13 @@ public class UserRedirectionIntegrationTest {
 	public void testAdminControllerAccess_withLoggedInNonAdminUser_shouldBeForbidden() throws Exception {
 		String responseString = mvc.perform(get("/admin/home")).andExpect(status().isOk()).andReturn().getResponse()
 				.getContentAsString();
-		assertTrue(responseString.contains("id=\"forbiddenByRoleError\""));
+		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
 		responseString = mvc.perform(get("/admin/selectFileForComparison")).andExpect(status().isOk()).andReturn()
 				.getResponse().getContentAsString();
-		assertTrue(responseString.contains("id=\"forbiddenByRoleError\""));
+		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
 		responseString = mvc.perform(get("/admin/importProgramsFromFile")).andExpect(status().isOk()).andReturn()
 				.getResponse().getContentAsString();
-		assertTrue(responseString.contains("id=\"forbiddenByRoleError\""));
+		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
 	}
 
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })

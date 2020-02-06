@@ -38,9 +38,8 @@ public class UserRedirectionIntegrationTest {
 	@WithAnonymousUser
 	@Test
 	public void testBadUrlArgs_shouldDirectToManagedErrorPage404() throws Exception {
-		String responseStr = mvc.perform(get("/browse/viewFo").param("id", "-999999")).andExpect(status().isNotFound())
-				.andReturn().getRequest().getContentAsString();
-		assertTrue(responseStr.contains("id=\"generalErrorPage\""));
+		mvc.perform(get("/browse/viewFo").param("id", "-999999")).andExpect(status().isNotFound())
+				.andExpect(status().reason("No such Funding Opporutnity"));
 	}
 
 	@WithAnonymousUser

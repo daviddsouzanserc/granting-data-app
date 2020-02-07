@@ -26,6 +26,7 @@ import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 @SpringBootTest(classes = GrantingDataApp.class)
 @ActiveProfiles("test")
 public class AdminServiceIntegrationTest {
+
 	@Autowired
 	AdminService adminService;
 
@@ -38,6 +39,8 @@ public class AdminServiceIntegrationTest {
 
 	static String testFoName = "TESTFO";
 
+	private static final String TEST_FILE = "NAMIS-TestFileBase1.xlsx";
+
 	/* TEST UTIL FUNCTION */
 	FundingCycleDatasetRow createFcDatasetRow(String foName, String year) {
 		FundingCycleDatasetRow retval = new FundingCycleDatasetRow();
@@ -48,6 +51,11 @@ public class AdminServiceIntegrationTest {
 		retval.setProgramNameFr(foName + "-fr");
 		retval.setNumReceivedApps(100);
 		return retval;
+	}
+
+	@Test
+	public void test_adminCanRegisterSFOandSFC() throws Exception {
+		assertEquals(2, adminService.applyChangesFromFileByIds(TEST_FILE, new String[] { "AANSE-2009", "BCPIR-2004" }));
 	}
 
 	@Test

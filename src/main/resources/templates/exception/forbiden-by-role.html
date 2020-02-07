@@ -3,12 +3,12 @@
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
 <title>Data store - Home</title>
 </head>
-<body>
+<body id="forbiddenByRoleErrorPage">
 	<div class="container">
 		<h2>ERROR</h2>
 		<div class="alert alert-danger" role="alert">
 		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-		  <span class="sr-only" id="forbiddenByRoleError">Error:</span>
+		  <span class="sr-only" >Error:</span>
 			  Your account does not have the proper role to access this page. 
 		</div>
 		<p>Please contact support central for any questions.</p>

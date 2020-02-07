@@ -2,22 +2,33 @@ package ca.gc.tri_agency.granting_data.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
 import ca.gc.tri_agency.granting_data.model.GrantingSystem;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
+import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
@@ -29,13 +40,18 @@ public class AdminServiceIntegrationTest {
 
 	@Autowired
 	AdminService adminService;
-
 	@Autowired
 	SystemFundingCycleRepository sfcRepo;
 	@Autowired
 	SystemFundingOpportunityRepository sfoRepo;
 	@Autowired
 	GrantingSystemRepository gsRepo;
+	@Autowired
+	FundingOpportunityRepository foRepo;
+	@Autowired
+	private WebApplicationContext context;
+
+	private MockMvc mvc;
 
 	static String testFoName = "TESTFO";
 
@@ -51,6 +67,39 @@ public class AdminServiceIntegrationTest {
 		retval.setProgramNameFr(foName + "-fr");
 		retval.setNumReceivedApps(100);
 		return retval;
+	}
+
+	@Test
+	@WithAnonymousUser
+	public void test_userMustBeAuthorizedBeforeRegisteringSFOandSFC_shouldReturn401() throws Exception {
+		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+		MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
+		paramMap.add("fileName", TEST_FILE);
+		paramMap.add("idToAction", "AANSE-2014");
+		mvc.perform(post("/admin/analyzeFoUploadData").queryParams(paramMap)).andExpect(status().isUnauthorized());
+	}
+
+	@Test
+	public void test_regsiterSFCwhenSFOalreadyExists() {
+		SystemFundingOpportunity sfo = new SystemFundingOpportunity();
+
+		// sfo.setExtId(RandomStringUtils.randomAlphabetic(10));
+
+		sfo.setLinkedFundingOpportunity(foRepo.findById(26L).get());
+		sfo.setGrantingSystem(gsRepo.findById(25L).get());
+		sfo.setNameEn(RandomStringUtils.randomAlphabetic(10));
+		sfo.setNameFr(RandomStringUtils.randomAlphabetic(10));
+		sfoRepo.save(sfo);
+
+		sfoRepo.findAll().forEach(sysFo -> System.out.printf(
+				"%nID = %d%nExtension ID = %s%nGranting System = %s%nLinked FO Name = %s%nEnglish Name = %s%nFrench Name = %s%n%n",
+				sysFo.getId(), sysFo.getExtId(), sysFo.getGrantingSystem().getNameEn(),
+				sysFo.getLinkedFundingOpportunity().getNameEn(), sysFo.getNameEn(), sysFo.getNameFr()));
+
+		// invoked a method that creates the corresponding SFC
+
+		// assert that the sfo in the database has a reference to the corresponding SFC
+		// that was just created
 	}
 
 	@Test

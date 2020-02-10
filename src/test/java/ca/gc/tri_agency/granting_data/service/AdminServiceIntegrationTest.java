@@ -71,7 +71,7 @@ public class AdminServiceIntegrationTest {
 
 	@Test
 	@WithAnonymousUser
-	public void test__applyChangesFromFileByIds_unauthorizedUserShouldReturn401() throws Exception {
+	public void test_userMustBeAuthorizedBeforeRegisteringSFOandSFC_shouldReturn401() throws Exception {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 		MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
 		paramMap.add("fileName", TEST_FILE);
@@ -111,7 +111,7 @@ public class AdminServiceIntegrationTest {
 	}
 
 	@Test
-	public void test_applyChangesFromFileByIs_registerSFOandSFC() throws Exception {
+	public void test_adminCanRegisterSFOandSFC() throws Exception {
 		assertEquals(2, adminService.applyChangesFromFileByIds(TEST_FILE, new String[] { "AANSE-2009", "BCPIR-2004" }));
 	}
 

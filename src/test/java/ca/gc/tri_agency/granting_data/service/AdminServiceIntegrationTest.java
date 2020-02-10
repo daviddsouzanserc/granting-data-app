@@ -80,13 +80,14 @@ public class AdminServiceIntegrationTest {
 	}
 
 	@Test
-	public void test_regsiterSFCwhenSFOalreadyExists() {
+	public void test_applyChangesFromFileByIds_regsiterSFCwhenSFOalreadyExists() {
+		String targetYear = "2009";
+		String sfoName = "SAMPLE";
 		SystemFundingOpportunity sfo = new SystemFundingOpportunity();
 
 		// sfo.setExtId(RandomStringUtils.randomAlphabetic(10));
 
-		sfo.setLinkedFundingOpportunity(foRepo.findById(26L).get());
-		sfo.setGrantingSystem(gsRepo.findById(25L).get());
+		sfo.setGrantingSystem(gsRepo.findByAcronym("NAMIS"));
 		sfo.setNameEn(RandomStringUtils.randomAlphabetic(10));
 		sfo.setNameFr(RandomStringUtils.randomAlphabetic(10));
 		sfoRepo.save(sfo);
@@ -96,10 +97,17 @@ public class AdminServiceIntegrationTest {
 				sysFo.getId(), sysFo.getExtId(), sysFo.getGrantingSystem().getNameEn(),
 				sysFo.getLinkedFundingOpportunity().getNameEn(), sysFo.getNameEn(), sysFo.getNameFr()));
 
+		adminService.applyChangesFromFileByIds("NAMIS-TestCase_registerSFCwhenSFOalreadyExists.xlsx",
+				new String[] { sfoName + "-" + targetYear });
+
 		// invoked a method that creates the corresponding SFC
 
 		// assert that the sfo in the database has a reference to the corresponding SFC
 		// that was just created
+
+		// TEST WILL NEED A CUSTOM FILE TO WORK WITH. REGISTER THE SFO FROM THE FILE
+		// (USING CONSTANT REFERENCES), SAVE IT THEN RUN THE ADMIN SERVICE
+		// regsiterSFCwhenSFOalreadyExists AND EVALUATE THE RESULTS
 	}
 
 	@Test

@@ -40,7 +40,16 @@ public class AnonymousUseCasesTest {
 		foId = Long.toString(foRepo.findAll().get(0).getId());
 	}
 
-	//
+	@WithAnonymousUser
+	@Test
+	public void test_anonUserCanViewFieldsOnViewFoPage_shouldSucceedWith200() throws Exception {
+		mvc.perform(get("/browse/viewFo").param("id", foId)).andExpect(status().isOk())
+				.andExpect(content().string(containsString("id=\"nameRow\"")))
+				.andExpect(content().string(containsString("id=\"leadAgencyRow\"")))
+				.andExpect(content().string(containsString("id=\"divisionRow\"")))
+				.andExpect(content().string(containsString("id=\"fundingTypeRow\"")))
+				.andExpect(content().string(containsString("id=\"programLeadRow\"")));
+	}
 
 	@WithAnonymousUser
 	@Test

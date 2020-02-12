@@ -7,19 +7,19 @@
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" > </div> 
 	<div class="container">
 		<h1>View Funding Opportunity</h1>
-		<div class="form-group row">
+		<div class="form-group row" id="nameRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.name}">Name</div>
 			<div class="col-sm-10" th:text="${fo.getLocalizedAttribute('name')}"></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="leadAgencyRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.leadAgency}">Lead Agency</div>
 			<div class="col-sm-10"><a th:if="${fo.leadAgency != null}" th:href="@{/browse/viewAgency(id=${fo.leadAgency.id})}" th:text="${fo.leadAgency.acronym}"></a></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="divisionRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.division}">Division</div>
 			<div class="col-sm-10" th:text="${fo.division}"></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="fundingTypeRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.fundingType}">Funding Type</div>
 			<div class="col-sm-10" th:text="${fo.fundingType}"></div>
 		</div>
@@ -39,7 +39,7 @@
 			<div class="col-sm-2 col-form-label" th:utext="#{form.awardSystem}">Award System</div>
 			<div class="col-sm-10" th:text="${fo.awardManagementSystem}"></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="programLeadRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.programLeadName}">Program Lead Name</div>
 			<div class="col-sm-10" th:text="${fo.programLeadName}"></div>
 		</div>

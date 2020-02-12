@@ -40,6 +40,8 @@ public class AnonymousUseCasesTest {
 		foId = Long.toString(foRepo.findAll().get(0).getId());
 	}
 
+	//
+
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCanViewFoPageInEnglish_shouldSucceed200() throws Exception {

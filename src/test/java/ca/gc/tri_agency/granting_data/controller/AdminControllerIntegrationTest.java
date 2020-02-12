@@ -3,6 +3,7 @@ package ca.gc.tri_agency.granting_data.controller;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -39,9 +41,19 @@ public class AdminControllerIntegrationTest {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 	}
 
+	@WithMockUser(roles = { "MDM ADMIN" })
+	@Test
+	public void test_onlyAdminCanAddFiscalYears_shouldSucceedWith302() throws Exception {
+//		whenever a POST is tried in the Manage FO controller, a 403 forbidden is
+//		returned; thus this test fails
+		mvc.perform(post("/manage/addFiscalYears").param("year", "2030")).andDo(MockMvcResultHandlers.print())
+				.andExpect(status().isFound()).andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewFiscalYear"));
+	}
+
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_nonAdminUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
+//		this only works with HTTP GET and not POST (which is what I think it should be)
 		mvc.perform(get("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
@@ -55,6 +67,7 @@ public class AdminControllerIntegrationTest {
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
+//		this only works with HTTP GET and not POST (which is what I think it should be)
 		mvc.perform(get("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
@@ -68,6 +81,7 @@ public class AdminControllerIntegrationTest {
 	@WithMockUser(roles = { "MDM ADMIN" })
 	@Test
 	public void test_onlyAdminCanAddFundingOpportunities_shouldSucceedWith302() throws Exception {
+//		this only works with HTTP GET and not a POST (which is what I think it should be)
 		mvc.perform(get("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")

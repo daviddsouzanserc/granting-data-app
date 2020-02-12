@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"  id="/browse/viewFoPage" th:lang="${#locale.language}">
+<html xmlns:th="http://www.thymeleaf.org"  id="/browse/viewFoPage">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-<title>Granting Data - View Funding Opportunity</title>
+<title th:utext="#{title.viewFoPage}">Granting Data - View Funding Opportunity</title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" > </div> 

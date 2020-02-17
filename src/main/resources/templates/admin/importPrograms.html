@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-        <title>Import programs</title>
+        <title th:text="#{title.importPrograms}"></title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('import')}"></div>
 	<div class="container">
-    	<h1>Import Programs from file</h1>
-    	<p>Click below to import the programs</p>
+    	<h1 th:text="#{th.importProgramsFromFile}"></h1>
+    	<p th:text="#{p.clickToImport}"></p>
         <form th:action="@{importProgramsFromFile}" method="post">
-            <div><input class="btn btn-primary" type="submit" value="Import"/></div>
+            <div><input class="btn btn-primary" type="submit" th:value="#{input.import}" /></div>
         </form>
 	</div>
 </body>

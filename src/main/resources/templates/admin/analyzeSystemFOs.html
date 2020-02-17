@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
-	<title>Granting Data - Analyze System Funding Opportunities</title>
+	<title th:text="#{title.analyzeSystemFos}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
@@ -15,15 +15,15 @@
 	<div class="section">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8">
-				<h1>System Funding Opportunities - Analyze Links</h1>
+				<h1 th:text="#{link.SFosAnalyze}"></h1>
 				<table id="dataTable" class="display">
 			       <!-- Header Table -->
 			       <thead>
 			            <tr>
-			                <th>Ext Id</th>
-			                <th>Name</th>
-			                <th>Granting System</th>
-			                <th>Linked to</th>
+			                <th th:text="#{th.extId}"></th>
+			                <th th:text="#{th.name}"></th>
+			                <th th:text="#{th.gs}"></th>
+			                <th th:text="#{th.linkedTo}"></th>
 			            </tr>
 			        </thead>
 			        <tbody>
@@ -33,7 +33,7 @@
 							<td th:text="${fo.grantingSystem.nameEn}"></td>
 							<th>
 								<a th:if="${fo.linkedFundingOpportunity != null}" th:href="@{../browse/viewFo(id=${fo.linkedFundingOpportunity.id})}" th:text="${fo.linkedFundingOpportunity.nameEn}" ></a>
-								<div th:if="${fo.linkedFundingOpportunity == null}">Not Linked</div>
+								<div th:if="${fo.linkedFundingOpportunity == null}" th:text="#{msg.notLinked}"></div>
 							</th>
 						</tr>
 					</tbody>

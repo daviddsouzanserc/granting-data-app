@@ -2,49 +2,49 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
 <meta charset="ISO-8859-1">
-<title>Granting Data - Create Funding Cycle</title>
+<title th:text="#{title.createFc}"></title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
 	<div class="container">
 		<form action="#" th:action="@{addGrantingCapabilities}" th:object="${gc}" method="post">            		
         	<!-- <input type="hidden" th:field="*{id}" />  -->
-			<h1>Add Granting Capability</h1>
+			<h1 th:text="#{h.addGc}"></h1>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Description</div>
+				<div class="col-sm-2 col-form-label" th:text="#{th.description}"></div>
 				<div><input type="text" th:field="*{description}" class="col-sm-10"  /></div>
-				<div th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
+				<div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" th:text="#{err.description}"></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">URL</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.url}"></div>
 				<div><input type="text" th:field="*{url}" class="col-sm-10"  /></div>
-				<div th:if="${#fields.hasErrors('url')}" th:errors="*{url}">URL Error</div>
+				<div th:if="${#fields.hasErrors('url')}" th:errors="*{url}" th:text="#{err.url}"></div>
 			</div>
 			<input type="hidden" name="fundingOpportunity" th:value="${foId}" />
 			
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Granting Stage</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.gs}"></div>
 				<div><select class="col-sm-2" th:field="*{grantingStage}">
 					<option th:each="stage : ${grantingStages}"
 						th:value="${stage.id}"
 						th:text="${stage.getLocalizedAttribute('name')}"></option>
 				</select></div>
-				<div th:if="${#fields.hasErrors('grantingStage')}" th:errors="*{grantingStage}">Granting Stage Error</div>
+				<div th:if="${#fields.hasErrors('grantingStage')}" th:errors="*{grantingStage}" th:text="#{err.gs}"></div>
 			</div>
 			
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Granting System</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.gSys}"></div>
 				<div><select class="col-sm-2" th:field="*{grantingSystem}">
 					<option th:each="system : ${grantingSystems}"
 						th:value="${system.id}"
 						th:text="${system.acronym}"></option>
 				</select></div>
-				<div th:if="${#fields.hasErrors('grantingSystem')}" th:errors="*{grantingSystems}">Granting System Error</div>
+				<div th:if="${#fields.hasErrors('grantingSystem')}" th:errors="*{grantingSystems}" th:text="#{err.gSys}"></div>
 			</div>
 			
 			
 			
-			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
+			<input type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}" />
 		</form>
 		
 		

@@ -38,7 +38,7 @@
 							<td th:text="${fo.getLocalizedAttribute('programName')}" ></td>
 							<td>
 								<div th:switch="${#arrays.contains(actionRowIds, fo.foCycle)}">
-									<label th:text="#{msg.forAction}" th:case="true" style="padding-right: 4px; font-weight: normal"></label><input type="checkbox" name="idToAction" th:value="${fo.foCycle}" checked="checked" /> 
+									<label th:utext="#{msg.forAction}" th:case="true" style="font-weight: normal"></label><input type="checkbox" name="idToAction" th:value="${fo.foCycle}" checked="checked" /> 
 									<label th:text="#{msg.exists}" th:case="false" style="font-weight: normal"></label>
 									<label th:case="*" style="font-weight: normal">???</label>
 								</div>

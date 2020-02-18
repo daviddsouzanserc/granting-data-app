@@ -13,10 +13,10 @@
 		<div th:if="${param.logout}" th:text="#{msg.loggedOut}"></div>
 		<form th:action="@{/login}" method="post">
 			<div>
-				<label th:text="#{label.username}" style="padding-right: 4px"> </label><input type="text" name="username" />
+				<label th:utext="#{label.username}"> </label><input type="text" name="username" />
 			</div>
 			<div>
-				<label th:text="#{label.password}" style="padding-right: 4px"> </label><input type="password" name="password" />
+				<label th:utext="#{label.password}"> </label><input type="password" name="password" />
 			</div>
 			<div>
 				<input type="submit" th:value="#{input.signIn}" />

@@ -1,6 +1,7 @@
 package ca.gc.tri_agency.granting_data.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
+import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = GrantingDataApp.class)
@@ -33,6 +35,8 @@ public class AdminControllerIntegrationTest {
 
 	@Autowired
 	private WebApplicationContext context;
+	@Autowired
+	private FundingOpportunityRepository foRepo;
 
 	private MockMvc mvc;
 
@@ -47,20 +51,20 @@ public class AdminControllerIntegrationTest {
 //		whenever a POST is tried in the Manage FO controller, a 403 forbidden is
 //		returned; thus this test fails
 		mvc.perform(post("/manage/addFiscalYears").param("year", "2030")).andDo(MockMvcResultHandlers.print())
-				.andExpect(status().isFound()).andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewFiscalYear"));
+				.andExpect(status().isCreated());// .andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewFiscalYear"));
 	}
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_nonAdminUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
 //		this only works with HTTP GET and not POST (which is what I think it should be)
-		mvc.perform(get("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
+		mvc.perform(post("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
 				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
 				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
-				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isOk())
+				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isFound())
 				.andExpect(content().string(containsString("id=\"forbiddenByRoleErrorPage\"")));
 	}
 
@@ -68,21 +72,22 @@ public class AdminControllerIntegrationTest {
 	@Test
 	public void test_anonUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
 //		this only works with HTTP GET and not POST (which is what I think it should be)
-		mvc.perform(get("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
+		mvc.perform(post("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
 				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
 				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
-				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isFound())
+				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isCreated())
 				.andExpect(redirectedUrl("http://localhost/login"));
 	}
 
 	@WithMockUser(roles = { "MDM ADMIN" })
 	@Test
 	public void test_onlyAdminCanAddFundingOpportunities_shouldSucceedWith302() throws Exception {
-//		this only works with HTTP GET and not a POST (which is what I think it should be)
-		mvc.perform(get("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
+		Long numFos = foRepo.count();
+
+		mvc.perform(post("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
@@ -90,6 +95,8 @@ public class AdminControllerIntegrationTest {
 				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
 				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isFound())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/browse/goldenList"));
+
+		assertEquals(numFos + 1, foRepo.count());
 	}
 
 	@WithAnonymousUser

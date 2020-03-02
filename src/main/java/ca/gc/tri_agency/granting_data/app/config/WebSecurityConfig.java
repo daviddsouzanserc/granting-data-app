@@ -110,6 +110,9 @@ public class WebSecurityConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 
+			http.authorizeRequests().antMatchers("/h2/**").access("hasRole('MDM ADMIN')").and().headers().frameOptions()
+					.disable().and().csrf().disable();
+
 			http.authorizeRequests()
 					.antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**", "/browse/**")
 					.permitAll().and().authorizeRequests().antMatchers("/entities/**", "/reports/**")

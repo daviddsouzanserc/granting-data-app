@@ -20,12 +20,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
+import ca.gc.tri_agency.granting_data.repo.FiscalYearRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 
 @RunWith(SpringRunner.class)
@@ -37,6 +37,8 @@ public class AdminControllerIntegrationTest {
 	private WebApplicationContext context;
 	@Autowired
 	private FundingOpportunityRepository foRepo;
+	@Autowired
+	FiscalYearRepository fyRepo;
 
 	private MockMvc mvc;
 
@@ -47,45 +49,65 @@ public class AdminControllerIntegrationTest {
 
 	@WithMockUser(roles = { "MDM ADMIN" })
 	@Test
-	public void test_onlyAdminCanAddFiscalYears_shouldSucceedWith302() throws Exception {
-//		whenever a POST is tried in the Manage FO controller, a 403 forbidden is
-//		returned; thus this test fails
-		mvc.perform(post("/manage/addFiscalYears").param("year", "2030")).andDo(MockMvcResultHandlers.print())
-				.andExpect(status().isCreated());// .andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewFiscalYear"));
+	/*
+	 * B/c it took me a while to figure out how to complete deliverable 14752, I
+	 * added this test. I'm not certain that the ability to add a Fiscal Year is
+	 * meant for the first release. Nevertheless, this test fails. However, this
+	 * failure properly reflects the fact that the Add a Fiscal Year feature does
+	 * not add one. Also, no error message is displayed to show that the Fiscal Year
+	 * was not added, and, as a side not, no error message will be displayed if you
+	 * try to add one that lies outside of the boundaries (1999 and 2050).
+	 */
+	public void test_onlyAdminCanAddFiscalYears_shouldSucceedWith200() throws Exception {
+		long numFys = fyRepo.count();
+
+		mvc.perform(post("/manage/addFiscalYears").param("year", "2030")).andExpect(status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.forwardedUrl("/browse/viewFiscalYear"));
+
+		// verify that a fiscal year was added
+		assertEquals(numFys + 1, fyRepo.count());
 	}
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_nonAdminUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
-//		this only works with HTTP GET and not POST (which is what I think it should be)
+		long numFos = foRepo.count();
+
 		mvc.perform(post("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
 				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
 				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
-				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isFound())
+				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isOk())
 				.andExpect(content().string(containsString("id=\"forbiddenByRoleErrorPage\"")));
+
+		// verify that a FO was not added
+		assertEquals(numFos, foRepo.count());
 	}
 
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
-//		this only works with HTTP GET and not POST (which is what I think it should be)
+		long numFos = foRepo.count();
+
 		mvc.perform(post("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
 				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
 				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
-				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isCreated())
+				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("http://localhost/login"));
+
+		// verify that a FO was not added
+		assertEquals(numFos, foRepo.count());
 	}
 
 	@WithMockUser(roles = { "MDM ADMIN" })
 	@Test
 	public void test_onlyAdminCanAddFundingOpportunities_shouldSucceedWith302() throws Exception {
-		Long numFos = foRepo.count();
+		long numFos = foRepo.count();
 
 		mvc.perform(post("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
@@ -93,9 +115,10 @@ public class AdminControllerIntegrationTest {
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
 				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
 				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
-				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isFound())
+				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/browse/goldenList"));
 
+		// verify that a FO was added
 		assertEquals(numFos + 1, foRepo.count());
 	}
 

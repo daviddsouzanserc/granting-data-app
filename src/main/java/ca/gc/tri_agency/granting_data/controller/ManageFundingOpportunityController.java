@@ -213,7 +213,7 @@ public class ManageFundingOpportunityController {
 		return "manage/addFiscalYears";
 	}
 
-//	@AdminOnly
+	@AdminOnly
 	@PostMapping(value = "/addFiscalYears")
 	public String addFiscalYearsPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
 			Model model) throws Exception {

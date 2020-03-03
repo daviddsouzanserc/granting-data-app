@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
 	<meta charset="ISO-8859-1">
-	<title> Fiscal Year </title>
+	<title th:text="#{title.fy}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
@@ -19,8 +19,8 @@
 		
 				<thead>
 		            <tr>
-		                <th>Fiscal Year</th>
-		                <th> List of Funding Cycles </th>
+		                <th th:text="#{title.fy}"></th>
+		                <th th:text="#{th.fcsList}"></th>
 		              
 		            </tr>
 				</thead>
@@ -28,7 +28,7 @@
 				<tbody>
 	       			<tr th:each="fo : ${fiscalYears}">
 	       				<td><span th:text="${fo.year}"></span></td>
-	       				<td> <a class="btn btn-primary" th:href="@{viewFcFromFy(id=${fo.id})}" role="button">View</a> </td>
+	       				<td> <a class="btn btn-primary" th:href="@{viewFcFromFy(id=${fo.id})}" role="button" th:text="#{msg.view}"></a> </td>
 	           			   <!-- add expected applications -->
 	       			</tr>
    				</tbody>
@@ -40,7 +40,7 @@
          <br>
        
       	 <div style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;color:red">
-      	 <a href="http://localhost:8090/manage/addFiscalYears"> Add a Fiscal Year</a>
+      	 <a href="http://localhost:8090/manage/addFiscalYears" th:text="#{link.addFy}"></a>
       	 </div> 
 		</div>
 		<table id="error" class="display" style="display:flex; justify-content:flex-end; width:80%; margin-top:10px;color:red">

@@ -73,9 +73,6 @@ public class DataAccessServiceImpl implements DataAccessService {
 	public FundingOpportunity getFundingOpportunity(long id) {
 		return foRepo.findById(id)
 				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Opportunity does not exist"));
-		// Below is another option for exception handling; if you don't want a lot of
-		// information passed to the error page, then I think it should be used
-		// .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 
 	@Override

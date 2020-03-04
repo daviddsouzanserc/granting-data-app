@@ -9,6 +9,8 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.DirContextOperations;
@@ -34,8 +36,14 @@ public class UserRepo {
 	private String nsercOu = "NSERC_Users";
 	private String sshrcOu = "SSHRC1_Users";
 
-	// @Autowired
-	private LdapTemplate ldapTemplate;
+	@Autowired
+	@Qualifier("ldapTemplateNSERC")
+	private LdapTemplate ldapTemplateNSERC;
+
+	@Autowired
+	@Qualifier("ldapTemplateSSHRC")
+	private LdapTemplate ldapTemplateSSHRC;
+
 
 	public String getDnByUsername(String username) {
 
@@ -43,7 +51,7 @@ public class UserRepo {
 		filter.and(new EqualsFilter("objectclass", "person"));
 		filter.and(new WhitespaceWildcardsFilter("cn", username));
 
-		List<Object> result = ldapTemplate.search("", filter.toString(), new AbstractContextMapper<Object>() {
+		List<Object> result = ldapTemplateNSERC.search("", filter.toString(), new AbstractContextMapper<Object>() {
 			@Override
 			protected Object doMapFromContext(DirContextOperations ctx) {
 				return ctx.getNameInNamespace();
@@ -68,15 +76,15 @@ public class UserRepo {
 
 		String filter = "(&(objectclass=person)(cn=" + username + "))";
 
-		return ldapTemplate.search(LdapUtils.emptyLdapName(), filter, sc, new UserAttributesMapper());
+		return ldapTemplateNSERC.search(LdapUtils.emptyLdapName(), filter, sc, new UserAttributesMapper());
 	}
 
 	public User findPerson(String dn) {
-		return ldapTemplate.lookup(dn, new UserAttributesMapper());
+		return ldapTemplateNSERC.lookup(dn, new UserAttributesMapper());
 	}
 
 	public List<User> getAllPersons() {
-		return ldapTemplate.search(query().where("objectclass").is("person"), new UserAttributesMapper());
+		return ldapTemplateNSERC.search(query().where("objectclass").is("person"), new UserAttributesMapper());
 	}
 
 //	private String buildDn(User user) {

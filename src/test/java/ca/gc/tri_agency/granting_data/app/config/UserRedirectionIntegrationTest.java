@@ -5,6 +5,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +39,8 @@ public class UserRedirectionIntegrationTest {
 	@WithAnonymousUser
 	@Test
 	public void testBadUrlArgs_shouldDirectToManagedErrorPage404() throws Exception {
-		mvc.perform(get("/browse/viewFo").param("id", "-999999")).andExpect(status().isNotFound())
-				.andExpect(status().reason("No such Funding Opporutnity"));
+		mvc.perform(get("/browse/viewFo").param("id", String.valueOf(Long.MAX_VALUE))).andExpect(status().isNotFound())
+				.andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("id=\"generalErrorPage\"")));
 	}
 
 	@WithAnonymousUser

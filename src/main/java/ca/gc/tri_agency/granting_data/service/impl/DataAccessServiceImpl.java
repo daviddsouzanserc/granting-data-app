@@ -10,9 +10,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FiscalYear;
@@ -61,7 +60,8 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public SystemFundingOpportunity getSystemFO(long id) {
-		return systemFoRepo.getOne(id);
+		return systemFoRepo.findById(id)
+				.orElseThrow(() -> new DataRetrievalFailureException("That System Funding Opportunity does not exist"));
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 	@Override
 	public FundingOpportunity getFundingOpportunity(long id) {
 		return foRepo.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such Funding Opporutnity"));
+				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Opportunity does not exist"));
 	}
 
 	@Override
@@ -143,7 +143,8 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public Agency getAgency(long id) {
-		return agencyRepo.getOne(id);
+		return agencyRepo.findById(id)
+				.orElseThrow(() -> new DataRetrievalFailureException("That Agency does not exist"));
 	}
 
 	@Override
@@ -189,7 +190,8 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public FundingCycle getFundingCycle(long id) {
-		return fcRepo.getOne(id);
+		return fcRepo.findById(id)
+				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Cycle does not exist"));
 	}
 
 	public List<FundingCycle> getAllFundingCycles() {

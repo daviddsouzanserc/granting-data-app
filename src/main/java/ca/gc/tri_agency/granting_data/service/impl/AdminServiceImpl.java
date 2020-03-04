@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import com.ebay.xcelite.Xcelite;
@@ -273,8 +274,10 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public int linkSystemFO(long systemFoId, long foId) {
-		SystemFundingOpportunity systemFo = systemFoRepo.getOne(systemFoId);
-		FundingOpportunity fo = foRepo.getOne(foId);
+		SystemFundingOpportunity systemFo = systemFoRepo.findById(systemFoId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That System Funding Opportunity does not exist"));
+		FundingOpportunity fo = foRepo.findById(foId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Opportunity does not exist"));
 		systemFo.setLinkedFundingOpportunity(fo);
 		systemFoRepo.save(systemFo);
 		return 1;

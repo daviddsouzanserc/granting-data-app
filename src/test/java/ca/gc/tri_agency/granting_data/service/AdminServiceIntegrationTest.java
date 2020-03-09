@@ -19,6 +19,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -34,7 +35,6 @@ import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
-import ca.gc.tri_agency.granting_data.service.impl.AdminServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = GrantingDataApp.class)
@@ -53,8 +53,6 @@ public class AdminServiceIntegrationTest {
 	FundingOpportunityRepository foRepo;
 	@Autowired
 	private WebApplicationContext context;
-	@Autowired
-	private AdminServiceImpl adminServiceImpl;
 
 	private MockMvc mvc;
 
@@ -65,7 +63,7 @@ public class AdminServiceIntegrationTest {
 	/* TEST UTIL FUNCTION */
 	FundingCycleDatasetRow createFcDatasetRow(String foName, String year) {
 		FundingCycleDatasetRow retval = new FundingCycleDatasetRow();
-		retval.setCompetitionYear(Long.getLong("2019"));
+		retval.setCompetitionYear(2019L);
 		retval.setFoCycle(foName + "-" + year);
 		retval.setProgram_ID(foName);
 		retval.setProgramNameEn(foName + "-en");
@@ -76,13 +74,19 @@ public class AdminServiceIntegrationTest {
 
 	@Test
 	@WithAnonymousUser
-	public void test_applyChangesFromFileByIds_unauthorizedUserShouldReturn401() throws Exception {
+	/*
+	 * Changed this method because the application currently has the security setup
+	 * so that when an unauthorized user tries to access any page that requires
+	 * authentication, that unauthorized user is redirected to the login page.
+	 */
+	public void test_applyChangesFromFileByIds_unauthorizedUserShouldRedirectToLoginPage() throws Exception {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 		MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
 		paramMap.add("fileName", TEST_FILE);
 		String idToAction = adminService.getFundingCyclesFromFile(TEST_FILE).get(0).getFoCycle();
 		paramMap.add("idToAction", idToAction);
-		mvc.perform(post("/admin/analyzeFoUploadData").queryParams(paramMap)).andExpect(status().isUnauthorized());
+		mvc.perform(post("/admin/analyzeFoUploadData").queryParams(paramMap)).andExpect(status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
 	}
 
 	@Test
@@ -91,25 +95,15 @@ public class AdminServiceIntegrationTest {
 	public void test_applyChangesFromFileByIds_regsiterSFCwhenSFOalreadyExists() {
 		String targetYear = "2009";
 		String sfoName = "SAMPLE";
-//		String targetGrantingSystem = "NAMIS";
-
-		// CREATE "SAMPLE" SFO IN THE DB
-		SystemFundingOpportunity sfo = new SystemFundingOpportunity();
-//		sfo.setExtId(sfoName + "-" + targetYear);
-//		sfo.setGrantingSystem(gsRepo.findByAcronym(targetGrantingSystem));
-//		sfo.setNameEn("SAMPLE EN");
-//		sfo.setNameFr("SAMPLE FR");
-		sfoRepo.save(sfo);
 
 		/*
-		 * When invoking the applyChangesFromFileByIds method, an SFO with the
-		 * commented-out attributes above will be persisted so instead, a blank SFO is
-		 * being persisted so that we can obtain a base id value. In other words, the
-		 * SFO that will be added with the applyChangesFromFileByIds method should have
-		 * an id equal to the id of the blank SFO + 1. Also, Since the new SFO is
-		 * persisted in the applyChangesFromFileByIds method, we can't extract its id
-		 * until after that invocation, thus we must hard-code it.
+		 * A blank SFO is being persisted so that we can obtain a base id value. In
+		 * other words, the SFO that will be added with the applyChangesFromFileByIds
+		 * method should have an id equal to the id of the blank SFO + 1. Also, Since
+		 * the new SFO is persisted in the applyChangesFromFileByIds method, we can't
+		 * extract its id until after that invocation.
 		 */
+		sfoRepo.save(new SystemFundingOpportunity());
 
 		long idForLastSfo = sfoRepo.findAll().get((int) sfoRepo.count() - 1).getId();
 		sfcRepo.findAll().forEach(sfo0 -> System.out.println(sfo0.getId()));

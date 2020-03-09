@@ -309,10 +309,13 @@
     <changeSet author="dev_yab (generated)" id="1574353543232-50">
         <addForeignKeyConstraint baseColumnNames="participating_agencies_id" baseTableName="funding_opportunity_participating_agencies" constraintName="FKuip0ni018fonghd8p7e326g8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="agency"/>
     </changeSet>
-    <changeSet id="Add proper column increments for id columns of system_funding_opporutnity and system_funding_cycle" author="dev_aha">
+    <changeSet author="dev_aha" id="Add proper column increments for id columns of system_funding_opporutnity and system_funding_cycle">
     	<addAutoIncrement tableName="system_funding_opportunity" columnName="id" columnDataType="BIGINT" startWith="1" incrementBy="1" />
     	<addAutoIncrement tableName="system_funding_cycle" columnName="id" columnDataType="BIGINT" startWith="1" incrementBy="1" /> 
     </changeSet>
+    <changeSet author="dev_aha" id="convert data type for fiscal_year column in the table system_funding_cycle">
+    	<modifyDataType tableName="system_funding_cycle" columnName="fiscal_year" newDataType="BIGINT"/>
+    </changeSet> 
     
 </databaseChangeLog>
 

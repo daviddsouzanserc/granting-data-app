@@ -6,8 +6,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -125,11 +123,7 @@ public class AdminServiceImpl implements AdminService {
 	public SystemFundingCycle registerSystemFundingCycle(FundingCycleDatasetRow row,
 			SystemFundingOpportunity targetSfo) {
 		SystemFundingCycle retval = new SystemFundingCycle();
-		try {
-			retval.setFiscalYear(new SimpleDateFormat("yyyy").parse("" + row.getCompetitionYear()));
-		} catch (ParseException e) {
-			LOG.log(Level.WARN, "Invalid year:" + row.getCompetitionYear());
-		}
+		retval.setFiscalYear(row.getCompetitionYear());
 		retval.setExtId(row.getFoCycle());
 		retval.setSystemFundingOpportunity(targetSfo);
 		retval.setNumAppsReceived(row.getNumReceivedApps());

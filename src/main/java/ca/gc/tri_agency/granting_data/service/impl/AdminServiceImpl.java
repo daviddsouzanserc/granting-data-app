@@ -112,7 +112,7 @@ public class AdminServiceImpl implements AdminService {
 	public SystemFundingOpportunity registerSystemFundingOpportunity(FundingCycleDatasetRow row,
 			GrantingSystem targetSystem) {
 		SystemFundingOpportunity retval = new SystemFundingOpportunity();
-		retval.setExtId(row.getProgram_ID());
+		retval.setExtId(row.getFoCycle());
 		retval.setNameEn(row.getProgramNameEn());
 		retval.setNameFr(row.getProgramNameFr());
 		retval.setGrantingSystem(targetSystem);

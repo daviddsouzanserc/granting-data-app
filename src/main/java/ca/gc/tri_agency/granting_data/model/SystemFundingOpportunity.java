@@ -12,7 +12,7 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 @Entity
 public class SystemFundingOpportunity implements LocalizedParametersModel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String extId;

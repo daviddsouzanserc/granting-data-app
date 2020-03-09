@@ -309,7 +309,11 @@
     <changeSet author="dev_yab (generated)" id="1574353543232-50">
         <addForeignKeyConstraint baseColumnNames="participating_agencies_id" baseTableName="funding_opportunity_participating_agencies" constraintName="FKuip0ni018fonghd8p7e326g8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="agency"/>
     </changeSet>
-
+    <changeSet id="Add proper column increments for id columns of system_funding_opporutnity and system_funding_cycle" author="dev_aha">
+    	<addAutoIncrement tableName="system_funding_opportunity" columnName="id" columnDataType="BIGINT" startWith="1" incrementBy="1" />
+    	<addAutoIncrement tableName="system_funding_cycle" columnName="id" columnDataType="BIGINT" startWith="1" incrementBy="1" /> 
+    </changeSet>
+    
 </databaseChangeLog>
 
 

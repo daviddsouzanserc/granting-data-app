@@ -1,5 +1,6 @@
 package ca.gc.tri_agency.granting_data.service;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -90,28 +91,50 @@ public class AdminServiceIntegrationTest {
 	public void test_applyChangesFromFileByIds_regsiterSFCwhenSFOalreadyExists() {
 		String targetYear = "2009";
 		String sfoName = "SAMPLE";
-		String targetGrantingSystem = "NAMIS";
+//		String targetGrantingSystem = "NAMIS";
 
 		// CREATE "SAMPLE" SFO IN THE DB
 		SystemFundingOpportunity sfo = new SystemFundingOpportunity();
-		sfo.setExtId(sfoName);
-		sfo.setGrantingSystem(gsRepo.findByAcronym(targetGrantingSystem));
-		sfo.setNameEn("SAMPLE EN");
-		sfo.setNameFr("SAMPLE FR");
+//		sfo.setExtId(sfoName + "-" + targetYear);
+//		sfo.setGrantingSystem(gsRepo.findByAcronym(targetGrantingSystem));
+//		sfo.setNameEn("SAMPLE EN");
+//		sfo.setNameFr("SAMPLE FR");
 		sfoRepo.save(sfo);
-		// VERIFY THAT THE SAMPLE FO IS IN THE DB
-		List<SystemFundingOpportunity> sfoList = sfoRepo.findByExtId(sfoName);
-		assertEquals(1, sfoList.size());
-		long newSfoId = sfoList.get(0).getId();
-		int origCountOfSFCsLinkedToSFO = sfcRepo.findByExtIdAndSystemFundingOpportunityId(sfoName, newSfoId).size();
+
+		/*
+		 * When invoking the applyChangesFromFileByIds method, an SFO with the
+		 * commented-out attributes above will be persisted so instead, a blank SFO is
+		 * being persisted so that we can obtain a base id value. In other words, the
+		 * SFO that will be added with the applyChangesFromFileByIds method should have
+		 * an id equal to the id of the blank SFO + 1. Also, Since the new SFO is
+		 * persisted in the applyChangesFromFileByIds method, we can't extract its id
+		 * until after that invocation, thus we must hard-code it.
+		 */
+
+		long idForLastSfo = sfoRepo.findAll().get((int) sfoRepo.count() - 1).getId();
+		sfcRepo.findAll().forEach(sfo0 -> System.out.println(sfo0.getId()));
+
+		int origCountOfSFCsLinkedToSFO = sfcRepo
+				.findByExtIdAndSystemFundingOpportunityId(sfoName + "-" + targetYear, idForLastSfo + 1).size();
 
 		// ADD A CYCLE TO "SAMPLE" thought the service
 		final String testFileName = "NAMIS-TestCase_registerSFCwhenSFOalreadyExists.xlsx";
 		adminService.applyChangesFromFileByIds(testFileName, new String[] { sfoName + "-" + targetYear });
 
-		int newCountOfSFCsLinkedToSFO = sfcRepo.findByExtIdAndSystemFundingOpportunityId(sfoName, newSfoId).size();
-		assertEquals(origCountOfSFCsLinkedToSFO + 1, newCountOfSFCsLinkedToSFO);
+		int newCountOfSFCsLinkedToSFO = sfcRepo
+				.findByExtIdAndSystemFundingOpportunityId(sfoName + "-" + targetYear, idForLastSfo + 1).size();
 
+		/*
+		 * This assertTrue and the first assertEquals are added b/c we want to ensure
+		 * that origCountOfSFCsLinkedToSFO uses the same SFO extId and SFO id as
+		 * newCountOfSFCsLinkedToSFO.
+		 */
+		int lastIdx = (int) sfoRepo.count() - 1;
+		SystemFundingOpportunity addedSfo = sfoRepo.findAll().get(lastIdx);
+		assertTrue(addedSfo.getExtId().equals(sfoName + "-" + targetYear));
+		assertEquals(addedSfo.getId(), idForLastSfo + 1);
+
+		assertEquals(origCountOfSFCsLinkedToSFO + 1, newCountOfSFCsLinkedToSFO);
 	}
 
 	@Test

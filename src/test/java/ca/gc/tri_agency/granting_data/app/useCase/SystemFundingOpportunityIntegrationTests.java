@@ -1,6 +1,7 @@
 package ca.gc.tri_agency.granting_data.app.useCase;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
@@ -48,6 +50,20 @@ public class SystemFundingOpportunityIntegrationTests {
 	}
 
 	@Test
+	@Transactional
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	public void test_adminCanUnlinkFoFromSfo_shouldSucceedWith200() throws Exception {
+		assertTrue(sfoRepo.getOne(1L).getLinkedFundingOpportunity() != null);
+		mvc.perform(MockMvcRequestBuilders.post("/admin/confirmUnlink").param("sfoId", "1"))
+				.andExpect(MockMvcResultMatchers.flash().attribute("linkedFoId", null))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/viewSystemFO"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+		assertTrue(sfoRepo.getOne(1L).getLinkedFundingOpportunity() == null);
+	}
+
+	@Test
+	@Transactional(readOnly = true)
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	public void test_unlinkFoConfirmationPageAccessableByAdmin_shouldSucceedWith200() throws Exception {
 		String sfoName = sfoRepo.getOne(1L).getNameEn();

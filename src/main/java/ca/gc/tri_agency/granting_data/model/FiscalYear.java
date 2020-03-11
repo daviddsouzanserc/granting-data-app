@@ -15,7 +15,7 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 public class FiscalYear implements LocalizedParametersModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotNull(message = "The year should not be Null")

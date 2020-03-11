@@ -1,5 +1,7 @@
 package ca.gc.tri_agency.granting_data.app.useCase;
 
+import static org.junit.Assert.assertFalse;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,11 +30,13 @@ public class SystemFundingOpportunityIntegrationTests {
 	private WebApplicationContext ctx;
 
 	@Autowired
-	// SFO data is added through the src/main/resources/db/h2-only-data.xml file
 	private SystemFundingOpportunityRepository sfoRepo;
 
 	private MockMvc mvc;
 
+	/*
+	 * SFO data is added through the src/main/resources/db/h2-only-data.xml file
+	 */
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(ctx).apply(SecurityMockMvcConfigurers.springSecurity()).build();
@@ -40,7 +44,15 @@ public class SystemFundingOpportunityIntegrationTests {
 
 	@Test
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
-	public void test_unlinkFoBtnVisibleToAdmin_shouldReturn200() throws Exception {
+	public void test_unlinkFoBtnNotVisibleToAdminWhenSfoNotLinkedToFo() throws Exception {
+		assertFalse(mvc.perform(MockMvcRequestBuilders.get("/admin/viewSystemFO").param("id", "2"))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
+				.contains("id=\"unlinkSfoBtn\""));
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	public void test_unlinkFoBtnVisibleToAdminWhenSfoLinkedToFo() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/admin/viewSystemFO").param("id", "1"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("id=\"unlinkSfoBtn\"")));

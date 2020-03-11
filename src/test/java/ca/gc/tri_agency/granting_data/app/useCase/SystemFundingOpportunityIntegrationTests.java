@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
+import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,10 +33,14 @@ public class SystemFundingOpportunityIntegrationTests {
 	@Autowired
 	private SystemFundingOpportunityRepository sfoRepo;
 
+	@Autowired
+	private FundingOpportunityRepository foRepo;
+
 	private MockMvc mvc;
 
 	/*
-	 * SFO data is added through the src/main/resources/db/h2-only-data.xml file
+	 * All test data is added through the src/main/resources/db/h2-only-data.xml
+	 * file
 	 */
 	@Before
 	public void setup() {
@@ -44,7 +49,17 @@ public class SystemFundingOpportunityIntegrationTests {
 
 	@Test
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
-	public void test_unlinkFoBtnNotVisibleToAdminWhenSfoNotLinkedToFo() throws Exception {
+	public void test_unlinkFoConfirmationPageAccessableByAdmin_shouldSucceedWith200() throws Exception {
+		String sfoName = sfoRepo.getOne(1L).getNameEn();
+		String foName = foRepo.getOne(26L).getNameEn();
+		mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlinkOfFO").param("sfoId", "1"))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
+				.contains("Are you sure you want to unlink the " + foName + " from " + sfoName + "?");
+	}
+
+	@Test
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	public void test_unlinkFoBtnNotVisibleToAdminWhenFoNotLinkedToSfo() throws Exception {
 		assertFalse(mvc.perform(MockMvcRequestBuilders.get("/admin/viewSystemFO").param("id", "2"))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
 				.contains("id=\"unlinkSfoBtn\""));
@@ -52,7 +67,7 @@ public class SystemFundingOpportunityIntegrationTests {
 
 	@Test
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
-	public void test_unlinkFoBtnVisibleToAdminWhenSfoLinkedToFo() throws Exception {
+	public void test_unlinkFoBtnVisibleToAdminWhenFoLinkedToSfo() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/admin/viewSystemFO").param("id", "1"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("id=\"unlinkSfoBtn\"")));

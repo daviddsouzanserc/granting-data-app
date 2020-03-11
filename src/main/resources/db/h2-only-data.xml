@@ -18,6 +18,7 @@
 			<column name="ext_id" value="SAMPLE EXT ID 2" />
 			<column name="name_en" value="NAME EN 2" />
 			<column name="name_fr" value="NAME FR 2" />
+			<column name="granting_system_id" value="21" />
 		</insert>
 
 	</changeSet>

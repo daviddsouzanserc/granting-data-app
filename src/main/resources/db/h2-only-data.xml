@@ -1,25 +1,26 @@
 <databaseChangeLog
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-	<changeSet author="dev_aha" id="sample SFO data" dbms="h2">
-		<insert tableName="system_funding_opportunity">
-			<column name="id" value="1" />
-			<column name="ext_id" value="SAMPLE EXT ID" />
-			<column name="name_en" value="NAME EN" />
-			<column name="name_fr" value="NAME FR" />
-			<column name="granting_system_id" value="20" />
-			<column name="linked_funding_opportunity_id" value="26" />
-		</insert>
-		<insert tableName="system_funding_opportunity">
-			<column name="id" value="2" />
-			<column name="ext_id" value="SAMPLE EXT ID 2" />
-			<column name="name_en" value="NAME EN 2" />
-			<column name="name_fr" value="NAME FR 2" />
-			<column name="granting_system_id" value="21" />
-		</insert>
+    <changeSet author="dev_aha" id="sample SFO data" dbms="h2">
+        <insert tableName="system_funding_opportunity">
+            <column name="id" value="1" />
+            <column name="ext_id" value="SAMPLE EXT ID" />
+            <column name="name_en" value="NAME EN" />
+            <column name="name_fr" value="NAME FR" />
+            <column name="granting_system_id" value="20" />
+            <column name="linked_funding_opportunity_id"
+                value="26" />
+        </insert>
+        <insert tableName="system_funding_opportunity">
+            <column name="id" value="2" />
+            <column name="ext_id" value="SAMPLE EXT ID 2" />
+            <column name="name_en" value="NAME EN 2" />
+            <column name="name_fr" value="NAME FR 2" />
+            <column name="granting_system_id" value="21" />
+        </insert>
 
-	</changeSet>
+    </changeSet>
 </databaseChangeLog>

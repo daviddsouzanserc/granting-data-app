@@ -6,10 +6,11 @@
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('')}" ></div>
 	<div class="container">
-		<h1>Search User</h1> <!--  th:utext="${fundingOpp.searchUser}" --> 
+		<h1 th:text="#{h.searchUser}"></h1> <!--  th:utext="${fundingOpp.searchUser}" --> 
 		<form action="#" th:action="@{searchUser}"  method="get" id="searchUserForm">
 			
 			<div class="form-group row">
+				
 				<div class="col-sm-2 col-form-label" th:utext="#{searchUser.nameEn}">Name EN</div>
 				<div><input type="text" name="username" /></div>
 			</div>

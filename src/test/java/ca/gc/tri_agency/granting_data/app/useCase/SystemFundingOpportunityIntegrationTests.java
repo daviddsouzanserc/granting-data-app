@@ -70,7 +70,8 @@ public class SystemFundingOpportunityIntegrationTests {
 		String foName = foRepo.getOne(26L).getNameEn();
 		mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlinkOfFO").param("sfoId", "1"))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
-				.contains("Are you sure you want to unlink the " + foName + " from " + sfoName + "?");
+				.contains("Are you sure you want to unlink the System Funding Opportunity named " + sfoName
+						+ " from the Funding Opportunity named " + foName + "?");
 	}
 
 	@Test

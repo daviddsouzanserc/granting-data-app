@@ -3,6 +3,7 @@ package ca.gc.tri_agency.granting_data.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
+import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
 import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.AdminService;
@@ -23,10 +26,24 @@ import ca.gc.tri_agency.granting_data.service.DataAccessService;
 public class AdminController {
 
 	@Autowired
-	AdminService adminService;
+	private AdminService adminService;
 
 	@Autowired
-	DataAccessService dataSevice;
+	private DataAccessService dataSevice;
+
+	@GetMapping(value = "/confirmUnlink", params = "sfoId")
+	public String unlinkSfoFromFo_get(@RequestParam("sfoId") long sfoId, Model model) {
+		SystemFundingOpportunity sfo = dataSevice.getSystemFO(sfoId);
+		FundingOpportunity fo = sfo.getLinkedFundingOpportunity();
+		if (fo == null) {
+			throw new DataRetrievalFailureException(
+					"That System Funding Opportunity is not linked to a Funding Opportunity");
+		}
+		model.addAttribute("sfo", sfo);
+		model.addAttribute("fo", fo);
+
+		return "/admin/confirmUnlink";
+	}
 
 	@GetMapping("/selectFileForComparison")
 	public String compareData_selectDatasetUploadFile(Model model) {

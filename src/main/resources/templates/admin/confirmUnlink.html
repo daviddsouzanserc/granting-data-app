@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
+<title th:text="#{title.confirmUnlink}"></title>
+</head>
+<body>
+	<div th:insert="~{fragments/general.html :: header_nav('datasets')}"></div>
+	<div class="container">
+		<p th:text="#{p.confirmUnlink(${sfo.getLocalizedAttribute('name')},${fo.getLocalizedAttribute('name')})}" style="font-size:14pt; font-weight=bold;"></p>
+		<div>
+		<button style="font-size:12pt; font-weight=bold;" class="btn btn-primary" th:text="#{msg.confirm}" formaction="@{'/admin/viewSystemFO'(id=${sfo.id})}" formmethod="post"></button>
+		<a style="font-size:12pt;" class="btn btn-primary" th:href="@{'/admin/viewSystemFO'(id=${sfo.id})}" th:text="#{msg.cancel}"></a>
+		</div>
+	</div>							 
+</body>
+</html>

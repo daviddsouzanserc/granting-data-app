@@ -9,8 +9,8 @@ public class FundingCycleDatasetRow implements LocalizedParametersModel {
 	@Column(name = "FO_Cycle")
 	private String foCycle;
 
-//@Column(name = "Competition_Year")
-	private Long competitionYear;
+	@Column(name = "Competition_Year")
+	private long competitionYear;
 
 	@Column(name = "Program_ID")
 	private String Program_ID;
@@ -64,11 +64,11 @@ public class FundingCycleDatasetRow implements LocalizedParametersModel {
 		this.programNameFr = programNameFr;
 	}
 
-	public Long getCompetitionYear() {
+	public long getCompetitionYear() {
 		return competitionYear;
 	}
 
-	public void setCompetitionYear(Long competitionYear) {
+	public void setCompetitionYear(long competitionYear) {
 		this.competitionYear = competitionYear;
 	}
 }

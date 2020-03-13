@@ -6,8 +6,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import com.ebay.xcelite.Xcelite;
@@ -112,7 +111,7 @@ public class AdminServiceImpl implements AdminService {
 	public SystemFundingOpportunity registerSystemFundingOpportunity(FundingCycleDatasetRow row,
 			GrantingSystem targetSystem) {
 		SystemFundingOpportunity retval = new SystemFundingOpportunity();
-		retval.setExtId(row.getProgram_ID());
+		retval.setExtId(row.getFoCycle());
 		retval.setNameEn(row.getProgramNameEn());
 		retval.setNameFr(row.getProgramNameFr());
 		retval.setGrantingSystem(targetSystem);
@@ -125,11 +124,7 @@ public class AdminServiceImpl implements AdminService {
 	public SystemFundingCycle registerSystemFundingCycle(FundingCycleDatasetRow row,
 			SystemFundingOpportunity targetSfo) {
 		SystemFundingCycle retval = new SystemFundingCycle();
-		try {
-			retval.setFiscalYear(new SimpleDateFormat("yyyy").parse("" + row.getCompetitionYear()));
-		} catch (ParseException e) {
-			LOG.log(Level.WARN, "Invalid year:" + row.getCompetitionYear());
-		}
+		retval.setFiscalYear(row.getCompetitionYear());
 		retval.setExtId(row.getFoCycle());
 		retval.setSystemFundingOpportunity(targetSfo);
 		retval.setNumAppsReceived(row.getNumReceivedApps());
@@ -273,8 +268,10 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public int linkSystemFO(long systemFoId, long foId) {
-		SystemFundingOpportunity systemFo = systemFoRepo.getOne(systemFoId);
-		FundingOpportunity fo = foRepo.getOne(foId);
+		SystemFundingOpportunity systemFo = systemFoRepo.findById(systemFoId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That System Funding Opportunity does not exist"));
+		FundingOpportunity fo = foRepo.findById(foId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Opportunity does not exist"));
 		systemFo.setLinkedFundingOpportunity(fo);
 		systemFoRepo.save(systemFo);
 		return 1;

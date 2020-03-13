@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-<title>Granting Data - Admin Home</title>
+<title th:text="#{title.adminHome}"></title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	<div class="container">
-		<h1>Admin Home</h1>
+		<h1 th:text="#{link.admin.home}"></h1>
 		<div th:if="${actionMessage != null}" th:text="${actionMessage}"></div>
-        <p>Please choose one of the following options</p>
+        <p th:text="#{p.admin.home.chooseOption}"></p>
         <ol>
-	        <li><a href="selectFileForComparison">Select file for data analysis and upload</a></li>
-	        <li><a href="analyzeSystemFOs">Analyze System FOs links to FOs</a></li>
-	        <li><a href="importProgramsFromFile">Upload Golden list</a></li>
+	        <li><a href="selectFileForComparison" th:text="#{link.selectFileForComparison}"></a></li>
+	        <li><a href="analyzeSystemFOs" th:text="#{link.analyzeSFos}"></a></li>
+	        <li><a href="importProgramsFromFile" th:text="#{link.importProgramsFromFile}"></a></li>
         </ol>
 	</div>
    </body>

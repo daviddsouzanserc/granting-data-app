@@ -1,30 +1,30 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"  id="/browse/viewFoPage">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-<title>Granting Data - View Funding Opportunity</title>
+<title th:utext="#{title.viewFoPage}"></title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" > </div> 
 	<div class="container">
-		<h1>View Funding Opportunity</h1>
-		<div class="form-group row">
+		<h1 th:utext="#{h.viewFo}"></h1>
+		<div class="form-group row" id="nameRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.name}">Name</div>
 			<div class="col-sm-10" th:text="${fo.getLocalizedAttribute('name')}"></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="leadAgencyRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.leadAgency}">Lead Agency</div>
 			<div class="col-sm-10"><a th:if="${fo.leadAgency != null}" th:href="@{/browse/viewAgency(id=${fo.leadAgency.id})}" th:text="${fo.leadAgency.acronym}"></a></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="divisionRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.division}">Division</div>
 			<div class="col-sm-10" th:text="${fo.division}"></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="fundingTypeRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.fundingType}">Funding Type</div>
 			<div class="col-sm-10" th:text="${fo.fundingType}"></div>
 		</div>
 		<div class="form-group row">
-			<div class="col-sm-2 col-form-label">Number of agencies</div>
+			<div class="col-sm-2 col-form-label" th:text="#{form.numAgencies}"></div>
 			<div class="col-sm-10" th:text="${#lists.size(fo.participatingAgencies)}"></div>
 		</div>
 		<div class="form-group row">
@@ -39,7 +39,7 @@
 			<div class="col-sm-2 col-form-label" th:utext="#{form.awardSystem}">Award System</div>
 			<div class="col-sm-10" th:text="${fo.awardManagementSystem}"></div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" id="programLeadRow">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.programLeadName}">Program Lead Name</div>
 			<div class="col-sm-10" th:text="${fo.programLeadName}"></div>
 		</div>
@@ -52,17 +52,17 @@
 			</div>
 		</div>
 		<div class="form-group row">
-			<div><h3>Granting Capabilities</h3></div>
+			<div><h3 th:text="#{h.grantingCapabilities}"></h3></div>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-10">
 				<table id="grantingCapabilitiesTable" class="table table-bordered">
 				<thead>
 					<tr>
-						<td>Description</td>
-						<td>URL</td>
-						<td>Granting Stage</td>
-						<td>Granting System</td>
+						<td th:text="#{th.description}"></td>
+						<td th:text="#{th.url}"></td>
+						<td th:text="#{th.grantingStage}"></td>
+						<td th:text="#{th.gs}"></td>
 						<td></td>
 					</tr>
 
@@ -84,17 +84,17 @@
 		</div>
 		
 		<div class="form-group row">
-			<div><h3>Funding Cycles</h3></div>
+			<div><h3 th:text="#{h.fcs}"></h3></div>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-10">
 				<table id="fundingCycles" class="table table-bordered">
 				<thead>
 					<tr>
-						<td>Year</td>
-						<td>Start Date (System / Planned)</td>
-						<td>End Date (System / Planned)</td>
-						<td># of Applications (expected / received)</td>
+						<td th:text="#{th.yr}"></td>
+						<td th:text="#{th.startDateSystemPlanned}"></td>
+						<td th:text="#{th.endDateSystemPlanned}"></td>
+						<td th:text="#{th.numApps}"></td>
 					</tr>
 
 				</thead>
@@ -111,7 +111,7 @@
 			</div>
 		</div>
 	
-		<a class="btn btn-primary" th:href="@{/manage/manageFo(id=${fo.id})}" role="button">Manage Funding Opportunity</a>
+		<a class="btn btn-primary" th:href="@{/manage/manageFo(id=${fo.id})}" role="button" th:text="#{link.manageFo}"></a>
 	</div>
 	
 	

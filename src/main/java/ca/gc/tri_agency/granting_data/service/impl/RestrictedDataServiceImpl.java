@@ -3,6 +3,7 @@ package ca.gc.tri_agency.granting_data.service.impl;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,9 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 		if (leadUserDn == null) {
 			// return;??
 		}
-		FundingOpportunity foToUpdate = foRepo.getOne(foId);
+		FundingOpportunity foToUpdate = foRepo.findById(foId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Opportunity does not exist"));
+		;
 		User person = userRepo.findPerson(leadUserDn);
 		foToUpdate.setProgramLeadName(person.getUsername());
 		foToUpdate.setProgramLeadDn(leadUserDn);
@@ -57,7 +60,8 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 
 	@Override
 	public void setFoLeadContributor(long foId, User user) {
-		FundingOpportunity foToUpdate = foRepo.getOne(foId);
+		FundingOpportunity foToUpdate = foRepo.findById(foId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Opportunity does not exist"));
 		foToUpdate.setProgramLeadDn(user.getDn());
 		foToUpdate.setProgramLeadName(user.getUsername());
 		foRepo.save(foToUpdate);

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{::script})}">
 <meta charset="ISO-8859-1">
-<title>Granting Data - Edit Funding Cycle</title>
+<title th:text="#{title.editFc}"></title>
 <script>
       $(document).ready(function() { 
        $("#isOpen").click(function() {
@@ -16,7 +16,7 @@
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" />
 	<div class="container">
 		<form action="#" th:action="@{editFc}" th:object="${fc}" method="post">            		
-			<h1>Edit Funding Cycle</h1>
+			<h1 th:text="#{h.editFc}"></h1>
 <!-- 			<div class="form-group row"> -->
 <!-- 				<div class="col-sm-2 col-form-label">Competition Year</div> -->
 <!-- 				<div><input type="date" th:field="*{compYear}" class="col-sm-2"  /></div> -->
@@ -24,66 +24,69 @@
 <!-- 			</div> -->
 
 			<div class="form-group row">
-			<div class="col-sm-2 col-form-label">Fiscal Year</div>
+			<div class="col-sm-2 col-form-label" th:text="#{form.fy}"></div>
 			<select  th:field="*{fiscalYear}">
-				<option th:each="i : ${fy}" th:value="${i.id}" th:text= "${i.getYear()}">Fiscal Year</option>
+				<option th:each="i : ${fy}" th:value="${i.id}" th:text= "${i.getYear()}" ></option>
 			</select>
 			</div>
 			
 			
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Is Open Ended?</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.isOpenEnded}"></div>
 				<div><input id="isOpen" type="checkbox" th:field="*{open}" class="col-sm-2"  /></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Start Date</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.startDate}"></div>
 				<div><input id="startDate" type="date" th:field="*{startDate}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}">Start Date Error</div>
+				<div th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" th:text="#{err.startDate}"></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">End Date</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.endDate}"></div>
 				<div><input id="endDate" type="date" th:field="*{endDate}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}">End Date Error</div>
+				<div th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" th:text="#{err.endDate}"></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Number of Expected Applications</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.numAppsExpected}"></div>
 				<div><input th:field="*{expectedApplications}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}">Expected Applications Error</div>
+				<div th:if="${#fields.hasErrors('expectedApplications')}" th:errors="*{expectedApplications}" th:text="#{err.expectedApps}"></div>
 			</div>
-
-			<b>NOI </b> <br> <br>
+			
+			<div th:utext="#{msg.boldNOI}"></div>
+			
+			<br>
+			
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Start Date</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.startDate}"></div>
 				<div><input id="startDateNOI" type="date" th:field="*{startDateNOI}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('startDateNOI')}" th:errors="*{startDateNOI}">Start Date Error</div>
+				<div th:if="${#fields.hasErrors('startDateNOI')}" th:errors="*{startDateNOI}" th:text="#{err.startDate}"></div>
 			</div>
 			
 			
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">End Date</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.endDate}"></div>
 				<div><input id="endDateNOI" type="date" th:field="*{endDateNOI}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('endDateNOI')}" th:errors="*{endDateNOI}">End Date Error</div>
+				<div th:if="${#fields.hasErrors('endDateNOI')}" th:errors="*{endDateNOI}" th:text="#{err.endDate}"></div>
 			</div>
-		
-
-		
-
-			<b> LOI </b> <br> <br>
+			
+			<div th:utext="#{msg.boldLOI}"></div>
+			
+			<br>
+					
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Start Date</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.startDate}"></div>
 				<div><input id="startDateLOI" type="date" th:field="*{startDateLOI}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('startDateLOI')}" th:errors="*{startDateLOI}">Start Date Error</div>
+				<div th:if="${#fields.hasErrors('startDateLOI')}" th:errors="*{startDateLOI}" th:text="#{err.startDate}"></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">End Date</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.endDate}"></div>
 				<div><input id="endDateLOI" type="date" th:field="*{endDateLOI}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('endDateLOI')}" th:errors="*{endDateLOI}">End Date Error</div>
+				<div th:if="${#fields.hasErrors('endDateLOI')}" th:errors="*{endDateLOI}" th:text="#{err.endDate}"></div>
 			</div>
 
 
 			
 			<input type="hidden" th:field="*{id}" /> 
-			<input type="submit" class="btn btn-primary" role="button" th:value="Submit" />
+			<input type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}" />
 		</form>
 		
 		

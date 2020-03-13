@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
-	<title>Data store - View Agency</title>
+	<title th:text="#{title.viewAgency}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
@@ -124,8 +124,8 @@
 	</style>
 	<div th:insert="~{fragments/general.html :: header_nav('entities')}" />
 	<div class="container">
-		<h1>Funding Cycle Calendar</h1>
-		<p>This view shows the opening and closing dates of upcomming funding opportunities</p>
+		<h1 th:text="#{h.fcCal}"></h1>
+		<p th:text="#{p.browse.viewCal.upcoming}"></p>
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-1" style="text-align: center;"><a th:href="@{viewCalendar(plusMinusMonth=${minusMonth})}"> << </a></div>
@@ -133,13 +133,13 @@
 				<div class="col-md-1" style="text-align: center;"><a th:href="@{viewCalendar(plusMinusMonth=${plusMonth})}">>></a></div>
 			</div>
 			<div class="row">
-				<div class="col-md-1 cal-weekday-header">Sun</div>
-				<div class="col-md-1 cal-weekday-header">Mon</div>
-				<div class="col-md-1 cal-weekday-header">Tue</div>
-				<div class="col-md-1 cal-weekday-header">Wed</div>
-				<div class="col-md-1 cal-weekday-header">Thu</div>
-				<div class="col-md-1 cal-weekday-header">Fri</div>
-				<div class="col-md-1 cal-weekday-header">Sat</div>
+				<div class="col-md-1 cal-weekday-header" th:text="#{day.su}"></div>
+				<div class="col-md-1 cal-weekday-header" th:text="#{day.m}"></div>
+				<div class="col-md-1 cal-weekday-header" th:text="#{day.tu}"></div>
+				<div class="col-md-1 cal-weekday-header" th:text="#{day.w}"></div>
+				<div class="col-md-1 cal-weekday-header" th:text="#{day.th}"></div>
+				<div class="col-md-1 cal-weekday-header" th:text="#{day.f}"></div>
+				<div class="col-md-1 cal-weekday-header" th:text="#{day.sa}"></div>
 			</div>
 			
 			

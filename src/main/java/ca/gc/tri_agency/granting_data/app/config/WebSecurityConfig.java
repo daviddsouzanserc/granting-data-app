@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
@@ -110,8 +111,7 @@ public class WebSecurityConfig {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 
-			http.authorizeRequests().antMatchers("/h2/**").access("hasRole('MDM ADMIN')").and().headers().frameOptions()
-					.disable().and().csrf().disable();
+			configureH2Console(http);
 
 			http.authorizeRequests()
 					.antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**", "/browse/**")
@@ -119,6 +119,12 @@ public class WebSecurityConfig {
 					.hasAnyRole("NSERC_USER", "SSHRC_USER", "AGENCY_USER").anyRequest().authenticated().and()
 					.formLogin().loginPage("/login").permitAll().and().logout().permitAll().and().exceptionHandling()
 					.accessDeniedPage("/exception/forbiden-by-role");
+		}
+
+		@Profile("local")
+		private void configureH2Console(HttpSecurity http) throws Exception {
+			http.authorizeRequests().antMatchers("/h2**").access("hasRole('MDM ADMIN')").and().headers().frameOptions()
+					.disable().and().csrf().disable();
 		}
 	}
 

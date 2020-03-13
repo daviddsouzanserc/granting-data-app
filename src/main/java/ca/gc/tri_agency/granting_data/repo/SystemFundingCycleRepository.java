@@ -9,4 +9,6 @@ import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 public interface SystemFundingCycleRepository extends JpaRepository<SystemFundingCycle, Long> {
 	List<SystemFundingCycle> findBySystemFundingOpportunityId(Long id);
 
+	List<SystemFundingCycle> findByExtIdAndSystemFundingOpportunityId(String sfoName, long newSfoId);
+
 }

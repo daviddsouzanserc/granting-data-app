@@ -1,30 +1,29 @@
 package ca.gc.tri_agency.granting_data.model;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
 public class SystemFundingCycle implements LocalizedParametersModel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String extId;
 
 	private Long numAppsReceived;
 
-	@Temporal(TemporalType.DATE)
-	private Date fiscalYear;
+	@Min(1978) // this is the smallest value in all of the Excel data set files
+	@Max(2050)
+	private Long fiscalYear;
 
 	@ManyToOne
 	@JoinColumn(name = "system_funding_opportunity_id")
@@ -46,11 +45,11 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 		this.extId = extId;
 	}
 
-	public Date getFiscalYear() {
+	public Long getFiscalYear() {
 		return fiscalYear;
 	}
 
-	public void setFiscalYear(Date compYear) {
+	public void setFiscalYear(Long compYear) {
 		this.fiscalYear = compYear;
 	}
 

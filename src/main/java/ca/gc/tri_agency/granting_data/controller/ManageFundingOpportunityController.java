@@ -49,7 +49,7 @@ public class ManageFundingOpportunityController {
 
 	@GetMapping(value = "/searchUser")
 	public String searchUserForm() {
-		return "fundingOpp/searchUser";
+		return "manage/searchUser";
 	}
 
 	@GetMapping(value = "/manageFo")

@@ -10,6 +10,8 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.hamcrest.Matchers;
+
 //import java.io.FileNotFoundException;
 //import java.io.IOException;
 //import java.nio.file.Files;
@@ -42,6 +44,7 @@ public class AdminUseCasesTest {
 	private WebApplicationContext context;
 
 	private MockMvc mvc;
+	private String foId;
 
 	@Autowired
 	private FundingOpportunityRepository foRepo;
@@ -49,6 +52,13 @@ public class AdminUseCasesTest {
 	@Before
 	public void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+	}
+
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	@Test
+	public void test_formVisibleOnSearchUserPage_shouldSucceedWith200() throws Exception {
+		mvc.perform(get("/manage/searchUser")).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.content().string(Matchers.containsString("id=\"searchUserForm\"")));
 	}
 
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
@@ -61,7 +71,8 @@ public class AdminUseCasesTest {
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	public void testSelectFileForCopmarisonFilePageLinkRequests() throws Exception {
-		mvc.perform(get("/admin/analyzeFoUploadData").param("filename", "NAMIS-TestFile.xlsx")).andExpect(status().isOk());
+		mvc.perform(get("/admin/analyzeFoUploadData").param("filename", "NAMIS-TestFile.xlsx"))
+				.andExpect(status().isOk());
 	}
 
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
@@ -73,14 +84,16 @@ public class AdminUseCasesTest {
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	public void testChangeProgramLeadLink_visibleWithAdminUser() throws Exception {
-		mvc.perform(get("/manage/manageFo").param("id", "26")).andExpect(status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string(containsString("href=\"editProgramLead?id=26\"")));
+		foId = foRepo.findAll().get(0).getId().toString();
+		mvc.perform(get("/manage/manageFo").param("id", foId)).andExpect(status().isOk()).andExpect(
+				MockMvcResultMatchers.content().string(containsString("href=\"editProgramLead?id=" + foId + "\"")));
 	}
-	
+
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	public void testViewEditProgramLead_withAdminUser_expectOk() throws Exception {
-		mvc.perform(get("/manage/editProgramLead").param("id", "26")).andExpect(status().isOk());
+		foId = foRepo.findAll().get(0).getId().toString();
+		mvc.perform(get("/manage/editProgramLead").param("id", foId)).andExpect(status().isOk());
 	}
 
 }

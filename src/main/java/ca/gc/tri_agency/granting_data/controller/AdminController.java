@@ -1,8 +1,13 @@
 package ca.gc.tri_agency.granting_data.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
@@ -31,8 +37,11 @@ public class AdminController {
 	@Autowired
 	private DataAccessService dataSevice;
 
-	@GetMapping(value = "/confirmUnlink", params = "sfoId")
-	public String unlinkSfoFromFo_get(@RequestParam("sfoId") long sfoId, Model model) {
+	@Autowired
+	private MessageSource msgSource;
+
+	@GetMapping(value = "/confirmUnlink")
+	public String unlinkSfoFromFo_get(@RequestParam long sfoId, Model model) {
 		SystemFundingOpportunity sfo = dataSevice.getSystemFO(sfoId);
 		FundingOpportunity fo = sfo.getLinkedFundingOpportunity();
 		if (fo == null) {
@@ -43,6 +52,24 @@ public class AdminController {
 		model.addAttribute("fo", fo);
 
 		return "/admin/confirmUnlink";
+	}
+
+	@PostMapping(value = "/confirmUnlink")
+	public String unlinkSfoFromFo_post(@RequestParam long sfoId, Model model, RedirectAttributes redirectAttributes) {
+		SystemFundingOpportunity sfo = dataSevice.getSystemFO(sfoId);
+		FundingOpportunity fo = dataSevice.getSystemFO(sfoId).getLinkedFundingOpportunity();
+
+		adminService.unlinkSystemFO(sfoId, fo.getId());
+
+		String wasUnlinkedFrom = msgSource.getMessage("msg.unlinkedPerformedMsg", null,
+				LocaleContextHolder.getLocale());
+		redirectAttributes.addFlashAttribute("actionMessage",
+				sfo.getLocalizedAttribute("name") + wasUnlinkedFrom + fo.getLocalizedAttribute("name"));
+
+		model.addAttribute("systemFO", sfo);
+		model.addAttribute("fosForLink", dataSevice.getAllFundingOpportunities());
+
+		return "redirect:/admin/viewSystemFO?id=" + sfoId;
 	}
 
 	@GetMapping("/selectFileForComparison")
@@ -94,10 +121,15 @@ public class AdminController {
 	}
 
 	@GetMapping("/viewSystemFO")
-	public String viewSystemFO(@RequestParam Long id, Model model) {
+	public String viewSystemFO(@RequestParam Long id, Model model, HttpServletRequest request) {
+		Map<String, ?> inFlashMap = RequestContextUtils.getInputFlashMap(request);
+		if (inFlashMap != null) {
+			model.addAttribute("unlinkedPerformedMsg", inFlashMap.get("actionMessage"));
+		}
+
 		model.addAttribute("systemFO", dataSevice.getSystemFO(id));
 		model.addAttribute("fosForLink", dataSevice.getAllFundingOpportunities());
-		return "admin/viewSystemFo";
+		return "admin/viewSystemFO";
 	}
 
 	@PostMapping(value = "/registerFOLink")

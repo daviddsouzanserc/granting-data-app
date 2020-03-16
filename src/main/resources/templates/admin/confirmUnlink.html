@@ -6,10 +6,12 @@
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('datasets')}"></div>
 	<div class="container">
-		<p th:text="#{p.confirmUnlink(${sfo.getLocalizedAttribute('name')},${fo.getLocalizedAttribute('name')})}" style="font-size:14pt; font-weight=bold;"></p>
+		<p th:text="#{p.confirmUnlink(${sfo.getLocalizedAttribute('name')},${fo.getLocalizedAttribute('name')})}" style="font-size:12pt; font-weight=bold;"></p>
 		<div>
-		<button style="font-size:12pt; font-weight=bold;" class="btn btn-primary" th:text="#{msg.confirm}" formaction="@{'/admin/viewSystemFO'(id=${sfo.id})}" formmethod="post"></button>
-		<a style="font-size:12pt;" class="btn btn-primary" th:href="@{'/admin/viewSystemFO'(id=${sfo.id})}" th:text="#{msg.cancel}"></a>
+		<form action="#" th:action="@{'/admin/confirmUnlink'(sfoId=${sfo.id})}" method="post">
+			<input type="submit" class="btn btn-primary" role="button" th:value="#{msg.confirm}" />
+			<a class="btn btn-primary" th:href="@{'/admin/viewSystemFO'(id=${sfo.id})}" th:text="#{msg.cancel}"></a>
+		</form>
 		</div>
 	</div>							 
 </body>

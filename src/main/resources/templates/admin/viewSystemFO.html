@@ -11,8 +11,9 @@
 	</script>
 </head>
 <body>
-	<div th:insert="~{fragments/general.html :: header_nav('datasets')}" />
+	<div th:insert="~{fragments/general.html :: header_nav('datasets')}"></div> 
 	<div class="container">
+		<h3 th:if="${unlinkedPerformedMsg != null}" th:utext="${unlinkedPerformedMsg}"></h3>
 		<h1 th:text="#{h.viewSFo}"></h1>
 		<div class="form-group row">
 			<div class="col-sm-2 col-form-label" th:text="#{form.name}"></div>

@@ -273,6 +273,21 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public int unlinkSystemFO(long systemFoId, long foId) {
+		SystemFundingOpportunity systemFo = systemFoRepo.findById(systemFoId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That System Funding Opportunity does not exist"));
+		FundingOpportunity fo = foRepo.findById(foId)
+				.orElseThrow(() -> new DataRetrievalFailureException("That Funding Opportunity does not exist"));
+		if (systemFo.getLinkedFundingOpportunity() != fo) {
+			throw new DataRetrievalFailureException(
+					"System Funding Opportunity is not linked with that Funding Opportunity");
+		}
+		systemFo.setLinkedFundingOpportunity(null);
+		systemFoRepo.save(systemFo);
+		return 1;
+	}
+
+	@Override
 	public int linkSystemFO(long systemFoId, long foId) {
 		SystemFundingOpportunity systemFo = systemFoRepo.findById(systemFoId)
 				.orElseThrow(() -> new DataRetrievalFailureException("That System Funding Opportunity does not exist"));

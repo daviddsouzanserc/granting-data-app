@@ -43,8 +43,7 @@ public class SystemFundingOpportunityIntegrationTests {
 	private MockMvc mvc;
 
 	/*
-	 * All test data is added through the src/main/resources/db/h2-only-data.xml
-	 * file
+	 * All test data comes from src/main/resources/db/h2-only-data.xml
 	 */
 	@Before
 	public void setup() {
@@ -54,14 +53,17 @@ public class SystemFundingOpportunityIntegrationTests {
 	@Test
 	@Transactional
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
-	public void test_adminCanUnlinkFoFromSfo_shouldSucceedWith200() throws Exception {
+	public void test_adminCanUnlinkFoFromSfo_shouldRedirectToViewSystemFo() throws Exception {
 		assertTrue(sfoRepo.getOne(1L).getLinkedFundingOpportunity() != null);
 		mvc.perform(MockMvcRequestBuilders.post("/admin/confirmUnlink").param("sfoId", "1"))
-				.andExpect(MockMvcResultMatchers.flash().attribute("linkedFoId", null))
+				.andExpect(MockMvcResultMatchers.flash().attributeCount(1))
+				.andExpect(MockMvcResultMatchers.flash().attributeExists("actionMessage"))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/viewSystemFO"))
-				.andExpect(MockMvcResultMatchers.status().isOk());
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/viewSystemFO?id=1"));
 		assertTrue(sfoRepo.getOne(1L).getLinkedFundingOpportunity() == null);
+		// when the page is refreshed, the flash attribute should disappear
+		mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "1"))
+				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
 	}
 
 	@Test

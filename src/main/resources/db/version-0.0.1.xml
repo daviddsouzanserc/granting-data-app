@@ -319,6 +319,7 @@
     <changeSet author="dev_aha" id="fiscal_yearProperIdGeneration">
         <addAutoIncrement tableName="fiscal_year" columnName="id" startWith="1" incrementBy="1" columnDataType="BIGINT" />
     </changeSet>
+    
 
 </databaseChangeLog>
 

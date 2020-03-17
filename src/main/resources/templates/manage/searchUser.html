@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-<title th:text="#{title.home}"></title>
+<title>Granting Data</title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('')}" ></div>
 	<div class="container">
 		<h1 th:text="#{h.searchUser}"></h1> <!--  th:utext="${fundingOpp.searchUser}" --> 
-		<form action="#" th:action="@{searchUser}"  method="get">
+		<form action="#" th:action="@{searchUser}"  method="get" id="searchUserForm">
 			
 			<div class="form-group row">
+				
 				<div class="col-sm-2 col-form-label" th:utext="#{searchUser.nameEn}">Name EN</div>
 				<div><input type="text" name="username" /></div>
 			</div>
@@ -36,4 +37,5 @@
 	</div>
 	
 </body>
+
 </html>

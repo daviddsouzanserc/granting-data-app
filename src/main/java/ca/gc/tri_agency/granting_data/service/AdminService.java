@@ -21,6 +21,8 @@ public interface AdminService {
 
 	public int linkSystemFO(long systemFoId, long foId);
 
+	public int unlinkSystemFO(long systemFoId, long foId);
+
 	SystemFundingOpportunity registerSystemFundingOpportunity(FundingCycleDatasetRow row, GrantingSystem targetSystem);
 
 	SystemFundingCycle registerSystemFundingCycle(FundingCycleDatasetRow row, SystemFundingOpportunity targetSfo);

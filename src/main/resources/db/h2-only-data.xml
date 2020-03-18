@@ -8,7 +8,7 @@
 			<column name="name_en" value="NAME EN" />
 			<column name="name_fr" value="NAME FR" />
 			<column name="granting_system_id" value="1" />
-			<column name="linked_funding_opportunity_id" value="null" />
+			<column name="linked_funding_opportunity_id" value="1" />
 		</insert>
 		<insert tableName="system_funding_opportunity">
 			<column name="id" valueComputed="seq_system_funding_opportunity.nextval" />

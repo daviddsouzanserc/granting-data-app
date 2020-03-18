@@ -10,4 +10,6 @@ public interface SystemFundingOpportunityRepository extends JpaRepository<System
 	SystemFundingOpportunity findByLinkedFundingOpportunityId(Long id);
 
 	List<SystemFundingOpportunity> findByExtId(String id);
+
+	List<SystemFundingOpportunity> findByNameEn(String name);
 }

@@ -96,39 +96,28 @@ public class AdminServiceIntegrationTest {
 		String targetYear = "2009";
 		String sfoName = "SAMPLE";
 
-		/*
-		 * A blank SFO is being persisted so that we can obtain a base id value. In
-		 * other words, the SFO that will be added with the applyChangesFromFileByIds
-		 * method should have an id equal to the id of the blank SFO + 1. Also, Since
-		 * the new SFO is persisted in the applyChangesFromFileByIds method, we can't
-		 * extract its id until after that invocation.
-		 */
-		sfoRepo.save(new SystemFundingOpportunity());
+		// create new test SFO with no SFCs
+		SystemFundingOpportunity newSfo = new SystemFundingOpportunity();
+		newSfo.setNameEn(sfoName + " EN");
+		newSfo.setNameFr(sfoName + " FR");
+		newSfo.setExtId(sfoName);
 
-		long idForLastSfo = sfoRepo.findAll().get((int) sfoRepo.count() - 1).getId();
-		sfcRepo.findAll().forEach(sfo0 -> System.out.println(sfo0.getId()));
+		// List<GrantingSystem> gsList = gsRepo.findAll();
+		newSfo.setGrantingSystem(gsRepo.findByAcronym("NAMIS"));
+		newSfo = sfoRepo.save(newSfo);
+		List<SystemFundingOpportunity> sfoMatchingNames = sfoRepo.findByNameEn(sfoName + " EN");
+		assertTrue("i think the process and test requires unique SFO names", sfoMatchingNames.size() == 1);
 
-		int origCountOfSFCsLinkedToSFO = sfcRepo
-				.findByExtIdAndSystemFundingOpportunityId(sfoName + "-" + targetYear, idForLastSfo + 1).size();
+		int origCountOfSFCsLinkedToSFO = sfcRepo.findBySystemFundingOpportunityId(newSfo.getId()).size();
+		assertTrue("logic says new SFO shoudl ahve no SFCs", origCountOfSFCsLinkedToSFO == 0);
 
 		// ADD A CYCLE TO "SAMPLE" thought the service
 		final String testFileName = "NAMIS-TestCase_registerSFCwhenSFOalreadyExists.xlsx";
 		adminService.applyChangesFromFileByIds(testFileName, new String[] { sfoName + "-" + targetYear });
 
-		int newCountOfSFCsLinkedToSFO = sfcRepo
-				.findByExtIdAndSystemFundingOpportunityId(sfoName + "-" + targetYear, idForLastSfo + 1).size();
+		int newCountOfSFCsLinkedToSFO = sfcRepo.findBySystemFundingOpportunityId(newSfo.getId()).size();
 
-		/*
-		 * This assertTrue and the first assertEquals are added b/c we want to ensure
-		 * that origCountOfSFCsLinkedToSFO uses the same SFO extId and SFO id as
-		 * newCountOfSFCsLinkedToSFO.
-		 */
-		int lastIdx = (int) sfoRepo.count() - 1;
-		SystemFundingOpportunity addedSfo = sfoRepo.findAll().get(lastIdx);
-		assertTrue(addedSfo.getExtId().equals(sfoName + "-" + targetYear));
-		assertEquals(addedSfo.getId(), idForLastSfo + 1);
-
-		assertEquals(origCountOfSFCsLinkedToSFO + 1, newCountOfSFCsLinkedToSFO);
+		assertTrue("new count of SFCs linked ot SFO shoudl now be 1", newCountOfSFCsLinkedToSFO == 1);
 	}
 
 	@Test

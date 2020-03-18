@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -14,7 +15,8 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 @Entity
 public class SystemFundingCycle implements LocalizedParametersModel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(name = "SEQ_SYSTEM_FUNDING_CYCLE", sequenceName = "SEQ_SYSTEM_FUNDING_CYCLE", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SYSTEM_FUNDING_CYCLE")
 	private Long id;
 
 	private String extId;

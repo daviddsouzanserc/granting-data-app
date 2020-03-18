@@ -4,13 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
 public class GrantingSystem implements LocalizedParametersModel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) 
+	@SequenceGenerator(name = "SEQ_GRANTING_SYSTEM", sequenceName = "SEQ_GRANTING_SYSTEM", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GRANTING_SYSTEM")
 	private Long id;
 
 	protected String nameEn;

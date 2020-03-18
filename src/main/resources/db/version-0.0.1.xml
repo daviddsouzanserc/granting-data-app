@@ -146,6 +146,9 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
+    <changeSet author="dev_yab (generated)" id="1574353543232-11">
+    	<createSequence sequenceName="seq_system_funding_opportunity" startValue="1" incrementBy="1"/>
+    </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-13">
     	<!-- <createSequence sequenceName="seq_system_funding_opportunity" startValue="1" incrementBy="1"/> -->
         <createTable tableName="system_funding_opportunity">

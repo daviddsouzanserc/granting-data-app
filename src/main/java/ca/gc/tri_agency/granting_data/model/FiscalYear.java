@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -15,7 +16,8 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 public class FiscalYear implements LocalizedParametersModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(name = "SEQ_FISCAL_YEAR", sequenceName = "SEQ_FISCAL_YEAR", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FISCAL_YEAR")
 	private Long id;
 
 	@NotNull(message = "The year should not be Null")

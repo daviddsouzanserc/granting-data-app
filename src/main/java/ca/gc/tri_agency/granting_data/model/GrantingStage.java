@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -12,11 +13,9 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 @Entity
 public class GrantingStage implements LocalizedParametersModel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_GRANTING_STAGE", sequenceName = "SEQ_GRANTING_STAGE", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GRANTING_STAGE")
 	private Long id;
-
-//	@Column(name = "granting_function")
-//	private String grantingFunction;
 
 	protected String nameEn;
 

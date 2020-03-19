@@ -50,19 +50,14 @@ public class AdminControllerIntegrationTest {
 	@WithMockUser(roles = { "MDM ADMIN" })
 	@Test
 	/*
-	 * B/c it took me a while to figure out how to complete deliverable 14752, I
-	 * added this test. I'm not certain that the ability to add a Fiscal Year is
-	 * meant for the first release. Nevertheless, this test fails. However, this
-	 * failure properly reflects the fact that the Add a Fiscal Year feature does
-	 * not add one. Also, no error message is displayed to show that the Fiscal Year
-	 * was not added, and, as a side not, no error message will be displayed if you
-	 * try to add one that lies outside of the boundaries (1999 and 2050).
+	 * Test passes however no error message is displayed when a user tries to add an
+	 * invalid fiscal year.
 	 */
 	public void test_onlyAdminCanAddFiscalYears_shouldSucceedWith200() throws Exception {
 		long numFys = fyRepo.count();
 
 		mvc.perform(post("/manage/addFiscalYears").param("year", "2030")).andExpect(status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.forwardedUrl("/browse/viewFiscalYear"));
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewFiscalYear"));
 
 		// verify that a fiscal year was added
 		assertEquals(numFys + 1, fyRepo.count());

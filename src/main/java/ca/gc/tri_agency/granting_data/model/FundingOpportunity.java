@@ -21,10 +21,10 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
 public class FundingOpportunity implements LocalizedParametersModel {
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "test_sequence")
-	@SequenceGenerator(name = "test_sequence", sequenceName = "hibernate_sequence", allocationSize = 1)
+	@SequenceGenerator(name = "SEQ_FUNDING_OPPORTUNITY", sequenceName = "SEQ_FUNDING_OPPORTUNITY", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FUNDING_OPPORTUNITY")
 	private Long id;
 
 	private String nameEn;

@@ -9,10 +9,13 @@
 	<changeSet id="00000000000001" author="jfs">
         <createSequence sequenceName="hibernate_sequence" />
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-1">
+	<changeSet id="00000000000002" author="jfs">
+    	<createSequence sequenceName="seq_agency" startValue="1" incrementBy="1"/>
+	</changeSet>
+	<changeSet id="00000000000003" author="jfs">
         <createTable tableName="agency">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column name="id" type="BIGINT" valueSequenceNext="seq_agency">
+                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="acronym_en" type="VARCHAR(255)"/>
             <column name="acronym_fr" type="VARCHAR(255)"/>
@@ -20,41 +23,26 @@
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-2">
+	<changeSet id="00000000000004" author="jfs">
+    	<createSequence sequenceName="seq_fiscal_year" startValue="1" incrementBy="1"/>
+	</changeSet>
+	<changeSet id="00000000000005" author="jfs">
         <createTable tableName="fiscal_year">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column name="id" type="BIGINT" valueSequenceNext="seq_fiscal_year">
+                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="year" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-3">
-        <createTable tableName="funding_cycle">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="end_date" type="date"/>
-            <column name="expected_applications" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="is_open" type="BIT(1)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="start_date" type="date"/>
-            <column name="fiscal_year_id" type="BIGINT"/>
-            <column name="funding_opportunity_id" type="BIGINT"/>
-            <column name="end_dateloi" type="date"/>
-            <column name="end_datenoi" type="date"/>
-            <column name="start_dateloi" type="date"/>
-            <column name="start_datenoi" type="date"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-4">
+	<changeSet id="00000000000006" author="jfs">
+    	<createSequence sequenceName="seq_funding_opportunity" startValue="1" incrementBy="1"/>
+	</changeSet>
+	<changeSet id="00000000000007" author="jfs">
         <createTable tableName="funding_opportunity">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column name="id" type="BIGINT" valueSequenceNext="seq_funding_opportunity">
+                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="apply_method" type="VARCHAR(255)"/>
             <column name="award_management_system" type="VARCHAR(255)"/>
@@ -75,7 +63,9 @@
             <column name="partner_org" type="VARCHAR(255)"/>
             <column name="program_lead_dn" type="VARCHAR(255)"/>
             <column name="program_lead_name" type="VARCHAR(255)"/>
-            <column name="lead_agency_id" type="BIGINT"/>
+            <column name="lead_agency_id" type="BIGINT">
+            	<constraints nullable="false" foreignKeyName="fk_funding_opportunity_agency" references="agency(id)"/>
+            </column>
             <column name="isloi" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
@@ -84,140 +74,129 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-5">
-        <createTable tableName="funding_opportunity_participating_agencies">
-            <column name="funding_opportunity_id" type="BIGINT">
+	<changeSet id="00000000000008" author="jfs">
+    	<createSequence sequenceName="seq_funding_cycle" startValue="1" incrementBy="1"/>
+	</changeSet>
+	<changeSet id="00000000000009" author="jfs">
+        <createTable tableName="funding_cycle">
+            <column name="id" type="BIGINT" valueSequenceNext="seq_funding_cycle">
+                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="end_date" type="date"/>
+            <column name="expected_applications" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="participating_agencies_id" type="BIGINT">
+            <column name="is_open" type="BIT(1)">
                 <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="date"/>
+            <column name="fiscal_year_id" type="BIGINT">
+            	<constraints nullable="false" foreignKeyName="fk_funding_cycle_fiscal_year" references="fiscal_year(id)"/>
+            </column>
+            <column name="funding_opportunity_id" type="BIGINT">
+            	<constraints nullable="false" foreignKeyName="fk_funding_cycle_funding_opportunity" references="funding_opportunity(id)"/>
+            </column>
+            <column name="end_dateloi" type="date"/>
+            <column name="end_datenoi" type="date"/>
+            <column name="start_dateloi" type="date"/>
+            <column name="start_datenoi" type="date"/>
+        </createTable>
+    </changeSet>
+	<changeSet id="00000000000010" author="jfs">
+        <createTable tableName="funding_opportunity_participating_agencies">
+            <column name="funding_opportunity_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_funding_opportunity_participating_agencies_funding_opportunity" references="funding_opportunity(id)"/>
+            </column>
+            <column name="participating_agencies_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_funding_opportunity_participating_agencies_agency" references="agency(id)"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-6">
+	<changeSet id="00000000000011" author="jfs">
+    	<createSequence sequenceName="seq_granting_capability" startValue="1" incrementBy="1"/>
+	</changeSet>
+	<changeSet id="00000000000012" author="jfs">
         <createTable tableName="granting_capability">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column name="id" type="BIGINT"  valueSequenceNext="seq_granting_capability">
+                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(255)"/>
             <column name="url" type="VARCHAR(255)"/>
-            <column name="funding_opportunity_id" type="BIGINT"/>
+            <column name="funding_opportunity_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_granting_capability_funding_opportunity" references="funding_opportunity(id)"/>
+            </column>
             <column name="granting_stage_id" type="BIGINT"/>
             <column name="granting_system_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-7">
+	<changeSet id="00000000000013" author="jfs">
+		<createSequence sequenceName="seq_granting_stage" startValue="1" incrementBy="1"/>
+    </changeSet>
+	<changeSet id="00000000000014" author="jfs">
         <createTable tableName="granting_stage">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column name="id" type="BIGINT" valueSequenceNext="seq_granting_stage">
+                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-8">
+	<changeSet id="00000000000015" author="jfs">
+    	<createSequence sequenceName="seq_granting_system" startValue="1" incrementBy="1" />
+    </changeSet>
+	<changeSet id="00000000000016" author="jfs">
         <createTable tableName="granting_system">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column name="id" type="BIGINT" valueSequenceNext="seq_granting_system">
+                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="acronym" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-9">
-        <createTable tableName="hibernate_sequence">
-            <column name="next_val" type="BIGINT"/>
-        </createTable>
+	<changeSet id="00000000000017" author="jfs">
+    	<createSequence sequenceName="seq_system_funding_opportunity" startValue="1" incrementBy="1"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-10">
-        <createTable tableName="lead_contributor">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ad_user_dn" type="VARCHAR(255)"/>
-            <column name="email" type="VARCHAR(255)"/>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="funding_opportunity_id" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-11">
-        <createTable tableName="system_action">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="action_type" type="INT"/>
-            <column name="message" type="VARCHAR(255)"/>
-            <column name="reference_id" type="BIGINT"/>
-            <column name="user_dn" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-12">
-        <createTable tableName="system_funding_cycle">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="comp_year" type="date"/>
-            <column name="ext_id" type="VARCHAR(255)"/>
-            <column name="num_apps_received" type="BIGINT"/>
-            <column name="system_funding_opportunity_id" type="BIGINT"/>
-            <column name="fiscal_year" type="date"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-13">
+	<changeSet id="00000000000018" author="jfs">
         <createTable tableName="system_funding_opportunity">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false"/>
+            <column name="id" type="BIGINT" valueSequenceNext="seq_system_funding_opportunity">
+                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="name_en" type="VARCHAR(255)"/>
             <column name="name_fr" type="VARCHAR(255)"/>
-            <column name="granting_system_id" type="BIGINT"/>
-            <column name="linked_funding_opportunity_id" type="BIGINT"/>
+            <column name="granting_system_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_system_funding_opportunity_granting_system" references="granting_system(id)"/>
+            </column>
+            <column name="linked_funding_opportunity_id" type="BIGINT">
+                <constraints nullable="true" foreignKeyName="fk_system_funding_opportunity_funding_opportunity" references="funding_opportunity(id)"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-14">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY1" tableName="agency"/>
+	<changeSet id="00000000000019" author="jfs">
+    	<createSequence sequenceName="seq_system_funding_cycle" startValue="1" incrementBy="1"/>
+	</changeSet>
+	<changeSet id="00000000000020" author="jfs">
+        <createTable tableName="system_funding_cycle">
+            <column name="id" type="BIGINT" valueSequenceNext="seq_system_funding_cycle">
+                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comp_year" type="date"/>
+            <column name="ext_id" type="VARCHAR(255)"/>
+            <column name="num_apps_received" type="BIGINT"/>
+            <column name="system_funding_opportunity_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_system_funding_cycle_system_funding_opportunity" references="system_funding_opportunity(id)"/>
+            </column>
+            <column name="fiscal_year" type="date"/>
+        </createTable>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-15">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY2" tableName="fiscal_year"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-16">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY3" tableName="funding_cycle"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-17">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY4" tableName="funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-18">
+	<changeSet id="00000000000021" author="jfs">
         <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY5" tableName="funding_opportunity_participating_agencies"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-19">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY6" tableName="granting_capability"/>
+    <changeSet author="dev_aha" id="convert data type for fiscal_year column in the table system_funding_cycle">
+    	<modifyDataType tableName="system_funding_cycle" columnName="fiscal_year" newDataType="BIGINT"/>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-20">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY7" tableName="granting_stage"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-21">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY8" tableName="granting_system"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-22">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY9" tableName="lead_contributor"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-23">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY10" tableName="system_action"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-24">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY11" tableName="system_funding_cycle"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-25">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY12" tableName="system_funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-26">
-        <addUniqueConstraint columnNames="year" constraintName="UK_b8kivk0q21ddg7c8uyyrppgp3" tableName="fiscal_year"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-27">
-        <addUniqueConstraint columnNames="expected_applications" constraintName="expected_applications" tableName="funding_cycle"/>
-    </changeSet>
+    <!-- 
     <changeSet author="dev_yab (generated)" id="1574353543232-28">
         <createIndex indexName="FK14tr15getkq8fb5kjrrjptvjr" tableName="system_funding_opportunity">
             <column name="linked_funding_opportunity_id"/>
@@ -263,100 +242,12 @@
             <column name="system_funding_opportunity_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-37">
-        <createIndex indexName="FKmnm9gjqoedc34m9wb3nevyqa5" tableName="lead_contributor">
-            <column name="funding_opportunity_id"/>
-        </createIndex>
-    </changeSet>
     <changeSet author="dev_yab (generated)" id="1574353543232-38">
         <createIndex indexName="FKuip0ni018fonghd8p7e326g8" tableName="funding_opportunity_participating_agencies">
             <column name="participating_agencies_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-39">
-        <addForeignKeyConstraint baseColumnNames="linked_funding_opportunity_id" baseTableName="system_funding_opportunity" constraintName="FK14tr15getkq8fb5kjrrjptvjr" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-40">
-        <addForeignKeyConstraint baseColumnNames="lead_agency_id" baseTableName="funding_opportunity" constraintName="FK528n91tiwm42hbh9296moiphq" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="agency"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-41">
-        <addForeignKeyConstraint baseColumnNames="funding_opportunity_id" baseTableName="granting_capability" constraintName="FK63indjk5hvfqt20nl6yjhe4qi" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-42">
-        <addForeignKeyConstraint baseColumnNames="funding_opportunity_id" baseTableName="funding_cycle" constraintName="FK6bwbn2qevrkb0xtgfw7372cy" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-43">
-        <addForeignKeyConstraint baseColumnNames="granting_stage_id" baseTableName="granting_capability" constraintName="FK9n4a2q2pki6vjp6ghsv02ngv3" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="granting_stage"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-44">
-        <addForeignKeyConstraint baseColumnNames="granting_system_id" baseTableName="system_funding_opportunity" constraintName="FKbsasob7skpngyxtdeg9j9ierw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="granting_system"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-45">
-        <addForeignKeyConstraint baseColumnNames="fiscal_year_id" baseTableName="funding_cycle" constraintName="FKhigr6os32l974jwtwgojgohhv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="fiscal_year"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-46">
-        <addForeignKeyConstraint baseColumnNames="granting_system_id" baseTableName="granting_capability" constraintName="FKhq04tuapjciro02x3knac3hlt" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="granting_system"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-47">
-        <addForeignKeyConstraint baseColumnNames="system_funding_opportunity_id" baseTableName="system_funding_cycle" constraintName="FKikhvk8ji466d7w30b6wqhmees" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="system_funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-48">
-        <addForeignKeyConstraint baseColumnNames="funding_opportunity_id" baseTableName="lead_contributor" constraintName="FKmnm9gjqoedc34m9wb3nevyqa5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-49">
-        <addForeignKeyConstraint baseColumnNames="funding_opportunity_id" baseTableName="funding_opportunity_participating_agencies" constraintName="FKrk6d6wg7my3eyx93wt4qnpkx8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="funding_opportunity"/>
-    </changeSet>
-    <changeSet author="dev_yab (generated)" id="1574353543232-50">
-        <addForeignKeyConstraint baseColumnNames="participating_agencies_id" baseTableName="funding_opportunity_participating_agencies" constraintName="FKuip0ni018fonghd8p7e326g8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="agency"/>
-    </changeSet>
-
-    <changeSet author="dev_aha" id="Add proper column increments for id columns of system_funding_opporutnity and system_funding_cycle">
-    	<addAutoIncrement tableName="system_funding_opportunity" columnName="id" columnDataType="BIGINT" startWith="1" incrementBy="1" />
-    	<addAutoIncrement tableName="system_funding_cycle" columnName="id" columnDataType="BIGINT" startWith="1" incrementBy="1" /> 
-    </changeSet>
-    <changeSet author="dev_aha" id="convert data type for fiscal_year column in the table system_funding_cycle">
-    	<modifyDataType tableName="system_funding_cycle" columnName="fiscal_year" newDataType="BIGINT"/>
-    </changeSet> 
-    
-    
-    	<!-- The table granting_system is missing values in the H2 database but 
-		the table is not missing any values in the dev database (SQL Server) -->
-	<changeSet author="dev_aha" id="addMissingGrantingSystems">
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" value="26"></column>
-			<column name="acronym" value="CIMS" />
-			<column name="name_en"
-				value="Corporate Inventory Management System" />
-			<column name="name_fr"
-				value="Corporate Inventory Management System" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" value="27"></column>
-			<column name="acronym" value="ResearchNet" />
-			<column name="name_en" value="ResearchNet" />
-			<column name="name_fr" value="ResearchNet" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" value="28"></column>
-			<column name="acronym" value="Convergence" />
-			<column name="name_en" value="Convergence" />
-			<column name="name_fr" value="Convergence" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" value="29"></column>
-			<column name="acronym" value="SP Secure Upload" />
-			<column name="name_en"
-				value="SharePoint Secure Upload" />
-			<column name="name_fr"
-				value="Téléchargement Sécurisé SharePoint" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" value="30"></column>
-			<column name="acronym" value="SP Review" />
-			<column name="name_en" value="SharePoint Review" />
-			<column name="name_fr" value="Examen de SharePoint" />
-		</insert>
-	</changeSet>
+     -->
     
 
 </databaseChangeLog>

@@ -118,7 +118,7 @@ public class SystemFundingOpportunityIntegrationTests {
 	public void test_unlinkFoBtnNotVisibleToNonAdminUsers() throws Exception {
 		assertNotNull(sfoRepo.getOne(1L).getLinkedFundingOpportunity());
 		assertFalse(mvc.perform(MockMvcRequestBuilders.get("/admin/viewSystemFO").param("id", "1"))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
+				.andExpect(MockMvcResultMatchers.status().isForbidden()).andReturn().getResponse().getContentAsString()
 				.contains("id=\"unlinkSfoBtn\""));
 	}
 

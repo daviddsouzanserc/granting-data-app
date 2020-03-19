@@ -65,7 +65,7 @@ public class AdminControllerIntegrationTest {
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
-	public void test_nonAdminUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
+	public void test_nonAdminUserCannotAddFundingOpportunities_shouldFailWith403() throws Exception {
 		long numFos = foRepo.count();
 
 		mvc.perform(post("/manage/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
@@ -74,7 +74,7 @@ public class AdminControllerIntegrationTest {
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
 				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
 				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
-				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isOk())
+				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isForbidden())
 				.andExpect(content().string(containsString("id=\"forbiddenByRoleErrorPage\"")));
 
 		// verify that a FO was not added

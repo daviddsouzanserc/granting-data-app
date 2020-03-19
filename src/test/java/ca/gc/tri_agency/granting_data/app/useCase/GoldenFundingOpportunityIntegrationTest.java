@@ -4,65 +4,198 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.support.BindingAwareModelMap;
+import org.springframework.web.context.WebApplicationContext;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
-import ca.gc.tri_agency.granting_data.controller.AdminController;
 import ca.gc.tri_agency.granting_data.controller.ManageFundingOpportunityController;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
+import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = GrantingDataApp.class)
 @ActiveProfiles("local")
 public class GoldenFundingOpportunityIntegrationTest {
 
-	@Autowired
-	private AdminController adminController;
+//	@Autowired
+//	private AdminController adminController;
 	@Autowired
 	private AgencyRepository agencyRepo;
 	@Autowired
 	private FundingOpportunityRepository foRepo;
 	@Autowired
 	private ManageFundingOpportunityController mFoController;
+	@Autowired
+	private DataAccessService dataAccessService;
+	@Autowired
+	private WebApplicationContext ctx;
 
 	@Mock
-	BindingResult bindingResult;
+	private BindingResult bindingResult;
 	@Mock
-	Model model;
+	private Model model;
+	@Mock
+	private DataAccessService dataAccessServiceMock;
 
+	private MockMvc mvc;
+
+	@Before
+	public void setup() {
+		mvc = MockMvcBuilders.webAppContextSetup(ctx).apply(SecurityMockMvcConfigurers.springSecurity()).build();
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@Test
+	@Transactional
+	public void test_NonAdminCannotCreateGoldenFo_shouldFailWith403() throws Exception {
+		String am = RandomStringUtils.randomAlphabetic(10);
+		String ams = RandomStringUtils.randomAlphabetic(10);
+		boolean cpx = true;
+		String div = RandomStringUtils.randomAlphabetic(10);
+		boolean edi = true;
+		String frequency = RandomStringUtils.randomAlphabetic(10);
+		String ft = RandomStringUtils.randomAlphabetic(10);
+		boolean loi = true;
+		boolean noi = true;
+		boolean ji = true;
+		String nameEn = RandomStringUtils.randomAlphabetic(25);
+		String nameFr = RandomStringUtils.randomAlphabetic(25);
+		String po = RandomStringUtils.randomAlphabetic(25);
+		String pld = RandomStringUtils.randomAlphabetic(25);
+		String pln = RandomStringUtils.randomAlphabetic(25);
+		List<Agency> agencyList = agencyRepo.findAll();
+		Agency la = agencyList.size() > 0 ? agencyList.remove(0) : null;
+//		Set<Agency> pas = agencyList.size() > 0 ? new HashSet<>(agencyList) : null;
+
+		List<FundingOpportunity> fos = foRepo.findAll();
+		String idParam = String.valueOf(fos.get(fos.size() - 1).getId() + 1L);
+
+		mvc.perform(MockMvcRequestBuilders.post("/manage/addFo").param("id", idParam).param("nameEn", nameEn)
+				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
+				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
+				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)
+				.param("isComplex", Boolean.toString(cpx)).param("isEdiRequired", Boolean.toString(edi))
+				.param("isNOI", Boolean.toString(noi)).param("isLOI", Boolean.toString(loi))
+				.param("programLeadName", pln).param("programLeadDn", pld))
+				.andExpect(MockMvcResultMatchers.status().isForbidden()).andExpect(MockMvcResultMatchers.content()
+						.string(Matchers.containsString("id=\"forbiddenByRoleErrorPage\"")));
+	}
+
+	@WithMockUser(roles = "MDM ADMIN")
+	@Test
+	@Transactional
+	public void test_AdminCannotCreateGoldenFo_shouldSucceed() throws Exception {
+		String am = RandomStringUtils.randomAlphabetic(10);
+		String ams = RandomStringUtils.randomAlphabetic(10);
+		boolean cpx = true;
+		String div = RandomStringUtils.randomAlphabetic(10);
+		boolean edi = true;
+		String frequency = RandomStringUtils.randomAlphabetic(10);
+		String ft = RandomStringUtils.randomAlphabetic(10);
+		boolean loi = true;
+		boolean noi = true;
+		boolean ji = true;
+		String nameEn = RandomStringUtils.randomAlphabetic(25);
+		String nameFr = RandomStringUtils.randomAlphabetic(25);
+		String po = RandomStringUtils.randomAlphabetic(25);
+		String pld = RandomStringUtils.randomAlphabetic(25);
+		String pln = RandomStringUtils.randomAlphabetic(25);
+		List<Agency> agencyList = agencyRepo.findAll();
+		Agency la = agencyList.size() > 0 ? agencyList.remove(0) : null;
+//		Set<Agency> pas = agencyList.size() > 0 ? new HashSet<>(agencyList) : null;
+
+		List<FundingOpportunity> fos = foRepo.findAll();
+		String idParam = String.valueOf(fos.get(fos.size() - 1).getId() + 1L);
+
+		mvc.perform(MockMvcRequestBuilders.post("/manage/addFo").param("id", idParam).param("nameEn", nameEn)
+				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
+				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
+				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)
+				.param("isComplex", Boolean.toString(cpx)).param("isEdiRequired", Boolean.toString(edi))
+				.param("isNOI", Boolean.toString(noi)).param("isLOI", Boolean.toString(loi))
+				.param("programLeadName", pln).param("programLeadDn", pld));
+
+		fos = foRepo.findAll();
+		FundingOpportunity newGfo = fos.get(fos.size() - 1);
+
+		assertEquals(idParam, String.valueOf(newGfo.getId()));
+		assertEquals(am, newGfo.getApplyMethod());
+		assertEquals(ams, newGfo.getAwardManagementSystem());
+		assertEquals(cpx, newGfo.getIsComplex());
+		assertEquals(div, newGfo.getDivision());
+		assertEquals(edi, newGfo.getIsEdiRequired());
+		assertEquals(frequency, newGfo.getFrequency());
+		assertEquals(ft, newGfo.getFundingType());
+		assertEquals(loi, newGfo.getIsLOI());
+		assertEquals(noi, newGfo.getIsNOI());
+		assertEquals(ji, newGfo.getIsJointInitiative());
+		assertEquals(la, newGfo.getLeadAgency());
+		assertEquals(nameEn, newGfo.getNameEn());
+		assertEquals(nameFr, newGfo.getNameFr());
+//		assertEquals(pas, newGfo.getParticipatingAgencies());
+		assertEquals(po, newGfo.getPartnerOrg());
+		assertEquals(pld, newGfo.getProgramLeadDn());
+		assertEquals(pln, newGfo.getProgramLeadName());
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@Test(expected = AccessDeniedException.class)
+	@Transactional
+	public void test_NonAdminCannotCreateGoldenFo_shouldThrowDataAccessException() throws Exception {
+		mFoController.addFoPost(new FundingOpportunity(), bindingResult, model);
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@Test(expected = AccessDeniedException.class)
+	@Transactional
+	public void test_NonAdminCannotCreateGoldenFo_shouldThrowAccessDeniedException() {
+		dataAccessService.createFo(new FundingOpportunity());
+	}
+
+	// deliverable 18997
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
+	@Transactional
 	public void test_AdminCanCreateGoldenFo_shouldSucceed() throws Exception {
 		long initFoRepoSize = foRepo.count();
-		
+
 		FundingOpportunity gfo = new FundingOpportunity();
 		gfo.setApplyMethod(RandomStringUtils.randomAlphabetic(10));
 		gfo.setAwardManagementSystem(RandomStringUtils.randomAlphabetic(10));
-		gfo.setComplex(false);
+		gfo.setIsComplex(false);
 		gfo.setDivision(RandomStringUtils.randomAlphabetic(10));
-		gfo.setEdiRequired(false);
+		gfo.setIsEdiRequired(false);
 		gfo.setFrequency(RandomStringUtils.randomAlphabetic(10));
 		gfo.setFundingType(RandomStringUtils.randomAlphabetic(10));
 		gfo.setIsLOI(false);
 		gfo.setIsNOI(false);
-		gfo.setJointInitiative(false);
+		gfo.setIsJointInitiative(true);
 		gfo.setNameEn(RandomStringUtils.randomAlphabetic(25));
 		gfo.setNameFr(RandomStringUtils.randomAlphabetic(25));
 		gfo.setPartnerOrg(RandomStringUtils.randomAlphabetic(25));
@@ -74,7 +207,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 
 		String successUrl = mFoController.addFoPost(gfo, bindingResult, model);
 
-		assertEquals("redirect:/browse/goldenList", successUrl);
+		assertEquals("redirect:/admin/home", successUrl);
 		assertEquals(initFoRepoSize + 1, foRepo.count());
 	}
 

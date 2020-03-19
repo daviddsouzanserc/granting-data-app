@@ -254,16 +254,16 @@ public class ManageFundingOpportunityController {
 
 		}
 
-		try {
+//		try {
 			dataService.createFo(command);
-		}
+//		}
 
-		catch (Exception e) {
-			model.addAttribute("error", "Your input is not valid!"
-					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
-			return "manage/addFo";
-
-		}
+//		catch (Exception e) {
+//			model.addAttribute("error", "Your input is not valid!"
+//					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
+//			return "manage/addFo";
+//
+//		}
 
 		return "redirect:/browse/goldenList";
 	}

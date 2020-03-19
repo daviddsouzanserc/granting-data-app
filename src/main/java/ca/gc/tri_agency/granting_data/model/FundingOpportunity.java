@@ -139,13 +139,56 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return id;
 	}
 
-	public String toString() {
-		return "" + id + " : " + nameEn + " :: " + nameFr + " :: " + leadAgency;
-
-	}
+//	public String toString() {
+//		return "" + id + " : " + nameEn + " :: " + nameFr + " :: " + leadAgency;
+//
+//	}
 
 	public String getDivision() {
 		return division;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("FundingOpportunity [id=");
+		builder.append(id);
+		builder.append(", nameEn=");
+		builder.append(nameEn);
+		builder.append(", nameFr=");
+		builder.append(nameFr);
+		builder.append(", leadAgency=");
+		builder.append(leadAgency);
+		builder.append(", participatingAgencies=");
+		builder.append(participatingAgencies);
+		builder.append(", division=");
+		builder.append(division);
+		builder.append(", fundingType=");
+		builder.append(fundingType);
+		builder.append(", frequency=");
+		builder.append(frequency);
+		builder.append(", applyMethod=");
+		builder.append(applyMethod);
+		builder.append(", awardManagementSystem=");
+		builder.append(awardManagementSystem);
+		builder.append(", isNOI=");
+		builder.append(isNOI);
+		builder.append(", isLOI=");
+		builder.append(isLOI);
+		builder.append(", programLeadName=");
+		builder.append(programLeadName);
+		builder.append(", programLeadDn=");
+		builder.append(programLeadDn);
+		builder.append(", partnerOrg=");
+		builder.append(partnerOrg);
+		builder.append(", isEdiRequired=");
+		builder.append(isEdiRequired);
+		builder.append(", isComplex=");
+		builder.append(isComplex);
+		builder.append(", isJointInitiative=");
+		builder.append(isJointInitiative);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	public void setDivision(String division) {
@@ -186,7 +229,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isJointInitiative;
 	}
 
-	public void setJointInitiative(boolean isJointInitiative) {
+	public void setIsJointInitiative(boolean isJointInitiative) {
 		this.isJointInitiative = isJointInitiative;
 	}
 
@@ -202,7 +245,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isEdiRequired;
 	}
 
-	public void setEdiRequired(boolean isEdiRequired) {
+	public void setIsEdiRequired(boolean isEdiRequired) {
 		this.isEdiRequired = isEdiRequired;
 	}
 
@@ -210,7 +253,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isComplex;
 	}
 
-	public void setComplex(boolean isComplex) {
+	public void setIsComplex(boolean isComplex) {
 		this.isComplex = isComplex;
 	}
 

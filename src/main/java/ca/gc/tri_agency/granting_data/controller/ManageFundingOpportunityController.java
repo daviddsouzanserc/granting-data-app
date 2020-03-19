@@ -250,21 +250,11 @@ public class ManageFundingOpportunityController {
 	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
 			Model model) throws Exception {
 		if (bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getFieldError().toString());
-
-		}
-
-		try {
-			dataService.createFo(command);
-		}
-
-		catch (Exception e) {
-			model.addAttribute("error", "Your input is not valid!"
-					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
+			model.addAttribute("allAgencies", dataService.getAllAgencies());
 			return "manage/addFo";
-
 		}
 
+		dataService.createFo(command);
 		return "redirect:/browse/goldenList";
 	}
 

@@ -29,9 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
-import ca.gc.tri_agency.granting_data.controller.ManageFundingOpportunityController;
+import ca.gc.tri_agency.granting_data.controller.AdminController;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
@@ -45,16 +46,14 @@ import ca.gc.tri_agency.granting_data.service.DataAccessService;
 @ActiveProfiles("local")
 public class GoldenFundingOpportunityIntegrationTest {
 
-//	@Autowired
-//	private AdminController adminController;
+	@Autowired
+	private AdminController adminController;
 	@Autowired
 	private AgencyRepository agencyRepo;
 	@Autowired
 	private FundingOpportunityRepository foRepo;
 	@Autowired
 	SystemFundingOpportunityRepository sfoRepo;
-	@Autowired
-	private ManageFundingOpportunityController mFoController;
 	@Autowired
 	private DataAccessService dataAccessService;
 	@Autowired
@@ -64,6 +63,8 @@ public class GoldenFundingOpportunityIntegrationTest {
 	private BindingResult bindingResult;
 	@Mock
 	private Model model;
+	@Mock
+	private RedirectAttributes redirectAttributes;
 
 	private MockMvc mvc;
 
@@ -76,7 +77,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@Test
 	@Transactional(readOnly = true)
 	public void testNameFieldsEmptyOnAddFoPageWhenNewSfoNotLinkedWithSfo() throws Exception {
-		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/manage/addFo"))
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/addFo"))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
 		assertTrue(result.getResponse().getContentAsString()
 				.contains("<input class=\"col-sm-2\" id=\"nameEn\" name=\"nameEn\" value=\"\""));
@@ -91,7 +92,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 		SystemFundingOpportunity sfo = sfoRepo.findAll().get(0);
 		Long sfoId = sfo.getId();
 
-		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/manage/addFo").param("sfoId", sfoId.toString()))
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/addFo").param("sfoId", sfoId.toString()))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString()
@@ -126,7 +127,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 		List<FundingOpportunity> fos = foRepo.findAll();
 		String idParam = String.valueOf(fos.get(fos.size() - 1).getId() + 1L);
 
-		mvc.perform(MockMvcRequestBuilders.post("/manage/addFo").param("id", idParam).param("nameEn", nameEn)
+		mvc.perform(MockMvcRequestBuilders.post("/admin/addFo").param("id", idParam).param("nameEn", nameEn)
 				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
 				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
 				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)
@@ -140,7 +141,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@WithMockUser(roles = "MDM ADMIN")
 	@Test
 	@Transactional
-	public void test_AdminCannotCreateGoldenFo_shouldSucceed() throws Exception {
+	public void test_AdminCanCreateGoldenFo_usingMvcPerform_shouldSucceed() throws Exception {
 		String am = RandomStringUtils.randomAlphabetic(10);
 		String ams = RandomStringUtils.randomAlphabetic(10);
 		boolean cpx = true;
@@ -163,14 +164,20 @@ public class GoldenFundingOpportunityIntegrationTest {
 		List<FundingOpportunity> fos = foRepo.findAll();
 		String idParam = String.valueOf(fos.get(fos.size() - 1).getId() + 1L);
 
-		mvc.perform(MockMvcRequestBuilders.post("/manage/addFo").param("id", idParam).param("nameEn", nameEn)
+		mvc.perform(MockMvcRequestBuilders.post("/admin/addFo").param("id", idParam).param("nameEn", nameEn)
 				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
 				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
 				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)
 				.param("isComplex", Boolean.toString(cpx)).param("isEdiRequired", Boolean.toString(edi))
 				.param("isNOI", Boolean.toString(noi)).param("isLOI", Boolean.toString(loi))
-				.param("programLeadName", pln).param("programLeadDn", pld));
+				.param("programLeadName", pln).param("programLeadDn", pld))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home"))
+				.andExpect(MockMvcResultMatchers.flash().attribute("actionMessage", "Created Funding Opportunity named: " + nameEn));
 
+		// when the page is refreshed, the flash attribute should disappear
+		mvc.perform(MockMvcRequestBuilders.get("/admin/home")).andExpect(MockMvcResultMatchers.flash().attributeCount(0));
+		
 		fos = foRepo.findAll();
 		FundingOpportunity newGfo = fos.get(fos.size() - 1);
 
@@ -198,7 +205,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@Test(expected = AccessDeniedException.class)
 	@Transactional
 	public void test_NonAdminCannotCreateGoldenFo_shouldThrowDataAccessException() throws Exception {
-		mFoController.addFoPost(new FundingOpportunity(), bindingResult, model);
+		adminController.addFoPost(new FundingOpportunity(), bindingResult, model, redirectAttributes);
 	}
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
@@ -208,7 +215,6 @@ public class GoldenFundingOpportunityIntegrationTest {
 		dataAccessService.createFo(new FundingOpportunity());
 	}
 
-	// deliverable 18997
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	@Transactional
@@ -235,7 +241,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 		gfo.setLeadAgency(agencyList.size() > 0 ? agencyList.remove(0) : null);
 		gfo.setParticipatingAgencies(agencyList.size() > 0 ? new HashSet<Agency>(agencyList) : null);
 
-		String successUrl = mFoController.addFoPost(gfo, bindingResult, model);
+		String successUrl = adminController.addFoPost(gfo, bindingResult, model, redirectAttributes);
 
 		assertEquals("redirect:/admin/home", successUrl);
 		assertEquals(initFoRepoSize + 1, foRepo.count());

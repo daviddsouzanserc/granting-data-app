@@ -1,13 +1,12 @@
 package ca.gc.tri_agency.granting_data.app.useCase;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +20,7 @@ import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfig
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -34,8 +34,10 @@ import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
 import ca.gc.tri_agency.granting_data.controller.ManageFundingOpportunityController;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
+import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
+import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @RunWith(SpringRunner.class)
@@ -50,6 +52,8 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@Autowired
 	private FundingOpportunityRepository foRepo;
 	@Autowired
+	SystemFundingOpportunityRepository sfoRepo;
+	@Autowired
 	private ManageFundingOpportunityController mFoController;
 	@Autowired
 	private DataAccessService dataAccessService;
@@ -60,8 +64,6 @@ public class GoldenFundingOpportunityIntegrationTest {
 	private BindingResult bindingResult;
 	@Mock
 	private Model model;
-	@Mock
-	private DataAccessService dataAccessServiceMock;
 
 	private MockMvc mvc;
 
@@ -70,9 +72,37 @@ public class GoldenFundingOpportunityIntegrationTest {
 		mvc = MockMvcBuilders.webAppContextSetup(ctx).apply(SecurityMockMvcConfigurers.springSecurity()).build();
 	}
 
-	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	@Test
+	@Transactional(readOnly = true)
+	public void testNameFieldsEmptyOnAddFoPageWhenNewSfoNotLinkedWithSfo() throws Exception {
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/manage/addFo"))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+		assertTrue(result.getResponse().getContentAsString()
+				.contains("<input class=\"col-sm-2\" id=\"nameEn\" name=\"nameEn\" value=\"\""));
+		assertTrue(result.getResponse().getContentAsString()
+				.contains("<input class=\"col-sm-2\" id=\"nameFr\" name=\"nameFr\" value=\"\""));
+	}
+
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	@Transactional
+	public void testNameFieldsAutoFilledOnAddFoPageWhenLinkingNewFoWithSfo() throws Exception {
+		SystemFundingOpportunity sfo = sfoRepo.findAll().get(0);
+		Long sfoId = sfo.getId();
+
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/manage/addFo").param("sfoId", sfoId.toString()))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+		assertTrue(result.getResponse().getContentAsString()
+				.contains("<input class=\"col-sm-2\" id=\"nameEn\" name=\"nameEn\" value=\"" + sfo.getNameEn() + '"'));
+		assertTrue(result.getResponse().getContentAsString()
+				.contains("<input class=\"col-sm-2\" id=\"nameFr\" name=\"nameFr\" value=\"" + sfo.getNameFr() + '"'));
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@Test
+	@Transactional(readOnly = true)
 	public void test_NonAdminCannotCreateGoldenFo_shouldFailWith403() throws Exception {
 		String am = RandomStringUtils.randomAlphabetic(10);
 		String ams = RandomStringUtils.randomAlphabetic(10);

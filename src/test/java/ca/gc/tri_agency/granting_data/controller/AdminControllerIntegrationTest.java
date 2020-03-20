@@ -68,7 +68,7 @@ public class AdminControllerIntegrationTest {
 	public void test_nonAdminUserCannotAddFundingOpportunities_shouldFailWith403() throws Exception {
 		long numFos = foRepo.count();
 
-		mvc.perform(post("/admin/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
+		mvc.perform(post("/admin/createFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
@@ -86,7 +86,7 @@ public class AdminControllerIntegrationTest {
 	public void test_anonUserCannotAddFundingOpportunities_shouldRedirectToLoginWith302() throws Exception {
 		long numFos = foRepo.count();
 
-		mvc.perform(post("/admin/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
+		mvc.perform(post("/admin/createFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
@@ -104,7 +104,7 @@ public class AdminControllerIntegrationTest {
 	public void test_onlyAdminCanAddFundingOpportunities_shouldSucceedWith302() throws Exception {
 		long numFos = foRepo.count();
 
-		mvc.perform(post("/admin/addFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
+		mvc.perform(post("/admin/createFo").param("id", "26").param("nameEn", "A").param("nameFr", "B")
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")

@@ -142,7 +142,7 @@ public class AdminController {
 		return "redirect:analyzeSystemFOs";
 	}
 	
-	@GetMapping(value = "/addFo")
+	@GetMapping(value = "/createFo")
 	public String addFo(Model model, @RequestParam(name = "sfoId", required = false) Optional<Long> sfoId) {
 		FundingOpportunity fo = new FundingOpportunity();
 		if (sfoId.isPresent()) {
@@ -153,17 +153,17 @@ public class AdminController {
 		List<Agency> allAgencies = dataSevice.getAllAgencies();
 		model.addAttribute("fo", fo);
 		model.addAttribute("allAgencies", allAgencies);
-		return "admin/addFo";
+		return "admin/createFo";
 	}
 
-	@PostMapping(value = "/addFo", params = "id")
+	@PostMapping(value = "/createFo", params = "id")
 	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
 			Model model, RedirectAttributes redirectAttributes) throws Exception {
 		if (bindingResult.hasErrors()) {
 			// required in order to re-populate the drop-down list
 			List<Agency> allAgencies = dataSevice.getAllAgencies();
 			model.addAttribute("allAgencies", allAgencies);
-			return "admin/addFo";
+			return "admin/createFo";
 		}
 		dataSevice.createFo(command);
 		String createdFo = msgSource.getMessage("h.createdFo", null, LocaleContextHolder.getLocale());

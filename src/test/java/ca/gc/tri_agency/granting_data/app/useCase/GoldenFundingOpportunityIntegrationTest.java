@@ -77,7 +77,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@Test
 	@Transactional(readOnly = true)
 	public void testNameFieldsEmptyOnAddFoPageWhenNewSfoNotLinkedWithSfo() throws Exception {
-		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/addFo"))
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/createFo"))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
 		assertTrue(result.getResponse().getContentAsString()
 				.contains("<input class=\"col-sm-2\" id=\"nameEn\" name=\"nameEn\" value=\"\""));
@@ -92,7 +92,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 		SystemFundingOpportunity sfo = sfoRepo.findAll().get(0);
 		Long sfoId = sfo.getId();
 
-		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/addFo").param("sfoId", sfoId.toString()))
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/createFo").param("sfoId", sfoId.toString()))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString()
@@ -127,7 +127,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 		List<FundingOpportunity> fos = foRepo.findAll();
 		String idParam = String.valueOf(fos.get(fos.size() - 1).getId() + 1L);
 
-		mvc.perform(MockMvcRequestBuilders.post("/admin/addFo").param("id", idParam).param("nameEn", nameEn)
+		mvc.perform(MockMvcRequestBuilders.post("/admin/createFo").param("id", idParam).param("nameEn", nameEn)
 				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
 				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
 				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)
@@ -164,7 +164,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 		List<FundingOpportunity> fos = foRepo.findAll();
 		String idParam = String.valueOf(fos.get(fos.size() - 1).getId() + 1L);
 
-		mvc.perform(MockMvcRequestBuilders.post("/admin/addFo").param("id", idParam).param("nameEn", nameEn)
+		mvc.perform(MockMvcRequestBuilders.post("/admin/createFo").param("id", idParam).param("nameEn", nameEn)
 				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
 				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
 				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)

@@ -2,8 +2,10 @@ package ca.gc.tri_agency.granting_data.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -11,6 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
@@ -136,6 +140,35 @@ public class AdminController {
 	public String registerProgramLinkPost(@ModelAttribute("id") Long id, @ModelAttribute("foId") Long foId) {
 		adminService.linkSystemFO(id, foId);
 		return "redirect:analyzeSystemFOs";
+	}
+	
+	@GetMapping(value = "/addFo")
+	public String addFo(Model model, @RequestParam(name = "sfoId", required = false) Optional<Long> sfoId) {
+		FundingOpportunity fo = new FundingOpportunity();
+		if (sfoId.isPresent()) {
+			SystemFundingOpportunity sfo = dataSevice.getSystemFO(sfoId.get());
+			fo.setNameEn(sfo.getNameEn());
+			fo.setNameFr(sfo.getNameFr());
+		}
+		List<Agency> allAgencies = dataSevice.getAllAgencies();
+		model.addAttribute("fo", fo);
+		model.addAttribute("allAgencies", allAgencies);
+		return "admin/addFo";
+	}
+
+	@PostMapping(value = "/addFo", params = "id")
+	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
+			Model model, RedirectAttributes redirectAttributes) throws Exception {
+		if (bindingResult.hasErrors()) {
+			// required in order to re-populate the drop-down list
+			List<Agency> allAgencies = dataSevice.getAllAgencies();
+			model.addAttribute("allAgencies", allAgencies);
+			return "admin/addFo";
+		}
+		dataSevice.createFo(command);
+		String createdFo = msgSource.getMessage("h.createdFo", null, LocaleContextHolder.getLocale());
+		redirectAttributes.addFlashAttribute("actionMessage", createdFo + command.getLocalizedAttribute("name"));
+		return "redirect:/admin/home";
 	}
 
 }

@@ -1,5 +1,6 @@
 package ca.gc.tri_agency.granting_data.security;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -12,10 +13,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -81,5 +84,21 @@ public class SecurityConfigIntegrationTest {
 		assertTrue(mockResponse.contains("id=\"forbiddenByRoleErrorPage\""),
 				"Non-admin users should not be able to access the \"Edit Funding Opportunity\" page");
 	}
+	
+	@WithMockUser(roles = { "MDM ADMIN", "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
+	@Test
+        public void signOutButtonVisibleOnlyForAuthenticatedUsers() throws Exception {
+                ResultActions resAction = mvc.perform(get("/home")).andExpect(status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().string(containsString("value=\"Sign Out\"")));
+                assertFalse(resAction.andReturn().getResponse().getContentAsString().contains(">Sign In</button>"));
+        }
+    
+        @WithAnonymousUser
+        @Test
+        public void signInButtonVisibleOnlyForUnauthenticatedUsers() throws Exception {
+                ResultActions resAction = mvc.perform(get("/home")).andExpect(status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().string(containsString(">Sign In</button>")));
+                assertFalse(resAction.andReturn().getResponse().getContentAsString().contains("value=\"Sign Out\""));
+        }
 
 }

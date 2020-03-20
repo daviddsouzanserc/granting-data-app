@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="common_header(title,links,scripts)">
 <meta charset="ISO-8859-1">
 <title th:replace="${title}" th:text="#{title.general}"></title>
@@ -32,7 +32,8 @@
    					<a class="nav-link" th:href="@{${currentUrl}(lang=#{lang.otherLocale})}" th:text="#{lang.otherLanguage}">other language</a>
 				</li>
 				<li class="nav-item" th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
-					<form th:action="@{/logout}" method="post"><input type="submit" th:value="#{input.signOut}" class="btn"></form>
+					<form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post"><input type="submit" th:value="#{input.signOut}" class="btn"/></form>
+					<button sec:authorize="!isAuthenticated()" class="btn" onclick="location.href='/login';">Sign In</button>
 				</li>
    			</ul>
 		</nav>

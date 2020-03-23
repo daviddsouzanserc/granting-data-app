@@ -16,6 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
@@ -27,12 +30,17 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FUNDING_OPPORTUNITY")
 	private Long id;
 
+	@NotBlank
+	@Size(min = 3)
 	private String nameEn;
 
+	@NotBlank
+	@Size(min = 3)
 	private String nameFr;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "lead_agency_id")
+	@NotNull
 	private Agency leadAgency;
 
 	@ManyToMany(cascade = CascadeType.ALL)

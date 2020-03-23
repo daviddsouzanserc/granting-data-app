@@ -235,5 +235,26 @@ public class ManageFundingOpportunityController {
 
 		return "redirect:/browse/viewFiscalYear";
 	}
+	@AdminOnly
+	@GetMapping(value = "/addFo")
+	public String addFo(Model model) {
+		List<Agency> allAgencies = dataService.getAllAgencies();
+		model.addAttribute("fo", new FundingOpportunity());
+		model.addAttribute("allAgencies", allAgencies);
+		return "manage/addFo";
+	}
+
+	@AdminOnly
+	@PostMapping(value = "/addFo", params = "id")
+	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
+			Model model) throws Exception {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("allAgencies", dataService.getAllAgencies());
+			return "manage/addFo";
+		}
+
+		dataService.createFo(command);
+		return "redirect:/browse/goldenList";
+	}
 
 }

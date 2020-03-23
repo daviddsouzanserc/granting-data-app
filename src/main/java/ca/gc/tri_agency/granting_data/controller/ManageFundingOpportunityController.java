@@ -235,7 +235,6 @@ public class ManageFundingOpportunityController {
 
 		return "redirect:/browse/viewFiscalYear";
 	}
-
 	@AdminOnly
 	@GetMapping(value = "/addFo")
 	public String addFo(Model model) {

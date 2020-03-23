@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{::script})}">
+	<meta charset="ISO-8859-1">
+	<title th:text="#{title.createFo}"></title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		
+		
+		  $('#isJointInitiative').click(function(){
+		    if($(this).is(":checked"))
+		       $("#partnerOrg").removeAttr("disabled");
+		    else
+		       $("#partnerOrg").attr("disabled" , "disabled");
+		});
+		  
+		  
+		  $("#isNOI").click(function(){
+			  
+			  if($(this).is(":checked"))
+			       $("#isNOI").set("true");
+			    else
+			       $("#isNOI").set("false");  
+		  });
+		  
+		  
+			  $("#isLOI").click(function(){
+				  
+				  if($(this).is(":checked"))
+				       $("#isLOI").set("true");
+				    else
+				       $("#isLOI").set("false");  
+			  });
+			  
+			  
+		}); 	
+	</script>
+</head>
+<body>
+	 <div th:insert="~{fragments/general.html :: header_nav('home')}" />
+	 <div class="container">
+     <h1 th:text="#{h.createFo}"></h1>
+	<form action="#" th:action="@{createFo}" th:object="${fo}" method="post"> 
+			<input type="hidden" th:field="*{id}" />           					
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.name}"></div>
+				<div><input th:field="*{nameEn}" class="col-sm-2"  /></div>
+				<div th:if="${#fields.hasErrors('nameEn')}" th:errors="*{nameEn}" th:text="#{err.nameErr}"></div>
+			</div>
+			
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.nameFr}"></div>
+				<div><input th:field="*{nameFr}" class="col-sm-2"  /></div>
+				<div th:if="${#fields.hasErrors('nameFr')}" th:errors="*{nameFr}" th:text="#{err.nameErr}"></div>
+			</div>
+			
+			
+			<div class="form-group row">
+			<div class="col-sm-2 col-form-label" th:text="#{form.leadAgency}"></div>
+				<div><select class="col-sm-2" th:field="*{leadAgency}">
+					<option th:each="agency : ${allAgencies}"
+						th:value="${agency.id}"
+						th:text="${agency.getLocalizedAttribute('acronym')}">
+					</option>
+				</select>
+			</div>
+				<div th:if="${#fields.hasErrors('leadAgency')}" th:errors="*{leadAgency}" th:text="#{err.leadAgency}"></div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.division}"></div>
+				<div><input  class="col-sm-2" th:field="*{division}"  /></div>
+				<div th:if="${#fields.hasErrors('division')}" th:errors="*{division}" th:text="#{err.div}"></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.isJI}"></div>
+				<div><input id="isJointInitiative" type="checkbox" th:field="*{isJointInitiative}" class="col-sm-2"	></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.participatingOrg}"></div>
+				<div><input id="partnerOrg" type="text" th:field="*{partnerOrg}" class="col-sm-2" disabled ></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.participatingCmplx}"></div>
+				<div><input id="isComplex" type="checkbox" th:field="*{isComplex}" class="col-sm-2" ></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.isEDIrequired}"></div>
+				<div><input id="isEdiRequired" type="checkbox" th:field="*{isEdiRequired}" class="col-sm-2"  ></div>  
+			</div>
+				
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.fundingType}"></div>
+				<div><input class="col-sm-2" th:field="*{fundingType}" /></div>
+				<div th:if="${#fields.hasErrors('fundingType')}" th:errors="*{fundingType}" th:text="#{err.fundingType}"></div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.programLeadName}"></div>
+				<div> <input class="col-sm-2" th:field="*{programLeadName}"/></div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.frequency}"></div>
+				<div><input class="col-sm-2" th:field="*{frequency}" /></div>
+				<div th:if="${#fields.hasErrors('frequency')}" th:errors="*{frequency}" th:text="#{err.frequency}"></div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.applyMethod}"></div>
+				<div><input class="col-sm-2" th:field="*{applyMethod}" /></div>
+				<div th:if="${#fields.hasErrors('applyMethod')}" th:errors="*{applyMethod}" th:text="#{err.applyMethod}"></div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.awardSystem}"></div>
+				<div><input class="col-sm-2" th:field="*{awardManagementSystem}" /></div>
+				<div th:if="${#fields.hasErrors('awardManagementSystem')}" th:errors="*{awardManagementSystem}" th:text="#{err.awardManagementSystem}"></div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.programLeadDn}"></div>
+				<div> <input class="col-sm-2" th:field="*{programLeadDn}"/></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{msg.stages}"></div>
+				<br>
+				<div><input id="isNOI" type="checkbox" th:field="*{isNOI}" class="col-sm-2"	value="isNOI"  th:text="#{input.noi}"></div>
+				<div><input id="isLOI" type="checkbox" th:field="*{isLOI}" class="col-sm-2" value="isLOI" th:text="#{input.loi}"></div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.agencies}"></div>
+			
+				<div>
+					<select>
+							<option th:label="#{msg.nserc}"></option>
+							<option th:label="#{msg.SSHRC}"></option>
+		            </select>
+	            </div>
+		
+	            
+				<div th:if="${#fields.hasErrors('participatingAgencies')}" th:errors="*{participatingAgencies}" th:text="#{err.agencies}"></div>
+				
+				<br> 
+				<br>
+			
+			<input type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}"/>
+		</form>
+		</div>
+   </body>
+</html>

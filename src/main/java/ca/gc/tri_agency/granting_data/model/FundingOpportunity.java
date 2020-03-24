@@ -194,7 +194,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isJointInitiative;
 	}
 
-	public void setJointInitiative(boolean isJointInitiative) {
+	public void setIsJointInitiative(boolean isJointInitiative) {
 		this.isJointInitiative = isJointInitiative;
 	}
 
@@ -210,7 +210,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isEdiRequired;
 	}
 
-	public void setEdiRequired(boolean isEdiRequired) {
+	public void setIsEdiRequired(boolean isEdiRequired) {
 		this.isEdiRequired = isEdiRequired;
 	}
 
@@ -218,7 +218,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isComplex;
 	}
 
-	public void setComplex(boolean isComplex) {
+	public void setIsComplex(boolean isComplex) {
 		this.isComplex = isComplex;
 	}
 

@@ -29,6 +29,7 @@ import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.ADUserRepository;
+import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @Service
@@ -241,6 +242,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	}
 
+	@AdminOnly
 	@Override
 	public void createFo(FundingOpportunity fo) {
 		// TODO Auto-generated method stub

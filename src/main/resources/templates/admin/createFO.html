@@ -2,7 +2,7 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{::script})}">
 	<meta charset="ISO-8859-1">
-	<title th:text="#{title.editProgramLead}"></title>
+	<title th:text="#{title.createFo}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
@@ -42,12 +42,12 @@
 	 <div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	 <div class="container">
      <h1 th:text="#{h.createFo}"></h1>
-	<form action="#" th:action="@{addFo}" th:object="${fo}" method="post"> 
+	<form action="#" th:action="@{createFo}" th:object="${fo}" method="post"> 
 			<input type="hidden" th:field="*{id}" />           					
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:text="#{form.name}"></div>
 				<div><input th:field="*{nameEn}" class="col-sm-2"  /></div>
-				<div th:if="${#fields.hasErrors('nameEn')}" th:errors="*{nameEn}" class="alert alert-danger" th:text="#{err.nameErr}"></div>
+				<div th:if="${#fields.hasErrors('nameEn')}" th:errors="*{nameEn}" th:text="#{err.nameErr}"></div>
 			</div>
 			
 			
@@ -102,7 +102,7 @@
 			</div>
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:text="#{form.programLeadName}"></div>
-				<div> <input class="col-sm-2" th:text="*{programLeadName}"/></div>
+				<div> <input class="col-sm-2" th:field="*{programLeadName}"/></div>
 			</div>
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:text="#{form.frequency}"></div>
@@ -120,29 +120,32 @@
 				<div th:if="${#fields.hasErrors('awardManagementSystem')}" th:errors="*{awardManagementSystem}" th:text="#{err.awardManagementSystem}"></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label" th:text="#{form.programLeadName}"></div>
-				<div> <input class="col-sm-2" th:text="*{programLeadName}"/></div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.programLeadDn}"></div>
+				<div> <input class="col-sm-2" th:field="*{programLeadDn}"/></div>
 			</div>
 			
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:text="#{msg.stages}"></div>
 				<br>
 				<div><input id="isNOI" type="checkbox" th:field="*{isNOI}" class="col-sm-2"	value="isNOI"  th:text="#{input.noi}"></div>
-				<div><input id="isLOI" type="checkbox" th:field="*{isLOI}" class="col-sm-2" value= "isLOI" th:text="#{input.loi}"></div>
+				<div><input id="isLOI" type="checkbox" th:field="*{isLOI}" class="col-sm-2" value="isLOI" th:text="#{input.loi}"></div>
 			</div>
 			
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label" th:utext="#{form.agencies}">Agencies</div>
-				<div><select class="col-sm-10" multiple="multiple"
-	            	th:field="*{participatingAgencies}">
-					<option th:each="agency : ${allAgencies}"
-						th:value="${agency.id}"
-						th:text="${agency.getLocalizedAttribute('acronym')}">
-					</option>
-	            </select></div>
-				<div th:if="${#fields.hasErrors('participatingAgencies')}" th:errors="*{participatingAgencies}">Agencies Error</div>
-			</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.agencies}"></div>
 			
+				<div>
+					<select>
+							<option th:label="#{msg.nserc}"></option>
+							<option th:label="#{msg.SSHRC}"></option>
+		            </select>
+	            </div>
+		
+	            
+				<div th:if="${#fields.hasErrors('participatingAgencies')}" th:errors="*{participatingAgencies}" th:text="#{err.agencies}"></div>
+				
+				<br> 
+				<br>
 			
 			<input type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}"/>
 		</form>

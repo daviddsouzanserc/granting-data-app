@@ -64,13 +64,13 @@ public class UserRedirectionIntegrationTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
 	@Test
 	public void testAdminControllerAccess_withLoggedInNonAdminUser_shouldBeForbidden() throws Exception {
-		String responseString = mvc.perform(get("/admin/home")).andExpect(status().isOk()).andReturn().getResponse()
+		String responseString = mvc.perform(get("/admin/home")).andExpect(status().isForbidden()).andReturn().getResponse()
 				.getContentAsString();
 		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
-		responseString = mvc.perform(get("/admin/selectFileForComparison")).andExpect(status().isOk()).andReturn()
+		responseString = mvc.perform(get("/admin/selectFileForComparison")).andExpect(status().isForbidden()).andReturn()
 				.getResponse().getContentAsString();
 		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
-		responseString = mvc.perform(get("/admin/importProgramsFromFile")).andExpect(status().isOk()).andReturn()
+		responseString = mvc.perform(get("/admin/importProgramsFromFile")).andExpect(status().isForbidden()).andReturn()
 				.getResponse().getContentAsString();
 		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
 	}

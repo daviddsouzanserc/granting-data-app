@@ -172,6 +172,11 @@ public class BrowseController {
                 grantingCapability.setGrantingStage(grantingStageAward);
                 grantingCapability.setFundingOpportunity(fo);
                 grantingCapabilityRepo.save(grantingCapability);
+                grantingCapability = new GrantingCapability();
+                grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("ResearchNet"));
+                grantingCapability.setGrantingStage(grantingStageAward);
+                grantingCapability.setFundingOpportunity(fo);
+                grantingCapabilityRepo.save(grantingCapability);
                 continue;
             } else if ((fo.getAwardManagementSystem() == null || fo.getAwardManagementSystem()
                 .equals("Via Research Offices") || fo.getAwardManagementSystem()

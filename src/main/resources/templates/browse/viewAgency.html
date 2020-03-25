@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
 	<title th:text="#{title.viewAgency}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
@@ -44,6 +44,7 @@
 				</table>
 			</div>
 		</div>
+		<a sec:authorize="hasRole('MDM ADMIN')" id="createBusinessUnit" class="btn btn-primary" th:href="@{/admin/createBusinessUnit}" th:text="#{link.createBusinessUnit}"></a>
 	</div>
    </body>
 </html>

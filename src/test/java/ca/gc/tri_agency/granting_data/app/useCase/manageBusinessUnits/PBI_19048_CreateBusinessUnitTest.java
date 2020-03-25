@@ -43,14 +43,14 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
 	public void test_editLinkVisibleToAdminOnViewAgency_shouldSucceedWith200() throws Exception {
-		mvc.perform(get("/browser/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
+		mvc.perform(get("/browse/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
 				MockMvcResultMatchers.content().string(Matchers.containsString("id=\"createBusinessUnit\"")));
 	}
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_editLinkNotVisibleToNonAdminOnViewAgency_shouldSucceedWith200() throws Exception {
-		mvc.perform(get("/browser/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
+		mvc.perform(get("/browse/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
 				MockMvcResultMatchers.content().string(not(Matchers.containsString("id=\"createBusinessUnit\""))));
 	}
 

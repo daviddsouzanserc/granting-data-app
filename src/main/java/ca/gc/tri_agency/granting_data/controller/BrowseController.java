@@ -69,19 +69,19 @@ public class BrowseController {
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
             } else if (null != fo.getProgramLeadName() && fo.getProgramLeadName()
-                .equals("Ope")) {
+                .equals("Open")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("NSERC Online"));
                 grantingCapabilityRepo.save(grantingCapability);
             } else if ((applyMethod == null || applyMethod.equals("Offline") || applyMethod.equals("Not Applicable") || applyMethod.equals("Email")) && null != fo.getAwardManagementSystem() && !fo.getAwardManagementSystem()
                 .equals("null") && !fo.getAwardManagementSystem()
-                    .equals("Apears in NAMIS aka CSY")
+                    .equals("Apears in NAMIS aka CSYN")
                 && !fo.getAwardManagementSystem()
-                    .equals("Apears in NAMIS aka SY")) {
+                    .equals("Apears in NAMIS aka SYN")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym(fo.getAwardManagementSystem()));
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
             } else if (null != fo.getProgramLeadName() && fo.getProgramLeadName()
-                .equals("Allanah Brow")) {
+                .equals("Allanah Brown")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("ResearchNet"));
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
@@ -106,7 +106,7 @@ public class BrowseController {
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
             } else if (null != fo.getNameEn() && fo.getNameEn()
-                .equals("Special Initiatives Fund For Research Support And Collaboratio")) {
+                .equals("Special Initiatives Fund For Research Support And Collaboration")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("SP Secure Upload"));
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
@@ -141,10 +141,7 @@ public class BrowseController {
             }
         }
         for (FundingOpportunity fo : foList) {
-            if (fo.getId() == 117) {
-                System.out.println(fo.getNameEn() + ";");
-            }
-            if (null != fo.getNameEn() && (fo.getNameEn().equals("Parental Leave - Scholarships and Fellowships through grants (SSHRC) ")
+            if (null != fo.getNameEn() && (fo.getNameEn().equals("Parental Leave - Scholarships and Fellowships through grants (SSHRC)")
                 ||  fo.getNameEn().equals("Parental Leave - Research Grants")
                 || fo.getNameEn().equals("Parental Leave - Scholarships & Fellowships"))) {
                 continue;
@@ -160,13 +157,16 @@ public class BrowseController {
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
             } else if (null != fo.getProgramLeadName() && fo.getProgramLeadName()
-                .equals("Ope")) {
+                .equals("Open")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("NAMIS"));
                 grantingCapabilityRepo.save(grantingCapability);
             } else if (null != fo.getAwardManagementSystem() && fo.getAwardManagementSystem()
                 .equals("NAMIS/AMIS/CIHR System")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("NAMIS"));
                 grantingCapabilityRepo.save(grantingCapability);
+                /* Spring won't create a new entry in the granting_capability table if
+                I only change the Granting System for the GrantingCapability object
+                therefore I have to create a new GrantingCapability object. */
                 grantingCapability = new GrantingCapability();
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("AMIS"));
                 grantingCapability.setGrantingStage(grantingStageAward);
@@ -188,7 +188,7 @@ public class BrowseController {
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
             } else if (null != fo.getProgramLeadName() && fo.getProgramLeadName()
-                .equals("Allanah Brow")) {
+                .equals("Allanah Brown")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("ResearchNet"));
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
@@ -213,7 +213,7 @@ public class BrowseController {
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
             } else if (null != fo.getNameEn() && fo.getNameEn()
-                .equals("Special Initiatives Fund For Research Support And Collaboratio")) {
+                .equals("Special Initiatives Fund For Research Support And Collaboration")) {
                 grantingCapability.setGrantingSystem(grantingSystemRepo.findByAcronym("AMIS"));
                 grantingCapabilityRepo.save(grantingCapability);
                 continue;
@@ -239,8 +239,8 @@ public class BrowseController {
     // are done with it
     private static String assignGrantingSystem(String awardOrApplyMethod) {
         switch (awardOrApplyMethod) {
-        case "Apears in NAMIS aka CSY":
-        case "Apears in NAMIS aka SY":
+        case "Apears in NAMIS aka CSYN":
+        case "Apears in NAMIS aka SYN":
         case "NAMIS":
             return "NAMIS";
         case "NOLS":

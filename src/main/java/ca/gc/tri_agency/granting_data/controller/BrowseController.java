@@ -14,8 +14,8 @@ import ca.gc.tri_agency.granting_data.service.DataAccessService;
 @Controller
 @RequestMapping("/browse")
 public class BrowseController {
-
-	// private static final Logger LOG = LogManager.getLogger();
+    
+        // private static final Logger LOG = LogManager.getLogger();
 
 	@Autowired
 	DataAccessService dataService;
@@ -31,7 +31,6 @@ public class BrowseController {
 	public String goldListDisplay(Model model) {
 		model.addAttribute("goldenList", dataService.getAllFundingOpportunities());
 		model.addAttribute("fcByFoMap", dataService.getFundingCycleByFundingOpportunityMap());
-
 		return "browse/goldenList";
 	}
 

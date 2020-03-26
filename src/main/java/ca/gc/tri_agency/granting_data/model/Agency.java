@@ -24,6 +24,8 @@ public class Agency implements LocalizedParametersModel {
 	protected String acronymFr;
 
 	protected String acronymEn;
+	
+	private BusinessUnit businessUnit;
 
 	public Agency() {
 
@@ -90,6 +92,14 @@ public class Agency implements LocalizedParametersModel {
 
 	public Long getId() {
 		return id;
+	}
+
+	public BusinessUnit getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(BusinessUnit businessUnit) {
+		this.businessUnit = businessUnit;
 	}
 
 }

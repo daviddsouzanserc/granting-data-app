@@ -66,6 +66,8 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	private String programLeadDn;
 	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "business_unit_id")
 	private BusinessUnit businessUnit;
 
 	public FundingOpportunity() {

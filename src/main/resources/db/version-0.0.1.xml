@@ -193,8 +193,32 @@
 	<changeSet id="00000000000021" author="jfs">
         <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY5" tableName="funding_opportunity_participating_agencies"/>
     </changeSet>
-    <changeSet author="dev_aha" id="convert data type for fiscal_year column in the table system_funding_cycle">
+    <changeSet author="dev_aha" id="00000000000022">
     	<modifyDataType tableName="system_funding_cycle" columnName="fiscal_year" newDataType="BIGINT"/>
+    </changeSet>
+    <changeSet id="00000000000023" author="dev_aha">
+        <createSequence sequenceName="seq_business_unit" startValue="1" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="00000000000024" author="dev_aha">
+        <createTable tableName="business_unit">
+            <column name="id" type="BIGINT" valueSequenceNext="seq_business_unit">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name_en" type="VARCHAR(255)"/>
+            <column name="name_fr" type="VARCHAR(255)"/>
+            <column name="acronym_en" type="VARCHAR(255)"/>
+            <column name="acronym_fr" type="VARCHAR(255)"/>
+            <column name="agency_id" type="BIGINT" >
+                <constraints foreignKeyName="fk_business_unit_agency" nullable="false" references="agency(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="00000000000025" author="dev_aha">
+        <addColumn tableName="funding_opportunity">
+            <column name="business_unit_id" type="BIGINT">
+                <constraints nullable="true" foreignKeyName="fk_funding_opportunity_business_unit" references="business_unit(id)"/>
+            </column>
+        </addColumn>
     </changeSet>
     <!-- 
     <changeSet author="dev_yab (generated)" id="1574353543232-28">

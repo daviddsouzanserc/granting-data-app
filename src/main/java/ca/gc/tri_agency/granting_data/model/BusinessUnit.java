@@ -8,10 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
@@ -19,35 +23,26 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 public class BusinessUnit implements LocalizedParametersModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "SEQ_BUSINESS_UNIT", sequenceName = "SEQ_BUSINESS_UNIT", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BUSINESS_UNIT")
     private Long id;
     
-    @NotBlank
     @Size(min = 3, max = 255)
-    @Column(unique = true)
     private String nameEn;
     
-    @NotBlank
     @Size(min = 3, max = 255)
-    @Column(unique = true)
     private String nameFr;
     
-    @NotBlank
-    @Column(unique = true)
     private String acronymEn;
     
-    @NotBlank
-    @Column(unique = true)
     private String acronymFr;
     
-    @ManyToOne
-    private Set<FundingOpportunity> fos = new HashSet<>();
-    
-    @ManyToOne
-    private Set<Agency> agencies = new HashSet<>();
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
 
-//    @ManyToOne
-//    private Set<MembershipAccess> membershipAccesses = new HashSet<>();
+//    @ManyToOne(mappedBy = "businessUnit")
+//    private MembershipAccess;
     
 	public BusinessUnit(@NotBlank @Size(min = 3, max = 255) String nameEn,
 			@NotBlank @Size(min = 3, max = 255) String nameFr,
@@ -90,36 +85,25 @@ public class BusinessUnit implements LocalizedParametersModel {
 		this.acronymFr = acronymFr;
 	}
 
+	public Agency getAgency() {
+		return agency;
+	}
+
+	public void setAgency(Agency agency) {
+		this.agency = agency;
+	}
+
 	public Long getId() {
 		return id;
 	}
 
-	public Set<FundingOpportunity> getFos() {
-		return fos;
+	public String getAcronym() {
+		return LocaleContextHolder.getLocale().toString().contains("en") ?
+				getAcronymEn() : getAcronymFr();
 	}
-
-	public Set<Agency> getAgencies() {
-		return agencies;
+	
+	public String getName() {
+		return LocaleContextHolder.getLocale().toString().contains("en") ?
+				getNameEn() : getNameFr();
 	}
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

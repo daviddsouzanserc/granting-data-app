@@ -5,46 +5,40 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
 import ca.gc.tri_agency.granting_data.model.User;
-import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
-import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
 import ca.gc.tri_agency.granting_data.security.SecurityUtils;
+import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
 
 @Service
 public class RestrictedDataServiceImpl implements RestrictedDataService {
 
 	@Autowired
-	SystemFundingOpportunityRepository systemFoRepo;
+	private FundingOpportunityRepository foRepo;
 	@Autowired
-	FundingOpportunityRepository foRepo;
+	private FundingCycleRepository fcRepo;
 	@Autowired
-	FundingCycleRepository fcRepo;
+	private UserRepo userRepo;
 	@Autowired
-	AgencyRepository agencyRepo;
-	@Autowired
-	UserRepo userRepo;
-	@Autowired
-	GrantingCapabilityRepository grantingCapabilityRepo;
+	private GrantingCapabilityRepository grantingCapabilityRepo;
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
+	@AdminOnly
 	public FundingOpportunity saveFundingOpportunity(FundingOpportunity targetUpdate) {
 		return foRepo.save(targetUpdate);
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
+	@AdminOnly
 	public void setFoLeadContributor(long foId, String leadUserDn) {
 		if (leadUserDn == null) {
 			// return;??
@@ -91,10 +85,41 @@ public class RestrictedDataServiceImpl implements RestrictedDataService {
 	}
 
 	@Override
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
+	@AdminOnly
 	public GrantingCapability createGrantingCapability(@Valid GrantingCapability command) {
 
 		return grantingCapabilityRepo.save(command);
 	}
-
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

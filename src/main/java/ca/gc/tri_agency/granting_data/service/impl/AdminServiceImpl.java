@@ -20,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
 import com.ebay.xcelite.sheet.XceliteSheet;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingSystem;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
@@ -33,10 +35,12 @@ import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
 import ca.gc.tri_agency.granting_data.model.file.ProgramFromFile;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
+import ca.gc.tri_agency.granting_data.repo.BusinessUnitRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
+import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.AdminService;
 
 @Service
@@ -46,20 +50,23 @@ public class AdminServiceImpl implements AdminService {
 	private static final Logger LOG = LogManager.getLogger();
 
 	@Autowired
-	SystemFundingOpportunityRepository systemFoRepo;
+	private SystemFundingOpportunityRepository systemFoRepo;
 
 	@Autowired
-	FundingOpportunityRepository foRepo;
+	private FundingOpportunityRepository foRepo;
 
 	@Autowired
-	AgencyRepository agencyRepo;
+	private AgencyRepository agencyRepo;
 
 	@Autowired
-	SystemFundingCycleRepository systemFundingCycleRepo;
+	private SystemFundingCycleRepository systemFundingCycleRepo;
 
 	@Autowired
-	GrantingSystemRepository grantingSystemRepo;
-
+	private GrantingSystemRepository grantingSystemRepo;
+	
+	@Autowired
+	private BusinessUnitRepository buRepo;
+	
 	@Value("${dataset.analysis.folder}")
 	private String datasetAnalysisFolder;
 
@@ -290,6 +297,23 @@ public class AdminServiceImpl implements AdminService {
 		systemFo.setLinkedFundingOpportunity(fo);
 		systemFoRepo.save(systemFo);
 		return 1;
+	}
+
+	@Override
+	@AdminOnly
+	@Transactional
+	public BusinessUnit createBusinessUnit(BusinessUnit bu) {
+		return buRepo.save(bu);
+	}
+
+	@Override
+	@AdminOnly
+	@Transactional
+	public BusinessUnit updateBusinessUnit(BusinessUnit bu) {
+		if (!buRepo.existsById(bu.getId())) {
+			throw new DataRetrievalFailureException("That Business Unit does not exist");
+		} 
+		return buRepo.save(bu);
 	}
 
 }

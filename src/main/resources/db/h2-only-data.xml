@@ -51,5 +51,7 @@
 			<column name="name_fr" value="Examen de SharePoint" />
 		</insert>
 	</changeSet>
-
+    <changeSet dbms="h2" id="insertH2OnlyData" author="dev_aha">
+        <sqlFile path="h2-only-data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

@@ -46,6 +46,9 @@ public class BusinessUnit implements LocalizedParametersModel {
 	@JoinColumn(name = "agency_id")
 	private Agency agency;
 
+	public BusinessUnit() {
+	}
+
 	public BusinessUnit(@NotBlank @Size(min = 3, max = 255) String nameEn, @NotBlank @Size(min = 3, max = 255) String nameFr,
 			@NotBlank String acronymEn, @NotBlank String acronymFr, @NotNull Agency agency) {
 		this.nameEn = nameEn;

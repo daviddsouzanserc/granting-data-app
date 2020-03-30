@@ -28,7 +28,6 @@ public interface AdminService {
 
 	SystemFundingCycle registerSystemFundingCycle(FundingCycleDatasetRow row, SystemFundingOpportunity targetSfo);
 
-	BusinessUnit createBusinessUnit(BusinessUnit bu);
+	BusinessUnit createOrUpdateBusinessUnit(BusinessUnit bu);
 	
-	BusinessUnit updateBusinessUnit(BusinessUnit bu);
 }

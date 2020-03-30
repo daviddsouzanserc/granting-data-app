@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
@@ -460,15 +461,15 @@ public class DataAccessServiceImpl implements DataAccessService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<FundingOpportunity> findAllLocalizedFundingOpportunitiesByBusinessUnit(BusinessUnit bu) {
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public List<FundingOpportunity> getAllLocalizedFundingOpportunitiesByBusinessUnit(BusinessUnit bu) {
 		return LocaleContextHolder.getLocale().getLanguage() == "en" ? foRepo.findByBusinessUnitOrderByNameEnAsc(bu)
 				: foRepo.findByBusinessUnitOrderByNameFrAsc(bu);
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public List<BusinessUnit> findAllLocalizedBusinessUnitsByAgency(Agency agency) {
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public List<BusinessUnit> getAllLocalizedBusinessUnitsByAgency(Agency agency) {
 		return LocaleContextHolder.getLocale().getLanguage().equals("en") ? buRepo.findByAgencyOrderByNameEnAsc(agency)
 				: buRepo.findByAgencyOrderByNameFrAsc(agency);
 	}

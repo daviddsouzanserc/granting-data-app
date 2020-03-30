@@ -68,8 +68,8 @@ public interface DataAccessService {
 
 	Map<String, List<FundingCycle>> getAllDatesLOIEnd(long plusMinusMonth);
 	
-	List<FundingOpportunity> findAllLocalizedFundingOpportunitiesByBusinessUnit(BusinessUnit bu);
+	List<FundingOpportunity> getAllLocalizedFundingOpportunitiesByBusinessUnit(BusinessUnit bu);
 	
-	List<BusinessUnit> findAllLocalizedBusinessUnitsByAgency(Agency agency);
+	List<BusinessUnit> getAllLocalizedBusinessUnitsByAgency(Agency agency);
 
 }

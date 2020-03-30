@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ebay.xcelite.Xcelite;
@@ -96,7 +95,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public List<String> generateActionableFoCycleIds(List<FundingCycleDatasetRow> foCycles) {
 		// SYSTEM FCs HAVE UNIQUE IDENTIFIER THAT INCLUDES THE PROGRAM IDENTIFIER. USING
 		// THAT AS DETERMINATION FACTOR
@@ -117,7 +115,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	@Transactional
 	public SystemFundingOpportunity registerSystemFundingOpportunity(FundingCycleDatasetRow row,
 			GrantingSystem targetSystem) {
 		SystemFundingOpportunity retval = new SystemFundingOpportunity();
@@ -131,7 +128,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	@Transactional
 	public SystemFundingCycle registerSystemFundingCycle(FundingCycleDatasetRow row,
 			SystemFundingOpportunity targetSfo) {
 		SystemFundingCycle retval = new SystemFundingCycle();
@@ -140,12 +136,10 @@ public class AdminServiceImpl implements AdminService {
 		retval.setSystemFundingOpportunity(targetSfo);
 		retval.setNumAppsReceived(row.getNumReceivedApps());
 		retval = systemFundingCycleRepo.save(retval);
-		
 		return retval;
 	}
 
 	@Override
-	@Transactional
 	public int applyChangesFromFileByIds(String filename, String[] idsToAction) {
 		GrantingSystem targetSystem = getGrantingSystemFromFilename(filename);
 
@@ -181,7 +175,6 @@ public class AdminServiceImpl implements AdminService {
 
 	}
 
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public GrantingSystem getGrantingSystemFromFilename(String filename) {
 		List<GrantingSystem> grantingSystems = grantingSystemRepo.findAll();
 		GrantingSystem retval = null;
@@ -194,7 +187,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	@Transactional
 	public int importProgramsFromFile() {
 		int retval = 0;
 		HashMap<String, Agency> agencyMap = new HashMap<String, Agency>();
@@ -282,7 +274,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	@Transactional
 	public int unlinkSystemFO(long systemFoId, long foId) {
 		SystemFundingOpportunity systemFo = systemFoRepo.findById(systemFoId)
 				.orElseThrow(() -> new DataRetrievalFailureException("That System Funding Opportunity does not exist"));
@@ -298,7 +289,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	@Transactional
 	public int linkSystemFO(long systemFoId, long foId) {
 		SystemFundingOpportunity systemFo = systemFoRepo.findById(systemFoId)
 				.orElseThrow(() -> new DataRetrievalFailureException("That System Funding Opportunity does not exist"));

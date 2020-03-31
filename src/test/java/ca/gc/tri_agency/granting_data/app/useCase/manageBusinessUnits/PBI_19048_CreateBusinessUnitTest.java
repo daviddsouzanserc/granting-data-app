@@ -85,7 +85,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_accessCreateBusinessUnitByNonAdmin_shouldReturn403() throws Exception {
-		mvc.perform(get("/admin/createBusinessUnit?agencyId").param("id", "1")).andExpect(status().isOk()).andExpect(status().isForbidden())
+		mvc.perform(get("/admin/createBusinessUnit?agencyId=1")).andExpect(status().isOk()).andExpect(status().isForbidden())
 				.andReturn().getResponse().getContentAsString().contains("id=\"forbiddenByRoleErrorPage\"");
 	}
 
@@ -108,8 +108,8 @@ public class PBI_19048_CreateBusinessUnitTest {
 				.andExpect(MockMvcResultMatchers.flash().attribute("actionMessage",
 						"Created Business Unit named: " + nameEn));
 
-		// when viewBUs page is refreshed, flash attribute should disappear
-		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnits"))
+		// when viewBU page is refreshed, flash attribute should disappear
+		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnit?id=1"))
 				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
 
 		assertEquals(initBuCount + 1, buRepo.count());
@@ -166,7 +166,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 						"Edit Business Unit named: " + nameEn));
 
 		// when viewBUs page is refreshed, flash attribute should disappear
-		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnits"))
+		mvc.perform(MockMvcRequestBuilders.get("/browse/viewAgency?id=" + Long.toString(agencyId)))
 				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
 
 		assertEquals(initBuRepoCount, buRepo.count());
@@ -185,11 +185,11 @@ public class PBI_19048_CreateBusinessUnitTest {
 				.andExpect(MockMvcResultMatchers.status().isForbidden());
 	}
 
-	// CREATE TEST THAT VERIFIES THAT ANYONE CAN VIEW ALL OF THE BUSINESS UNITS
+	// CREATE TEST THAT VERIFIES THAT ANYONE CAN VIEW A BUSINESS UNIT
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCanAccessViewBusinessUnitPage_shouldSucceedWith200() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnit").param("id", "1")).andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
-				.getResponse().getContentAsString().contains("id=\"viewBUsPage\"");
+		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnit?id=1")).andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
+				.getResponse().getContentAsString().contains("id=\"viewBusinessUnitPage\"");
 	}
 }

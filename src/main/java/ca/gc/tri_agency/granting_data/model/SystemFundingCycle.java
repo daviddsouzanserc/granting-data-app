@@ -31,10 +31,6 @@ public class SystemFundingCycle implements LocalizedParametersModel {
 	@JoinColumn(name = "system_funding_opportunity_id")
 	private SystemFundingOpportunity systemFundingOpportunity;
 
-	/*
-	 * could add: private SimpleDateFormat applyDeadlineDate;
-	 */
-
 	public Long getId() {
 		return id;
 	}

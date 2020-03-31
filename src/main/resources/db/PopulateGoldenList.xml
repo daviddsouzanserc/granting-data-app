@@ -9,4 +9,8 @@ id="populate_granting_systems"
 author="Alex Hamilton">
       <sqlFile relativeToChangelogFile="true" path="PopulateGoldenList-version2.sql" />
   </changeSet>
+  <!-- FUNNY THAT USING SEQUENCES DIFFERS IN H2 AND MSSQL, BUT NOT WHEN RESETTING IT -->
+  <changeSet id="fixSequenceH2" author="jfs" >
+  	<sql>ALTER SEQUENCE seq_funding_opportunity restart with 142</sql>
+  </changeSet>
 </databaseChangeLog>

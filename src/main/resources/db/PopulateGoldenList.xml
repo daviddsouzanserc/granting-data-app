@@ -8,5 +8,6 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
 id="populate_granting_systems"
 author="Alex Hamilton">
       <sqlFile relativeToChangelogFile="true" path="PopulateGoldenList.sql" />
+<!--       <alterSequence sequenceName="seq_funding_opportunity" startValue="142" incrementBy="1"/> -->
   </changeSet>
 </databaseChangeLog>

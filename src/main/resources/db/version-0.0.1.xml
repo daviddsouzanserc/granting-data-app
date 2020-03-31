@@ -181,7 +181,7 @@
             <column name="id" type="BIGINT" valueSequenceNext="seq_system_funding_cycle">
                  <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="comp_year" type="date"/>
+            <column name="comp_year" type="BIGINT"/>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="num_apps_received" type="BIGINT"/>
             <column name="system_funding_opportunity_id" type="BIGINT">
@@ -192,9 +192,6 @@
     </changeSet>
 	<changeSet id="00000000000021" author="jfs">
         <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY5" tableName="funding_opportunity_participating_agencies"/>
-    </changeSet>
-    <changeSet author="dev_aha" id="convert data type for fiscal_year column in the table system_funding_cycle">
-    	<modifyDataType tableName="system_funding_cycle" columnName="fiscal_year" newDataType="BIGINT"/>
     </changeSet>
     <!-- 
     <changeSet author="dev_yab (generated)" id="1574353543232-28">

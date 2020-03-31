@@ -78,7 +78,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@Transactional(readOnly = true)
 	public void testNameFieldsEmptyOnAddFoPageWhenNewSfoNotLinkedWithSfo() throws Exception {
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/createFo"))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		assertTrue(result.getResponse().getContentAsString()
 				.contains("<input class=\"col-sm-2\" id=\"nameEn\" name=\"nameEn\" value=\"\""));
 		assertTrue(result.getResponse().getContentAsString()

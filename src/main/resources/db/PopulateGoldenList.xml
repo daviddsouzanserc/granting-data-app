@@ -4,10 +4,11 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
-  <changeSet
-id="populate_granting_systems"
-author="Alex Hamilton">
+  <changeSet id="populate_granting_systems" author="Alex Hamilton">
       <sqlFile relativeToChangelogFile="true" path="PopulateGoldenList.sql" />
-<!--       <alterSequence sequenceName="seq_funding_opportunity" startValue="142" incrementBy="1"/> -->
+  </changeSet>
+  <!-- FUNNY THAT USING SEQUENCES DIFFERS IN H2 AND MSSQL, BUT NOT WHEN RESETTING IT -->
+  <changeSet id="fixSequenceH2" author="jfs" >
+  	<sql>ALTER SEQUENCE seq_funding_opportunity restart with 142</sql>
   </changeSet>
 </databaseChangeLog>

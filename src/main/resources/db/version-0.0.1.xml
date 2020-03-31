@@ -181,13 +181,12 @@
             <column name="id" type="BIGINT" valueSequenceNext="seq_system_funding_cycle">
                  <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="comp_year" type="BIGINT"/>
+            <column name="fiscal_year" type="BIGINT"/>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="num_apps_received" type="BIGINT"/>
             <column name="system_funding_opportunity_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_system_funding_cycle_system_funding_opportunity" references="system_funding_opportunity(id)"/>
             </column>
-            <column name="fiscal_year" type="date"/>
         </createTable>
     </changeSet>
 	<changeSet id="00000000000021" author="jfs">

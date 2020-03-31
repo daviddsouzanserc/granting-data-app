@@ -3,6 +3,7 @@ package ca.gc.tri_agency.granting_data.app.useCase.manageBusinessUnits;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -85,8 +86,8 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_accessCreateBusinessUnitByNonAdmin_shouldReturn403() throws Exception {
-		mvc.perform(get("/admin/createBusinessUnit?agencyId=1")).andExpect(status().isOk()).andExpect(status().isForbidden())
-				.andReturn().getResponse().getContentAsString().contains("id=\"forbiddenByRoleErrorPage\"");
+		assertTrue(mvc.perform(get("/admin/createBusinessUnit?agencyId=1")).andExpect(status().isForbidden())
+				.andReturn().getResponse().getContentAsString().contains("id=\"forbiddenByRoleErrorPage\""));
 	}
 
 	// CREATE POST ACTION CAN ONLY BE EXECUTED BY ADMIN
@@ -189,7 +190,9 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCanAccessViewBusinessUnitPage_shouldSucceedWith200() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnit?id=1")).andExpect(MockMvcResultMatchers.status().isOk()).andReturn()
-				.getResponse().getContentAsString().contains("id=\"viewBusinessUnitPage\"");
+		assertTrue("Wrong Page or Page is Missing Content", mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnit?id=1"))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
+				.contains("id=\"viewBusinessUnitPage\""));
+		
 	}
 }

@@ -18,38 +18,5 @@
 			<column name="granting_system_id" value="1" />
 		</insert>
 	</changeSet>
-	<!-- The table granting_system is missing values in the H2 database but the table is not missing any values in the dev database (SQL Server) -->
-	<changeSet author="dev_aha" id="addMissingGrantingSystems">
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" valueComputed="seq_granting_system.nextval"></column>
-			<column name="acronym" value="CIMS" />
-			<column name="name_en" value="Corporate Inventory Management System" />
-			<column name="name_fr" value="Corporate Inventory Management System" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" valueComputed="seq_granting_system.nextval"></column>
-			<column name="acronym" value="ResearchNet" />
-			<column name="name_en" value="ResearchNet" />
-			<column name="name_fr" value="ResearchNet" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" valueComputed="seq_granting_system.nextval"></column>
-			<column name="acronym" value="Convergence" />
-			<column name="name_en" value="Convergence" />
-			<column name="name_fr" value="Convergence" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" valueComputed="seq_granting_system.nextval"></column>
-			<column name="acronym" value="SP Secure Upload" />
-			<column name="name_en" value="SharePoint Secure Upload" />
-			<column name="name_fr" value="Téléchargement Sécurisé SharePoint" />
-		</insert>
-		<insert dbms="h2" tableName="granting_system">
-			<column name="id" valueComputed="seq_granting_system.nextval"></column>
-			<column name="acronym" value="SP Review" />
-			<column name="name_en" value="SharePoint Review" />
-			<column name="name_fr" value="Examen de SharePoint" />
-		</insert>
-	</changeSet>
 
 </databaseChangeLog>

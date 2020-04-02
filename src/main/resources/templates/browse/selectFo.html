@@ -12,8 +12,6 @@
 			<table id="SelectedFoTable" class="table table-bordered">
 				<thead>
 		            <tr>
-		                <th th:text="#{form.applyMethod}"></th>
-		                <th th:text="#{th.awardManagementSystem}"></th>
 		                <th th:text="#{form.division}"></th>
 		                <th th:text="#{form.frequency}"></th>
 		                <th th:text="#{form.fundingType}"></th>
@@ -23,8 +21,6 @@
 				
 				<tbody>
 	       			<tr th:each="fo : ${fos}" >
-	           			<td><span th:text="${fo.applyMethod}"></span></td>
-	           			<td><span th:text="${fo.awardManagementSystem}"></span></td>
 	           			<td><span th:text="${fo.division}"></span></td>
 	           			<td><span th:text="${fo.frequency}"></span></td>
 	           			<td><span th:text="${fo.fundingType}"></span></td>

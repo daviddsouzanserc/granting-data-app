@@ -88,16 +88,6 @@ $(document).ready(function(){
 				<div th:if="${#fields.hasErrors('frequency')}" th:errors="*{frequency}" th:text="#{err.frequency}"></div>
 			</div>
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label" th:utext="#{form.applyMethod}">Apply Method</div>
-				<div><input class="col-sm-2" th:field="*{applyMethod}" /></div>
-				<div th:if="${#fields.hasErrors('applyMethod')}" th:errors="*{applyMethod}" th:text="#{err.applyMethod}"></div>
-			</div>
-			<div class="form-group row">
-				<div class="col-sm-2 col-form-label" th:utext="#{form.awardSystem}">Award System</div>
-				<div><input class="col-sm-2" th:field="*{awardManagementSystem}" /></div>
-				<div th:if="${#fields.hasErrors('awardManagementSystem')}" th:errors="*{awardManagementSystem}" th:text="#{err.awardManagementSystem}"></div>
-			</div>
-			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:utext="#{form.programLeadName}">Program Lead Name</div>
 				<div class="col-sm-2" th:text="${fo.programLeadName}"></div>
 			</div>

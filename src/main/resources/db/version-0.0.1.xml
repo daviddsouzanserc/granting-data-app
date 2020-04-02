@@ -6,9 +6,6 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
     
-	<changeSet id="00000000000001" author="jfs">
-        <createSequence sequenceName="hibernate_sequence" />
-    </changeSet>
 	<changeSet id="00000000000002" author="jfs">
     	<createSequence sequenceName="seq_agency" startValue="1" incrementBy="1"/>
 	</changeSet>
@@ -44,8 +41,8 @@
             <column name="id" type="BIGINT" valueSequenceNext="seq_funding_opportunity">
                  <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="apply_method" type="VARCHAR(255)"/>
-            <column name="award_management_system" type="VARCHAR(255)"/>
+<!--             <column name="apply_method" type="VARCHAR(255)"/> -->
+<!--             <column name="award_management_system" type="VARCHAR(255)"/> -->
             <column name="division" type="VARCHAR(255)"/>
             <column name="frequency" type="VARCHAR(255)"/>
             <column name="funding_type" type="VARCHAR(255)"/>

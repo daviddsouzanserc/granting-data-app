@@ -105,7 +105,8 @@ public class CreateBusinessUnitIntegrationTest {
 	public void testService_nonAdminCannotCreateBU_shouldthrowAccessDeniedException() {
 		Agency agency = agencyRepo.findAll().get(0);
 		BusinessUnit bu = new BusinessUnit("EN NAME TEST", "FR NAME TEST", "EN ACRONYM TEST", "FR ACRONYM TEST", agency);
-		buService.saveBusinessUnit(bu);	}
+		buService.saveBusinessUnit(bu);
+	}
 
 	// CREATE POST ACTION CAN ONLY BE EXECUTED BY ADMIN
 	@WithMockUser(roles = { "MDM ADMIN" })
@@ -151,7 +152,7 @@ public class CreateBusinessUnitIntegrationTest {
 		String nameFr = RandomStringUtils.randomAlphabetic(20);
 		String acronymEn = RandomStringUtils.randomAlphabetic(5);
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
-		Long agencyId = 1L; 
+		Long agencyId = 1L;
 
 		assertTrue(mvc.perform(MockMvcRequestBuilders.post("/admin/createBU").param("agencyId", Long.toString(agencyId))
 				.param("nameEn", nameEn).param("nameFr", nameFr).param("acronymEn", acronymEn)

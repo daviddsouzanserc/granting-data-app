@@ -126,7 +126,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public List<FundingOpportunity> getFoByNameEn(String nameEn) {
-		return foRepo.findByNameEn(nameEn);
+		return foRepo.findAllByNameEn(nameEn);
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public List<FundingOpportunity> getAgencyFundingOpportunities(long id) {
-		return foRepo.findByLeadAgencyId(id);
+		return foRepo.findAllByLeadAgencyId(id);
 	}
 
 	@Override

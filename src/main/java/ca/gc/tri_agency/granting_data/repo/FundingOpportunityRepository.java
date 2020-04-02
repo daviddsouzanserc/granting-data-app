@@ -11,11 +11,10 @@ import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 @Repository
 public interface FundingOpportunityRepository extends JpaRepository<FundingOpportunity, Long> {
 
-	List<FundingOpportunity> findByNameEn(String nameEn);
+	List<FundingOpportunity> findAllByNameEn(String nameEn);
 
-	List<FundingOpportunity> findByLeadAgencyId(long id);
+	List<FundingOpportunity> findAllByLeadAgencyId(long id);
 
-	List<FundingOpportunity> findByBusinessUnitOrderByNameEnAsc(BusinessUnit bu);
+	List<FundingOpportunity> findAllByBusinessUnit(BusinessUnit bu);
 	
-	List<FundingOpportunity> findByBusinessUnitOrderByNameFrAsc(BusinessUnit bu);
 }

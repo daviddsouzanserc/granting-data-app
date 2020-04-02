@@ -40,12 +40,12 @@ public class BusinessUnitServiceImpl implements BusinessUnitService {
 
 	@Override
 	public List<FundingOpportunity> findAllFundingOpportunitiesByBusinessUnit(BusinessUnit bu) {
-		return foRepo.findByBusinessUnitOrderByNameFrAsc(bu);
+		return foRepo.findAllByBusinessUnit(bu);
 	}
 
 	@Override
 	public List<BusinessUnit> findAllBusinessUnitsByAgency(Agency agency) {
-		return buRepo.findByAgencyOrderByNameFrAsc(agency);
+		return buRepo.findAllByAgency(agency);
 	}
 
 	@Override

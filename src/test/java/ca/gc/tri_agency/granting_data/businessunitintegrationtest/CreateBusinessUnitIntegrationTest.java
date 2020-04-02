@@ -57,14 +57,14 @@ public class CreateBusinessUnitIntegrationTest {
 	// CREATE LINK ACCESSIBLE VROM VIEW AGENCY PAGE, ONLY ACCESSIBLE BY ADMIN
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
-	public void test_createBULinkVisibleToAdminOnViewAgencyPage_shouldSucceedWith200() throws Exception {
+	public void test_createBULinkVisibleToAdmin_shouldSucceedWith200() throws Exception {
 		mvc.perform(get("/browse/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
 				MockMvcResultMatchers.content().string(Matchers.containsString("id=\"createBusinessUnit\"")));
 	}
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
-	public void test_createBULinkNotVisibleToNonAdminOnViewAgencyPage_shouldSucceedReturn200() throws Exception {
+	public void test_createBULinkNotVisibleToNonAdmin_shouldReturn200() throws Exception {
 		mvc.perform(get("/browse/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
 				MockMvcResultMatchers.content().string(not(Matchers.containsString("id=\"createBusinessUnit\""))));
 	}
@@ -75,7 +75,7 @@ public class CreateBusinessUnitIntegrationTest {
 	public void test_adminCanAccessCreateBUPage_shouldSucceedWith200() throws Exception {
 		String agencyName = agencyRepo.findById(1L).get().getNameEn();
 		assertTrue(mvc.perform(get("/admin/createBU?agencyId=1")).andExpect(status().isOk()).andReturn().getResponse()
-				.getContentAsString().contains("<div>" + agencyName + "</div>"));
+				.getContentAsString().contains('>' + agencyName + "</a>"));
 	}
 
 	// CREATE PAGE CANNOT BE ACCESSED BY NON-ADMIN
@@ -152,7 +152,7 @@ public class CreateBusinessUnitIntegrationTest {
 		String nameFr = RandomStringUtils.randomAlphabetic(20);
 		String acronymEn = RandomStringUtils.randomAlphabetic(5);
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
-		Long agencyId = 1L;
+		Long agencyId = 1L; 
 
 		assertTrue(mvc.perform(MockMvcRequestBuilders.post("/admin/createBU").param("agencyId", Long.toString(agencyId))
 				.param("nameEn", nameEn).param("nameFr", nameFr).param("acronymEn", acronymEn)

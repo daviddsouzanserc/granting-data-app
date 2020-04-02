@@ -110,7 +110,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 						"Created Business Unit named: " + nameEn));
 
 		// when viewBU page is refreshed, flash attribute should disappear
-		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBU?id=1"))
+		mvc.perform(MockMvcRequestBuilders.get("/browse/viewAgency?id=1"))
 				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
 
 		assertEquals(initBuCount + 1, buRepo.count());
@@ -190,9 +190,9 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCanAccessViewBusinessUnitPage_shouldSucceedWith200() throws Exception {
-		assertTrue("Wrong Page or Page is Missing Content", mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnit?id=1"))
+		assertTrue("Wrong Page or Page is Missing Content", mvc.perform(MockMvcRequestBuilders.get("/browse/viewBU?id=1"))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
-				.contains("id=\"viewBusinessUnitPage\""));
+				.contains("id=\"viewBUPage\""));
 		
 	}
 }

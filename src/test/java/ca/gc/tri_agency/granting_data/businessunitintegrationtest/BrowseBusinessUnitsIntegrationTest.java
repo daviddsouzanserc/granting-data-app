@@ -44,7 +44,7 @@ public class BrowseBusinessUnitsIntegrationTest {
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCanAccessViewBUPage_shouldSucceedWith200() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBu").param("id", "1"))
+		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBU").param("id", "1"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(CoreMatchers.containsString("id=\"viewBUPage\"")));
 	}

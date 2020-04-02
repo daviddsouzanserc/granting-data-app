@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.util.CalendarGrid;
+import ca.gc.tri_agency.granting_data.service.BusinessUnitService;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @Controller
@@ -19,11 +21,15 @@ public class BrowseController {
 
 	@Autowired
 	DataAccessService dataService;
+	@Autowired
+	private BusinessUnitService buService;
 
 	@GetMapping(value = "/viewAgency")
 	public String viewAgency(@RequestParam("id") long id, Model model) {
-		model.addAttribute("agency", dataService.getAgency(id));
+		Agency agency = dataService.getAgency(id);
+		model.addAttribute("agency", agency);
 		model.addAttribute("agencyFos", dataService.getAgencyFundingOpportunities(id));
+		model.addAttribute("agencyBUs", buService.findAllBusinessUnitsByAgency(agency));
 		return "browse/viewAgency";
 	}
 

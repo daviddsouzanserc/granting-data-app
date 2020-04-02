@@ -28,13 +28,19 @@ public class BusinessUnitController {
 	@Autowired
 	private DataAccessService das; // TODO: refactor DataAccessService
 	@Autowired
-	private AgencyRepository agencyRepo; // TODO: refactor AgencyRepository
+	private AgencyRepository agencyRepo; // TODO: refactor AgencyService
 	@Autowired
 	private MessageSource msgSource;
 
 	@Autowired
 	public BusinessUnitController(BusinessUnitService buService) {
 		this.buService = buService;
+	}
+	
+	@GetMapping("/browse/viewBU")
+	public String viewBU(@RequestParam("id") Long id, Model model) {
+		model.addAttribute("bu", buService.findBusinessUnitById(id));
+		return "browse/viewBU";
 	}
 
 	@AdminOnly

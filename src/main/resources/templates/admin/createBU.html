@@ -9,7 +9,7 @@
 <body id="createBusinessUnitPage">
 	<div th:insert="~{fragments/general.html :: header_nav('home')}"></div>
 	<div class="container">
-		<h1 th:text="#{h.createBu}"></h1>
+		<h1 th:text="#{h.createBu}" style="margin-bottom: 25px"></h1>
 
 		<form action="#" th:action="@{createBU}" th:object="${bu}" method="post">
 
@@ -45,9 +45,9 @@
 				<div class="col-sm-5" th:if="${#fields.hasErrors('acronymFr')}" th:errors="*{acronymFr}"></div>
 			</div>
 
-			<div class="form-group row">
+			<div class="form-group row" style="margin-bottom: 35px">
 				<div class="col-sm-2 col-form-label" th:text="#{form.agency}"></div>
-				<div th:text="${bu.agency.getName()}"></div>
+				<div><a th:href="@{/browse/viewAgency(id=${bu.agency.id})}" th:text="${bu.agency.getName()}"></a></div>
 				<div>
 					<input hidden="true" th:field="*{agency}">
 				</div>

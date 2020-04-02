@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+<meta charset="ISO-8859-1">
+<title th:text="#{title.createBu}"></title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+</head>
+<body id="createBusinessUnitPage">
+	<div th:insert="~{fragments/general.html :: header_nav('home')}"></div>
+	<div class="container">
+		<h1 th:text="#{h.createBu}"></h1>
+
+		<form action="#" th:action="@{createBU}" th:object="${bu}" method="post">
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.nameEn}"></div>
+				<div>
+					<input th:type="text" th:field="*{nameEn}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('nameEn')}" th:errors="*{nameEn}" th:text="#{err.nameErr}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.nameFr}"></div>
+				<div>
+					<input th:type="text" th:field="*{nameFr}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('nameFr')}" th:errors="*{nameFr}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.acronymEn}"></div>
+				<div>
+					<input th:type="text" th:field="*{acronymEn}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('acronymEn')}" th:errors="*{acronymEn}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.acronymFr}"></div>
+				<div>
+					<input th:type="text" th:field="*{acronymFr}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('acronymFr')}" th:errors="*{acronymFr}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.agency}"></div>
+				<div th:text="${bu.agency.getName()}"></div>
+				<div><input hidden="true" th:field="*{agency}"></div>
+			</div>
+
+			<input th:type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}"/>
+		</form>
+
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

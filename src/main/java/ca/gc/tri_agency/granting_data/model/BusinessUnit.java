@@ -2,7 +2,6 @@ package ca.gc.tri_agency.granting_data.model;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,22 +27,18 @@ public class BusinessUnit implements LocalizedParametersModel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BUSINESS_UNIT")
 	private Long id;
 	
-	@NotBlank
 	@Size(min = 3, max = 255)
-	@Column(unique = true)
+	@NotBlank
 	private String nameEn;
 
-	@NotBlank
 	@Size(min = 3, max = 255)
-	@Column(unique = true)
+	@NotBlank
 	private String nameFr;
 
 	@NotBlank
-	@Column(unique = true)
 	private String acronymEn;
 
 	@NotBlank
-	@Column(unique = true)
 	private String acronymFr;
 
 	@ManyToOne(optional = false)
@@ -126,7 +123,7 @@ public class BusinessUnit implements LocalizedParametersModel {
 		builder.append(", acronymFr=");
 		builder.append(acronymFr);
 		builder.append(", agency=");
-		builder.append(agency.getAcronym());
+		builder.append(agency.getId());
 		builder.append("]");
 		return builder.toString();
 	}

@@ -46,8 +46,7 @@ public class BrowseController {
 	}
 
 	@GetMapping(value = "/viewCalendar")
-	public String viewCalendar(@RequestParam(name = "plusMinusMonth", defaultValue = "0") Long plusMinusMonth,
-			Model model) {
+	public String viewCalendar(@RequestParam(name = "plusMinusMonth", defaultValue = "0") Long plusMinusMonth, Model model) {
 		model.addAttribute("plusMonth", plusMinusMonth + 1);
 		model.addAttribute("minusMonth", plusMinusMonth - 1);
 		model.addAttribute("calGrid", new CalendarGrid(plusMinusMonth));
@@ -72,6 +71,11 @@ public class BrowseController {
 	public String viewFundingCyclesFromFiscalYear(@RequestParam("id") long id, Model model) {
 		model.addAttribute("fc", dataService.fundingCyclesByFiscalYearId(id));
 		return "browse/viewFcFromFy";
+	}
+
+	@GetMapping(value = "/viewBusinessUnit")
+	public String viewBusinessUnit(@RequestParam("id") Long id, Model model) {
+		return "browse/viewBU";
 	}
 
 }

@@ -105,13 +105,12 @@ public class WebSecurityConfig {
 //		}
 //	}
 
+	@Profile("dev")
 	@Configuration
 	@Order(1)
 	public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-
-			configureH2Console(http);
 
 			http.authorizeRequests()
 					.antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**", "/browse/**")
@@ -121,9 +120,22 @@ public class WebSecurityConfig {
 					.accessDeniedPage("/exception/forbiden-by-role");
 		}
 
-		@Profile("local")
-		private void configureH2Console(HttpSecurity http) throws Exception {
-			http.authorizeRequests().antMatchers("/h2**").access("hasRole('MDM ADMIN')").and().headers().frameOptions()
+	}
+	
+	@Profile(value = {"local", "test"})
+	@Configuration
+	@Order(1)
+	public static class LocalFormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+
+			http.authorizeRequests()
+					.antMatchers("/h2**").access("hasRole('MDM ADMIN')")
+					.antMatchers("/", "/home", "/webjars/**", "/css/**", "/images/**", "/js/**", "/browse/**")
+					.permitAll().and().authorizeRequests().antMatchers("/entities/**", "/reports/**")
+					.hasAnyRole("NSERC_USER", "SSHRC_USER", "AGENCY_USER").anyRequest().authenticated().and()
+					.formLogin().loginPage("/login").permitAll().and().logout().permitAll().and().exceptionHandling()
+					.accessDeniedPage("/exception/forbiden-by-role").and().headers().frameOptions()
 					.disable().and().csrf().disable();
 		}
 	}

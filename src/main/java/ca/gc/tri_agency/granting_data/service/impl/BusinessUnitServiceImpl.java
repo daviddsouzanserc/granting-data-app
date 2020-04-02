@@ -3,7 +3,6 @@ package ca.gc.tri_agency.granting_data.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +11,7 @@ import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.repo.BusinessUnitRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
+import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.BusinessUnitService;
 
 @Service
@@ -39,19 +39,18 @@ public class BusinessUnitServiceImpl implements BusinessUnitService {
 	}
 
 	@Override
-	public List<FundingOpportunity> getAllLocalizedFundingOpportunitiesByBusinessUnit(BusinessUnit bu) {
-		return LocaleContextHolder.getLocale().getLanguage() == "en" ? foRepo.findByBusinessUnitOrderByNameEnAsc(bu)
-				: foRepo.findByBusinessUnitOrderByNameFrAsc(bu);
+	public List<FundingOpportunity> findAllFundingOpportunitiesByBusinessUnit(BusinessUnit bu) {
+		return foRepo.findByBusinessUnitOrderByNameFrAsc(bu);
 	}
 
 	@Override
-	public List<BusinessUnit> getAllLocalizedBusinessUnitsByAgency(Agency agency) {
-		return LocaleContextHolder.getLocale().getLanguage().equals("en") ? buRepo.findByAgencyOrderByNameEnAsc(agency)
-				: buRepo.findByAgencyOrderByNameFrAsc(agency);
+	public List<BusinessUnit> findAllBusinessUnitsByAgency(Agency agency) {
+		return buRepo.findByAgencyOrderByNameFrAsc(agency);
 	}
 
 	@Override
-	public BusinessUnit createBusinessUnit(BusinessUnit bu) {
+	@AdminOnly
+	public BusinessUnit saveBusinessUnit(BusinessUnit bu) {
 		return buRepo.save(bu);
 	}
 

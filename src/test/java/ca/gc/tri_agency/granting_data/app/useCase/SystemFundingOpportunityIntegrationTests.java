@@ -17,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,7 +73,7 @@ public class SystemFundingOpportunityIntegrationTests {
 		String sfoName = sfoRepo.getOne(1L).getNameEn();
 		String foName = sfoRepo.getOne(1L).getLinkedFundingOpportunity().getNameEn();
 		assertTrue(mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "1"))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn().getResponse().getContentAsString()
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
 				.contains("Are you sure you want to unlink the System Funding Opportunity named " + sfoName
 						+ " from the Funding Opportunity named " + foName + '?'));
 	}

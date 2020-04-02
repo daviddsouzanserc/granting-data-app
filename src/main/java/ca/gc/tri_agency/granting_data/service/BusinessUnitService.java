@@ -12,10 +12,10 @@ public interface BusinessUnitService {
 	
 	List<BusinessUnit> findAllBusinessUnits();
 	
-	List<FundingOpportunity> getAllLocalizedFundingOpportunitiesByBusinessUnit(BusinessUnit bu);
+	List<FundingOpportunity> findAllFundingOpportunitiesByBusinessUnit(BusinessUnit bu);
 	
-	List<BusinessUnit> getAllLocalizedBusinessUnitsByAgency(Agency agency);
+	List<BusinessUnit> findAllBusinessUnitsByAgency(Agency agency);
 
-	BusinessUnit createBusinessUnit(BusinessUnit bu);
+	BusinessUnit saveBusinessUnit(BusinessUnit bu);
 
 }

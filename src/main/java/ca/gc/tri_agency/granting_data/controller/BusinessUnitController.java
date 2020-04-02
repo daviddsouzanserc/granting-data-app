@@ -53,7 +53,7 @@ public class BusinessUnitController {
 		if (bindingResult.hasErrors()) {
 			return "admin/createBU";
 		}
-		buService.createBusinessUnit(bu);
+		buService.saveBusinessUnit(bu);
 		String actionMsg = msgSource.getMessage("h.createdBu", null, LocaleContextHolder.getLocale());
 		redirectAttributes.addFlashAttribute("actionMsg", actionMsg + bu.getName());
 		return "redirect:/browse/viewAgency?id=" + bu.getAgency().getId();

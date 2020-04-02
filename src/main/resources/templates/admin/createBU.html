@@ -48,47 +48,14 @@
 			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:text="#{form.agency}"></div>
 				<div th:text="${bu.agency.getName()}"></div>
-				<div><input hidden="true" th:field="*{agency}"></div>
+				<div>
+					<input hidden="true" th:field="*{agency}">
+				</div>
 			</div>
 
-			<input th:type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}"/>
+			<input th:type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}" />
 		</form>
 
 	</div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

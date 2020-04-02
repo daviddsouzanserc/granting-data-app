@@ -9,11 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -27,11 +24,9 @@ public class BusinessUnit implements LocalizedParametersModel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BUSINESS_UNIT")
 	private Long id;
 	
-	@Size(min = 3, max = 255)
 	@NotBlank
 	private String nameEn;
 
-	@Size(min = 3, max = 255)
 	@NotBlank
 	private String nameFr;
 
@@ -43,12 +38,13 @@ public class BusinessUnit implements LocalizedParametersModel {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "agency_id")
+	@NotNull
 	private Agency agency;
 
 	public BusinessUnit() {
 	}
-
-	public BusinessUnit(@NotBlank @Size(min = 3, max = 255) String nameEn, @NotBlank @Size(min = 3, max = 255) String nameFr,
+	
+	public BusinessUnit(@NotBlank String nameEn, @NotBlank String nameFr,
 			@NotBlank String acronymEn, @NotBlank String acronymFr, @NotNull Agency agency) {
 		this.nameEn = nameEn;
 		this.nameFr = nameFr;
@@ -56,6 +52,8 @@ public class BusinessUnit implements LocalizedParametersModel {
 		this.acronymFr = acronymFr;
 		this.agency = agency;
 	}
+
+
 
 	public String getNameEn() {
 		return nameEn;

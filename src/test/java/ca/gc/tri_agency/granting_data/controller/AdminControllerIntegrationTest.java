@@ -38,7 +38,7 @@ public class AdminControllerIntegrationTest {
 	@Autowired
 	private FundingOpportunityRepository foRepo;
 	@Autowired
-	FiscalYearRepository fyRepo;
+	private FiscalYearRepository fyRepo;
 
 	private MockMvc mvc;
 
@@ -124,7 +124,7 @@ public class AdminControllerIntegrationTest {
 				.andExpect(status().is3xxRedirection());
 	}
 
-	@WithMockUser(username = "nserc-user", roles = { "SSHRC" })
+	@WithMockUser(username = "sshrc-user", roles = { "SSHRC" })
 	@Test
 	public void givenSshrcRequestOnAdminUrl_shouldFailWithForbiddenByRoleError() throws Exception {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML))

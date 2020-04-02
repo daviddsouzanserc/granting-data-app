@@ -10,14 +10,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
-import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
@@ -26,7 +22,6 @@ import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.util.FundingCycleInfo;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
-import ca.gc.tri_agency.granting_data.repo.BusinessUnitRepository;
 import ca.gc.tri_agency.granting_data.repo.FiscalYearRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
@@ -55,8 +50,6 @@ public class DataAccessServiceImpl implements DataAccessService {
 	private FundingCycleRepository fcRepo;
 	@Autowired
 	private FiscalYearRepository fyRepo;
-	@Autowired
-	private BusinessUnitRepository buRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -458,20 +451,6 @@ public class DataAccessServiceImpl implements DataAccessService {
 			retval.get(endDateKey).add(fc);
 		}
 		return retval;
-	}
-
-	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<FundingOpportunity> getAllLocalizedFundingOpportunitiesByBusinessUnit(BusinessUnit bu) {
-		return LocaleContextHolder.getLocale().getLanguage() == "en" ? foRepo.findByBusinessUnitOrderByNameEnAsc(bu)
-				: foRepo.findByBusinessUnitOrderByNameFrAsc(bu);
-	}
-
-	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public List<BusinessUnit> getAllLocalizedBusinessUnitsByAgency(Agency agency) {
-		return LocaleContextHolder.getLocale().getLanguage().equals("en") ? buRepo.findByAgencyOrderByNameEnAsc(agency)
-				: buRepo.findByAgencyOrderByNameFrAsc(agency);
 	}
 
 }

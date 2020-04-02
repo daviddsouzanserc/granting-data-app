@@ -59,14 +59,14 @@ public class PBI_19048_CreateBusinessUnitTest {
 	// CREATE LINK ACCESSIBLE VROM VIEW AGENCY PAGE, ONLY ACCESSIBLE BY ADMIN
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	@Test
-	public void test_editLinkVisibleToAdminOnViewAgency_shouldSucceedWith200() throws Exception {
+	public void test_createBULinkVisibleToAdminOnViewAgencyPage_shouldSucceedWith200() throws Exception {
 		mvc.perform(get("/browse/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
 				MockMvcResultMatchers.content().string(Matchers.containsString("id=\"createBusinessUnit\"")));
 	}
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
-	public void test_editLinkNotVisibleToNonAdminOnViewAgency_shouldSucceedWith200() throws Exception {
+	public void test_createBULinkNotVisibleToNonAdminOnViewAgencyPage_shouldSucceedReturn200() throws Exception {
 		mvc.perform(get("/browse/viewAgency?id=1")).andExpect(status().isOk()).andExpect(
 				MockMvcResultMatchers.content().string(not(Matchers.containsString("id=\"createBusinessUnit\""))));
 	}
@@ -76,7 +76,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@Test
 	public void test_accessCreateBusinessUnitPageByAdmin_shouldSucceedWith200() throws Exception {
 		String agencyName = agencyRepo.findById(1L).get().getNameEn();
-		mvc.perform(get("/admin/createBusinessUnit?agencyId=1")).andExpect(status().isOk()).andReturn().getResponse()
+		mvc.perform(get("/admin/createBU?agencyId=1")).andExpect(status().isOk()).andReturn().getResponse()
 				.getContentAsString()
 				.contains("<input class=\"col-sm-2\" id=\"agencyNameLabel\" name=\"agencyNameLabel\" value=\""
 						+ agencyName + '"');
@@ -86,7 +86,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_accessCreateBusinessUnitByNonAdmin_shouldReturn403() throws Exception {
-		assertTrue(mvc.perform(get("/admin/createBusinessUnit?agencyId=1")).andExpect(status().isForbidden())
+		assertTrue(mvc.perform(get("/admin/createBU?agencyId=1")).andExpect(status().isForbidden())
 				.andReturn().getResponse().getContentAsString().contains("id=\"forbiddenByRoleErrorPage\""));
 	}
 
@@ -102,7 +102,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
 		Long agencyId = 1L;
 
-		mvc.perform(MockMvcRequestBuilders.post("admin/createBusinessUnit").param("nameEn", nameEn).param("nameFr", nameFr)
+		mvc.perform(MockMvcRequestBuilders.post("admin/createBU").param("nameEn", nameEn).param("nameFr", nameFr)
 				.param("acronymEn", acronymEn).param("acronymFr", acronymFr))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.forwardedUrl("/browse/viewAgency?id=" + Long.toString(agencyId)))
@@ -110,7 +110,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 						"Created Business Unit named: " + nameEn));
 
 		// when viewBU page is refreshed, flash attribute should disappear
-		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBusinessUnit?id=1"))
+		mvc.perform(MockMvcRequestBuilders.get("/browse/viewBU?id=1"))
 				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
 
 		assertEquals(initBuCount + 1, buRepo.count());
@@ -159,7 +159,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
 		Long agencyId = 2L;
 
-		mvc.perform(MockMvcRequestBuilders.post("/admin/editBusinessUnit").param("id", "1").param("nameEn", nameEn)
+		mvc.perform(MockMvcRequestBuilders.post("/admin/editBU").param("id", "1").param("nameEn", nameEn)
 				.param("nameFr", nameFr).param("acronymEn", acronymEn).param("acronymFr", acronymFr))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.forwardedUrl("/browse/viewAgency?id=" + Long.toString(agencyId)))
@@ -182,7 +182,7 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_nonAdminUserCannotAccessEditBusinessUnitPage_shouldReturn403() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/admin/editBusinessUnit").param("id", "1"))
+		mvc.perform(MockMvcRequestBuilders.get("/admin/editBU").param("id", "1"))
 				.andExpect(MockMvcResultMatchers.status().isForbidden());
 	}
 

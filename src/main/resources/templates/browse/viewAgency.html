@@ -29,23 +29,25 @@
 		<div class="form-group row">
 			<div class="col-sm-10">
 				<table id="dataTable">
-				<thead>
-					<tr>
-						<td th:text="#{form.name}"></td>
-						<td th:text="#{form.leadAgency}"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="fo : ${agencyFos}">
-						<td><a th:href="@{'/browse/viewFo'(id=${fo.id})}" th:text="${fo.getLocalizedAttribute('name')}"></a></td>
-						<td th:text="${fo.leadAgency.getLocalizedAttribute('acronym')}"></td>
-					</tr>
-				</tbody>
+					<thead>
+						<tr>
+							<td th:text="#{form.name}"></td>
+							<td th:text="#{form.leadAgency}"></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="fo : ${agencyFos}">
+							<td><a th:href="@{'/browse/viewFo'(id=${fo.id})}" th:text="${fo.getLocalizedAttribute('name')}"></a></td>
+							<td th:text="${fo.leadAgency.getLocalizedAttribute('acronym')}"></td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		</div>
-		<a sec:authorize="hasRole('MDM ADMIN')" id="createBusinessUnit" class="btn btn-primary" th:href="@{/admin/createBusinessUnit}" th:text="#{link.createBusinessUnit}"></a>
+		<h4 th:if="${actionMsg != null}" th:utext="${actionMsg}"></h4>
+		<a sec:authorize="hasRole('MDM ADMIN')" id="createBusinessUnit" class="btn btn-primary"
+			th:href="@{'/admin/createBU'(agencyId=${agency.id})}" th:text="#{link.createBusinessUnit}"></a>
 	</div>
-   </body>
+</body>
 </html>
 

@@ -14,9 +14,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,11 +29,11 @@ import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.repo.BusinessUnitRepository;
-import ca.gc.tri_agency.granting_data.service.impl.AdminServiceImpl;
+import ca.gc.tri_agency.granting_data.service.BusinessUnitService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = GrantingDataApp.class)
-@Profile("test")
+@ActiveProfiles("local")
 public class CreateBusinessUnitIntegrationTest {
 
 	@Autowired
@@ -42,7 +42,7 @@ public class CreateBusinessUnitIntegrationTest {
 	private AgencyRepository agencyRepo;
 
 	@Autowired
-	private AdminServiceImpl asi;
+	private BusinessUnitService buService;
 
 	@Autowired
 	private WebApplicationContext context;
@@ -94,7 +94,7 @@ public class CreateBusinessUnitIntegrationTest {
 
 		Agency agency = agencyRepo.findAll().get(0);
 		BusinessUnit bu = new BusinessUnit("EN NAME TEST", "FR NAME TEST", "EN ACRONYM TEST", "FR ACRONYM TEST", agency);
-		asi.createOrUpdateBusinessUnit(bu);
+		buService.saveBusinessUnit(bu);
 
 		assertEquals(initBuCount + 1, buRepo.count());
 	}
@@ -105,8 +105,7 @@ public class CreateBusinessUnitIntegrationTest {
 	public void testService_nonAdminCannotCreateBU_shouldthrowAccessDeniedException() {
 		Agency agency = agencyRepo.findAll().get(0);
 		BusinessUnit bu = new BusinessUnit("EN NAME TEST", "FR NAME TEST", "EN ACRONYM TEST", "FR ACRONYM TEST", agency);
-		asi.createOrUpdateBusinessUnit(bu);
-	}
+		buService.saveBusinessUnit(bu);	}
 
 	// CREATE POST ACTION CAN ONLY BE EXECUTED BY ADMIN
 	@WithMockUser(roles = { "MDM ADMIN" })
@@ -152,7 +151,7 @@ public class CreateBusinessUnitIntegrationTest {
 		String nameFr = RandomStringUtils.randomAlphabetic(20);
 		String acronymEn = RandomStringUtils.randomAlphabetic(5);
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
-		Long agencyId = 1L; // TODO: this may have to changed here and in admin test
+		Long agencyId = 1L; 
 
 		assertTrue(mvc.perform(MockMvcRequestBuilders.post("/admin/createBU").param("agencyId", Long.toString(agencyId))
 				.param("nameEn", nameEn).param("nameFr", nameFr).param("acronymEn", acronymEn)

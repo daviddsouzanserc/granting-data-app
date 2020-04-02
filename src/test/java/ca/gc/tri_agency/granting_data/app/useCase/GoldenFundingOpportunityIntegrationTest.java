@@ -105,8 +105,6 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@Test
 	@Transactional(readOnly = true)
 	public void test_NonAdminCannotCreateGoldenFo_shouldFailWith403() throws Exception {
-		String am = RandomStringUtils.randomAlphabetic(10);
-		String ams = RandomStringUtils.randomAlphabetic(10);
 		boolean cpx = true;
 		String div = RandomStringUtils.randomAlphabetic(10);
 		boolean edi = true;
@@ -130,10 +128,9 @@ public class GoldenFundingOpportunityIntegrationTest {
 		mvc.perform(MockMvcRequestBuilders.post("/admin/createFo").param("id", idParam).param("nameEn", nameEn)
 				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
 				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
-				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)
-				.param("isComplex", Boolean.toString(cpx)).param("isEdiRequired", Boolean.toString(edi))
-				.param("isNOI", Boolean.toString(noi)).param("isLOI", Boolean.toString(loi))
-				.param("programLeadName", pln).param("programLeadDn", pld))
+				.param("frequency", frequency).param("isComplex", Boolean.toString(cpx))
+				.param("isEdiRequired", Boolean.toString(edi)).param("isNOI", Boolean.toString(noi))
+				.param("isLOI", Boolean.toString(loi)).param("programLeadName", pln).param("programLeadDn", pld))
 				.andExpect(MockMvcResultMatchers.status().isForbidden()).andExpect(MockMvcResultMatchers.content()
 						.string(Matchers.containsString("id=\"forbiddenByRoleErrorPage\"")));
 	}
@@ -167,23 +164,21 @@ public class GoldenFundingOpportunityIntegrationTest {
 		mvc.perform(MockMvcRequestBuilders.post("/admin/createFo").param("id", idParam).param("nameEn", nameEn)
 				.param("nameFr", nameFr).param("leadAgency", Long.toString(la.getId())).param("division", div)
 				.param("isJointInitiative", Boolean.toString(ji)).param("fundingType", ft).param("partnerOrg", po)
-				.param("frequency", frequency).param("applyMethod", am).param("awardManagementSystem", ams)
-				.param("isComplex", Boolean.toString(cpx)).param("isEdiRequired", Boolean.toString(edi))
-				.param("isNOI", Boolean.toString(noi)).param("isLOI", Boolean.toString(loi))
-				.param("programLeadName", pln).param("programLeadDn", pld))
+				.param("frequency", frequency).param("isComplex", Boolean.toString(cpx))
+				.param("isEdiRequired", Boolean.toString(edi)).param("isNOI", Boolean.toString(noi))
+				.param("isLOI", Boolean.toString(loi)).param("programLeadName", pln).param("programLeadDn", pld))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home"))
-				.andExpect(MockMvcResultMatchers.flash().attribute("actionMessage", "Created Funding Opportunity named: " + nameEn));
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home")).andExpect(MockMvcResultMatchers.flash()
+						.attribute("actionMessage", "Created Funding Opportunity named: " + nameEn));
 
 		// when the page is refreshed, the flash attribute should disappear
-		mvc.perform(MockMvcRequestBuilders.get("/admin/home")).andExpect(MockMvcResultMatchers.flash().attributeCount(0));
-		
+		mvc.perform(MockMvcRequestBuilders.get("/admin/home"))
+				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
+
 		fos = foRepo.findAll();
 		FundingOpportunity newGfo = fos.get(fos.size() - 1);
 
 		assertEquals(idParam, String.valueOf(newGfo.getId()));
-		assertEquals(am, newGfo.getApplyMethod());
-		assertEquals(ams, newGfo.getAwardManagementSystem());
 		assertEquals(cpx, newGfo.getIsComplex());
 		assertEquals(div, newGfo.getDivision());
 		assertEquals(edi, newGfo.getIsEdiRequired());
@@ -222,8 +217,6 @@ public class GoldenFundingOpportunityIntegrationTest {
 		long initFoRepoSize = foRepo.count();
 
 		FundingOpportunity gfo = new FundingOpportunity();
-		gfo.setApplyMethod(RandomStringUtils.randomAlphabetic(10));
-		gfo.setAwardManagementSystem(RandomStringUtils.randomAlphabetic(10));
 		gfo.setIsComplex(false);
 		gfo.setDivision(RandomStringUtils.randomAlphabetic(10));
 		gfo.setIsEdiRequired(false);

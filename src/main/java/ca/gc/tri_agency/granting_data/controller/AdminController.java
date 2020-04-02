@@ -106,18 +106,6 @@ public class AdminController {
 
 	}
 
-	@GetMapping("/importProgramsFromFile")
-	public String importPrograms() {
-		return "admin/importPrograms";
-	}
-
-	@PostMapping("/importProgramsFromFile")
-	public String importPrograms_post(Model model, final RedirectAttributes redirectAttrs) {
-		int num = adminService.importProgramsFromFile();
-		redirectAttrs.addFlashAttribute("actionMessage", "Successfully applied " + num + " Funcing Cycles");
-		return "redirect:/admin/home";
-	}
-
 	@GetMapping("/analyzeSystemFOs")
 	public String analyzeSystemFOs(Model model) {
 		model.addAttribute("systemFOs", dataSevice.getAllSystemFOs());
@@ -141,7 +129,7 @@ public class AdminController {
 		adminService.linkSystemFO(id, foId);
 		return "redirect:analyzeSystemFOs";
 	}
-	
+
 	@GetMapping(value = "/createFo")
 	public String addFo(Model model, @RequestParam(name = "sfoId", required = false) Optional<Long> sfoId) {
 		FundingOpportunity fo = new FundingOpportunity();

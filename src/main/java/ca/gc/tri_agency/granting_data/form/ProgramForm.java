@@ -33,14 +33,6 @@ public class ProgramForm {
 	@Size(min = 2)
 	private String frequency;
 
-	@NotNull
-	@Size(min = 2)
-	private String applyMethod;
-
-	@NotNull
-	@Size(min = 2)
-	private String awardManagementSystem;
-
 	private String programLeadName;
 
 	@NotNull
@@ -56,8 +48,6 @@ public class ProgramForm {
 		this.setFundingType(p.getFundingType());
 		this.setDivision(p.getDivision());
 		this.frequency = p.getFrequency();
-		this.applyMethod = p.getApplyMethod();
-		this.awardManagementSystem = p.getAwardManagementSystem();
 		this.programLeadName = p.getProgramLeadName();
 		this.leadAgency = p.getLeadAgency();
 
@@ -99,22 +89,6 @@ public class ProgramForm {
 
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
-	}
-
-	public String getApplyMethod() {
-		return applyMethod;
-	}
-
-	public void setApplyMethod(String applyMethod) {
-		this.applyMethod = applyMethod;
-	}
-
-	public String getAwardManagementSystem() {
-		return awardManagementSystem;
-	}
-
-	public void setAwardManagementSystem(String awardManagementSystem) {
-		this.awardManagementSystem = awardManagementSystem;
 	}
 
 	public String getProgramLeadName() {

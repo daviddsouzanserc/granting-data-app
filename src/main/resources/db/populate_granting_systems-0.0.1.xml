@@ -46,6 +46,37 @@ author="dev_dyd">
 			<column name="name_en" value="NAMIS" />
 			<column name="name_fr" value="NAMIS" />
 		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="CIMS" />
+			<column name="name_en" value="Corporate Inventory Management System" />
+			<column name="name_fr" value="Corporate Inventory Management System" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="ResearchNet" />
+			<column name="name_en" value="ResearchNet" />
+			<column name="name_fr" value="ResearchNet" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="Convergence" />
+			<column name="name_en" value="Convergence" />
+			<column name="name_fr" value="Convergence" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="SP Secure Upload" />
+			<column name="name_en" value="SharePoint Secure Upload" />
+			<column name="name_fr" value="Téléchargement Sécurisé SharePoint" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="SP Review" />
+			<column name="name_en" value="SharePoint Review" />
+			<column name="name_fr" value="Examen de SharePoint" />
+		</insert>
+
 		<insert tableName="agency">
 			<column name="id" valueSequenceNext="seq_agency" />
 			<column name="acronym_en" value="SSHRC" />
@@ -103,6 +134,10 @@ author="dev_dyd">
 		<insert tableName="fiscal_year">
 			<column name="id" valueSequenceNext="seq_fiscal_year" />
 			<column name="year" value="2019" />
+		</insert>
+		<insert tableName="fiscal_year">
+			<column name="id" valueSequenceNext="seq_fiscal_year" />
+			<column name="year" value="2020" />
 		</insert>
       <rollback>
           <sql>

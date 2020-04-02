@@ -53,10 +53,6 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	private String frequency;
 
-	private String applyMethod;
-
-	private String awardManagementSystem;
-
 	public boolean isNOI;
 
 	private boolean isLOI;
@@ -70,8 +66,6 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	}
 
 	public void loadFromForm(FundingOpportunity f) {
-		this.setApplyMethod(f.getApplyMethod());
-		this.setAwardManagementSystem(f.getAwardManagementSystem());
 		this.setDivision(f.getDivision());
 		this.setFundingType(f.getFundingType());
 		this.setFrequency(f.getFrequency());
@@ -105,27 +99,11 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		this.frequency = frequency;
 	}
 
-	public String getApplyMethod() {
-		return applyMethod;
-	}
-
 	private String partnerOrg;
 
 	private boolean isEdiRequired;
 
 	private boolean isComplex;
-
-	public void setApplyMethod(String applyMethod) {
-		this.applyMethod = applyMethod;
-	}
-
-	public String getAwardManagementSystem() {
-		return awardManagementSystem;
-	}
-
-	public void setAwardManagementSystem(String awardManagementSystem) {
-		this.awardManagementSystem = awardManagementSystem;
-	}
 
 	public String getProgramLeadName() {
 		return programLeadName;

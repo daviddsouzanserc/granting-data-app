@@ -72,8 +72,7 @@ public class AdminControllerIntegrationTest {
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
-				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
-				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
+				.param("fundingType", "E").param("frequency", "Once").param("isNOI", "false").param("_isNOI", "on")
 				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().isForbidden())
 				.andExpect(content().string(containsString("id=\"forbiddenByRoleErrorPage\"")));
 
@@ -90,8 +89,7 @@ public class AdminControllerIntegrationTest {
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
-				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
-				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
+				.param("fundingType", "E").param("frequency", "Once").param("isNOI", "false").param("_isNOI", "on")
 				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("http://localhost/login"));
 
@@ -108,8 +106,7 @@ public class AdminControllerIntegrationTest {
 				.param("leadAgency", "3").param("division", "Q").param("isJointIntiative", "false")
 				.param("_isJointIntiative", "on").param("partnerOrg", "Z").param("isComplex", "false")
 				.param("_isComplex", "on").param("isEdiRequired", "false").param("_isEdiRequired", "on")
-				.param("fundingType", "E").param("frequency", "Once").param("applyMethod", "NOLS")
-				.param("awardManagementSystem", "SSHERC").param("isNOI", "false").param("_isNOI", "on")
+				.param("fundingType", "E").param("frequency", "Once").param("isNOI", "false").param("_isNOI", "on")
 				.param("isLOI", "false").param("_isLOI", "on")).andExpect(status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home"));
 

@@ -53,8 +53,6 @@ public class BusinessUnit implements LocalizedParametersModel {
 		this.agency = agency;
 	}
 
-
-
 	public String getNameEn() {
 		return nameEn;
 	}
@@ -94,6 +92,10 @@ public class BusinessUnit implements LocalizedParametersModel {
 	public void setAgency(Agency agency) {
 		this.agency = agency;
 	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;
@@ -121,7 +123,7 @@ public class BusinessUnit implements LocalizedParametersModel {
 		builder.append(", acronymFr=");
 		builder.append(acronymFr);
 		builder.append(", agency=");
-		builder.append(agency.getId());
+		builder.append(agency.getAcronym());
 		builder.append("]");
 		return builder.toString();
 	}

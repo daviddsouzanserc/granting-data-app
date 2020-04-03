@@ -122,13 +122,12 @@ public class EditBusinessUnitIntegrationTest {
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
 		String agencyId = "2";
 
-		mvc.perform(MockMvcRequestBuilders.post("/admin/editBU").param("id", Long.toString(buBeforeUpate.getId()))
-				.param("nameEn", nameEn).param("nameFr", nameFr).param("acronymEn", acronymEn)
-				.param("acronymFr", acronymFr).param("agencyId", agencyId))
-				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		mvc.perform(MockMvcRequestBuilders.post("/admin/editBU").param("id", "1").param("nameEn", nameEn)
+				.param("nameFr", nameFr).param("acronymEn", acronymEn).param("acronymFr", acronymFr)
+				.param("agency", agencyId)).andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewAgency?id=" + agencyId))
 				.andExpect(MockMvcResultMatchers.flash().attribute("actionMsg",
-						"Edit the Business Unit named: " + nameEn));
+						"Edited the Business Unit named: " + nameEn));
 
 		// when viewBUs page is refreshed, flash attribute should disappear
 		mvc.perform(MockMvcRequestBuilders.get("/browse/viewAgency?id=" + agencyId))

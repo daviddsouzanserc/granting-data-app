@@ -75,7 +75,7 @@ public class CreateBusinessUnitIntegrationTest {
 	public void test_adminCanAccessCreateBUPage_shouldSucceedWith200() throws Exception {
 		String agencyName = agencyRepo.findById(1L).get().getNameEn();
 		assertTrue(mvc.perform(get("/admin/createBU?agencyId=1")).andExpect(status().isOk()).andReturn().getResponse()
-				.getContentAsString().contains('>' + agencyName + "</a>"));
+				.getContentAsString().contains('>' + agencyName + "</div>"));
 	}
 
 	// CREATE PAGE CANNOT BE ACCESSED BY NON-ADMIN
@@ -152,7 +152,7 @@ public class CreateBusinessUnitIntegrationTest {
 		String nameFr = RandomStringUtils.randomAlphabetic(20);
 		String acronymEn = RandomStringUtils.randomAlphabetic(5);
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
-		Long agencyId = 1L; 
+		Long agencyId = 1L;
 
 		assertTrue(mvc.perform(MockMvcRequestBuilders.post("/admin/createBU").param("agencyId", Long.toString(agencyId))
 				.param("nameEn", nameEn).param("nameFr", nameFr).param("acronymEn", acronymEn)

@@ -80,14 +80,13 @@ public class PBI_19048_CreateBusinessUnitTest {
 				.getContentAsString()
 				.contains("<input class=\"col-sm-2\" id=\"agencyNameLabel\" name=\"agencyNameLabel\" value=\""
 						+ agencyName + '"');
-		// TODO: refactor so that the Agency name label is filled in
 	}
 
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test
 	public void test_accessCreateBusinessUnitByNonAdmin_shouldReturn403() throws Exception {
-		assertTrue(mvc.perform(get("/admin/createBU?agencyId=1")).andExpect(status().isForbidden())
-				.andReturn().getResponse().getContentAsString().contains("id=\"forbiddenByRoleErrorPage\""));
+		assertTrue(mvc.perform(get("/admin/createBU?agencyId=1")).andExpect(status().isForbidden()).andReturn().getResponse()
+				.getContentAsString().contains("id=\"forbiddenByRoleErrorPage\""));
 	}
 
 	// CREATE POST ACTION CAN ONLY BE EXECUTED BY ADMIN
@@ -102,12 +101,12 @@ public class PBI_19048_CreateBusinessUnitTest {
 		String acronymFr = RandomStringUtils.randomAlphabetic(5);
 		Long agencyId = 1L;
 
-		mvc.perform(MockMvcRequestBuilders.post("admin/createBU").param("nameEn", nameEn).param("nameFr", nameFr)
-				.param("acronymEn", acronymEn).param("acronymFr", acronymFr))
-				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.forwardedUrl("/browse/viewAgency?id=" + Long.toString(agencyId)))
-				.andExpect(MockMvcResultMatchers.flash().attribute("actionMessage",
-						"Created Business Unit named: " + nameEn));
+		mvc.perform(MockMvcRequestBuilders.post("/admin/createBU").param("agencyId", "1").param("nameEn", nameEn)
+				.param("nameFr", nameFr).param("acronymEn", acronymEn).param("acronymFr", acronymFr)
+				.param("agency", "1")).andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewAgency?id=" + Long.toString(agencyId)))
+				.andExpect(MockMvcResultMatchers.flash().attribute("actionMsg",
+						"Created the Business Unit named: " + nameEn));
 
 		// when viewBU page is refreshed, flash attribute should disappear
 		mvc.perform(MockMvcRequestBuilders.get("/browse/viewAgency?id=1"))
@@ -160,11 +159,11 @@ public class PBI_19048_CreateBusinessUnitTest {
 		Long agencyId = 2L;
 
 		mvc.perform(MockMvcRequestBuilders.post("/admin/editBU").param("id", "1").param("nameEn", nameEn)
-				.param("nameFr", nameFr).param("acronymEn", acronymEn).param("acronymFr", acronymFr))
-				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.forwardedUrl("/browse/viewAgency?id=" + Long.toString(agencyId)))
-				.andExpect(MockMvcResultMatchers.flash().attribute("actionMessage",
-						"Edit Business Unit named: " + nameEn));
+				.param("nameFr", nameFr).param("acronymEn", acronymEn).param("acronymFr", acronymFr)
+				.param("agency", "2")).andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/browse/viewAgency?id=" + Long.toString(agencyId)))
+				.andExpect(MockMvcResultMatchers.flash().attribute("actionMsg",
+						"Edited the Business Unit named: " + nameEn));
 
 		// when viewBUs page is refreshed, flash attribute should disappear
 		mvc.perform(MockMvcRequestBuilders.get("/browse/viewAgency?id=" + Long.toString(agencyId)))
@@ -190,9 +189,10 @@ public class PBI_19048_CreateBusinessUnitTest {
 	@WithAnonymousUser
 	@Test
 	public void test_anonUserCanAccessViewBusinessUnitPage_shouldSucceedWith200() throws Exception {
-		assertTrue("Wrong Page or Page is Missing Content", mvc.perform(MockMvcRequestBuilders.get("/browse/viewBU?id=1"))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
-				.contains("id=\"viewBUPage\""));
-		
+		assertTrue("Wrong Page or Page is Missing Content",
+				mvc.perform(MockMvcRequestBuilders.get("/browse/viewBU?id=1"))
+						.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse()
+						.getContentAsString().contains("id=\"viewBUPage\""));
+
 	}
 }

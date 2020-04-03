@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ca.gc.tri_agency.granting_data.model.BusinessUnit;
-import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
 import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.BusinessUnitService;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
@@ -24,28 +23,26 @@ import ca.gc.tri_agency.granting_data.service.DataAccessService;
 public class BusinessUnitController {
 
 	private BusinessUnitService buService;
-
-	@Autowired
 	private DataAccessService das; // TODO: refactor DataAccessService
-	@Autowired
-	private AgencyRepository agencyRepo; // TODO: refactor AgencyService
+
 	@Autowired
 	private MessageSource msgSource;
 
 	@Autowired
-	public BusinessUnitController(BusinessUnitService buService) {
+	public BusinessUnitController(BusinessUnitService buService, DataAccessService das) {
 		this.buService = buService;
+		this.das = das;
 	}
-	
+
 	@GetMapping("/browse/viewBU")
-	public String viewBU(@RequestParam("id") Long id, Model model) {
+	public String showViewBU(@RequestParam("id") Long id, Model model) {
 		model.addAttribute("bu", buService.findBusinessUnitById(id));
 		return "browse/viewBU";
 	}
 
 	@AdminOnly
 	@GetMapping("/admin/createBU")
-	public String viewCreateBU(@RequestParam("agencyId") Long agencyId, Model model) {
+	public String showCreateBU(@RequestParam("agencyId") Long agencyId, Model model) {
 		BusinessUnit bu = new BusinessUnit();
 		bu.setAgency(das.getAgency(agencyId));
 		model.addAttribute("bu", bu);
@@ -54,13 +51,33 @@ public class BusinessUnitController {
 
 	@AdminOnly
 	@PostMapping(value = "/admin/createBU")
-	public String processCreateBU(@Valid @ModelAttribute("bu") BusinessUnit bu, BindingResult bindingResult, Model model,
+	public String processCreateBU(@Valid @ModelAttribute("bu") BusinessUnit bu, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			return "admin/createBU";
 		}
 		buService.saveBusinessUnit(bu);
 		String actionMsg = msgSource.getMessage("h.createdBu", null, LocaleContextHolder.getLocale());
+		redirectAttributes.addFlashAttribute("actionMsg", actionMsg + bu.getName());
+		return "redirect:/browse/viewAgency?id=" + bu.getAgency().getId();
+	}
+
+	@AdminOnly
+	@GetMapping("/admin/editBU")
+	public String showEditBU(@RequestParam("id") Long id, Model model) {
+		model.addAttribute("bu", buService.findBusinessUnitById(id));
+		return "admin/editBU";
+	}
+
+	@AdminOnly
+	@PostMapping("/admin/editBU")
+	public String processEditBU(@Valid @ModelAttribute("bu") BusinessUnit bu, BindingResult bindingResult, Model model,
+			RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
+			return "admin/editBU";
+		}
+		buService.saveBusinessUnit(bu);
+		String actionMsg = msgSource.getMessage("h.editedBu", null, LocaleContextHolder.getLocale());
 		redirectAttributes.addFlashAttribute("actionMsg", actionMsg + bu.getName());
 		return "redirect:/browse/viewAgency?id=" + bu.getAgency().getId();
 	}

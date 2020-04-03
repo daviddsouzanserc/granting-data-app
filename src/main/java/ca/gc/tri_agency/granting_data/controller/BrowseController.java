@@ -1,5 +1,8 @@
 package ca.gc.tri_agency.granting_data.controller;
 
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.util.CalendarGrid;
 import ca.gc.tri_agency.granting_data.service.BusinessUnitService;
@@ -29,7 +33,8 @@ public class BrowseController {
 		Agency agency = dataService.getAgency(id);
 		model.addAttribute("agency", agency);
 		model.addAttribute("agencyFos", dataService.getAgencyFundingOpportunities(id));
-		model.addAttribute("agencyBUs", buService.findAllBusinessUnitsByAgency(agency));
+		model.addAttribute("agencyBUs", buService.findAllBusinessUnitsByAgency(agency).stream()
+				.sorted(Comparator.comparing(BusinessUnit::getName)).collect(Collectors.toList()));
 		return "browse/viewAgency";
 	}
 

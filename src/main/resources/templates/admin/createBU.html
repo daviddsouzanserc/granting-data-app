@@ -45,17 +45,20 @@
 				<div class="col-sm-5" th:if="${#fields.hasErrors('acronymFr')}" th:errors="*{acronymFr}"></div>
 			</div>
 
-			<div class="form-group row" style="margin-bottom: 35px">
+			<div class="form-group row">
 				<div class="col-sm-2 col-form-label" th:text="#{form.agency}"></div>
-				<div><a th:href="@{/browse/viewAgency(id=${bu.agency.id})}" th:text="${bu.agency.getName()}"></a></div>
-				<div>
-					<input hidden="true" th:field="*{agency}">
-				</div>
+				<div th:text="${bu.agency.getName()}"></div>
 			</div>
 
-			<input th:type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}" />
-		</form>
+			<div>
+				<input hidden="true" th:field="*{agency}">
+			</div>
+			<div style="margin-bottom: 35px">
+				<input th:type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}"/> <a
+					class="btn btn-primary" th:href="@{/browse/viewAgency(id=${bu.agency.id})}" th:text="#{msg.cancel}"></a>
+			</div>
 
+		</form>
 	</div>
 </body>
 </html>

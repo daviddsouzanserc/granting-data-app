@@ -71,11 +71,11 @@ public class SystemFundingOpportunityIntegrationTests {
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	public void test_unlinkFoConfirmationPageAccessableByAdmin_shouldSucceedWith200() throws Exception {
 		String sfoName = sfoRepo.getOne(1L).getNameEn();
-		String foName = foRepo.getOne(26L).getNameEn();
-		mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "1"))
+		String foName = sfoRepo.getOne(1L).getLinkedFundingOpportunity().getNameEn();
+		assertTrue(mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "1"))
 				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString()
 				.contains("Are you sure you want to unlink the System Funding Opportunity named " + sfoName
-						+ " from the Funding Opportunity named " + foName + "?");
+						+ " from the Funding Opportunity named " + foName + '?'));
 	}
 
 	@Test
@@ -83,13 +83,13 @@ public class SystemFundingOpportunityIntegrationTests {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	public void test_unlinkFoConfirmationPageNotAccessableByNonAdminUsers_shouldReturn403() throws Exception {
 		assertNotNull(sfoRepo.getOne(1L).getLinkedFundingOpportunity());
-		mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "1"))
+		assertTrue(mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "1"))
 				/*
 				 * If status().isForbidden() is changed to status().isOk() then this test will
 				 * pass but is that what you want?
 				 */
 				.andExpect(MockMvcResultMatchers.status().isForbidden()).andReturn().getResponse().getContentAsString()
-				.contains("id=\"forbiddenByRoleErrorPage\"");
+				.contains("id=\"forbiddenByRoleErrorPage\""));
 	}
 
 	@Test
@@ -97,9 +97,9 @@ public class SystemFundingOpportunityIntegrationTests {
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
 	public void test_confirmUnlinkPageNotAccessibleWhenSfoHasNoLinkedFo_shouldReturn404() throws Exception {
 		assertNull(sfoRepo.getOne(2L).getLinkedFundingOpportunity());
-		mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "2"))
+		assertTrue(mvc.perform(MockMvcRequestBuilders.get("/admin/confirmUnlink").param("sfoId", "2"))
 				.andExpect(MockMvcResultMatchers.status().isNotFound()).andReturn().getResponse().getContentAsString()
-				.contains("id=\"generalErrorPage\"");
+				.contains("id=\"generalErrorPage\""));
 	}
 
 	@Test

@@ -223,6 +223,30 @@
             <column name="country" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
+    <changeSet id="00000000000023" author="dev_aha">
+        <createSequence sequenceName="seq_business_unit" startValue="1" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="00000000000024" author="dev_aha">
+        <createTable tableName="business_unit">
+            <column name="id" type="BIGINT" valueSequenceNext="seq_business_unit">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name_en" type="VARCHAR(255)"/>
+            <column name="name_fr" type="VARCHAR(255)"/>
+            <column name="acronym_en" type="VARCHAR(255)"/>
+            <column name="acronym_fr" type="VARCHAR(255)"/>
+            <column name="agency_id" type="BIGINT" >
+                <constraints foreignKeyName="fk_business_unit_agency" nullable="false" references="agency(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="00000000000025" author="dev_aha">
+        <addColumn tableName="funding_opportunity">
+            <column name="business_unit_id" type="BIGINT">
+                <constraints nullable="true" foreignKeyName="fk_funding_opportunity_business_unit" references="business_unit(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
     <!-- 
     <changeSet author="dev_yab (generated)" id="1574353543232-28">
         <createIndex indexName="FK14tr15getkq8fb5kjrrjptvjr" tableName="system_funding_opportunity">

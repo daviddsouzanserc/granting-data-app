@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
 	<title th:text="#{title.viewAgency}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
@@ -12,7 +12,7 @@
 
 </head>
 <body>
-	<div th:insert="~{fragments/general.html :: header_nav('entities')}" />
+	<div th:insert="~{fragments/general.html :: header_nav('entities')}"></div>
 	<div class="container">
 		<h1 th:text="#{th.viewAgency}"></h1>
 		<div class="form-group row">
@@ -29,22 +29,47 @@
 		<div class="form-group row">
 			<div class="col-sm-10">
 				<table id="dataTable">
-				<thead>
-					<tr>
-						<td th:text="#{form.name}"></td>
-						<td th:text="#{form.leadAgency}"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="fo : ${agencyFos}">
-						<td><a th:href="@{'/browse/viewFo'(id=${fo.id})}" th:text="${fo.getLocalizedAttribute('name')}"></a></td>
-						<td th:text="${fo.leadAgency.getLocalizedAttribute('acronym')}"></td>
-					</tr>
-				</tbody>
+					<thead>
+						<tr>
+							<td th:text="#{form.name}"></td>
+							<td th:text="#{form.leadAgency}"></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="fo : ${agencyFos}">
+							<td><a th:href="@{'/browse/viewFo'(id=${fo.id})}" th:text="${fo.getLocalizedAttribute('name')}"></a></td>
+							<td th:text="${fo.leadAgency.getLocalizedAttribute('acronym')}"></td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		</div>
+		<div class="form-group row">
+			<div>
+				<h3 th:text="#{h.businessUnits}"></h3>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col-sm-10">
+				<table id="businessUnitsTable" class="table table-bordered">
+					<thead>
+						<tr>
+							<td th:text="#{th.name}"></td>
+							<td th:text="#{th.acronym}"></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="bu : ${agencyBUs}">
+							<td><a th:href="@{'/browse/viewBU'(id=${bu.id})}" id="viewBULink" th:text="${bu.getName()}"></a></td>
+							<td th:text="${bu.getAcronym()}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<h4 th:if="${actionMsg != null}" th:utext="${actionMsg}"></h4>
+		<a sec:authorize="hasRole('MDM ADMIN')" id="createBusinessUnit" class="btn btn-primary"
+			th:href="@{'/admin/createBU'(agencyId=${agency.id})}" th:text="#{link.createBusinessUnit}" style="margin-bottom: 100px"></a>
 	</div>
-   </body>
+</body>
 </html>
-

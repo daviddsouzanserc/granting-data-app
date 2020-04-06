@@ -28,7 +28,6 @@ import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
-import ca.gc.tri_agency.granting_data.repoLdap.ADUserRepository;
 import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
@@ -36,23 +35,21 @@ import ca.gc.tri_agency.granting_data.service.DataAccessService;
 public class DataAccessServiceImpl implements DataAccessService {
 
 	@Autowired
-	SystemFundingOpportunityRepository systemFoRepo;
+	private SystemFundingOpportunityRepository systemFoRepo;
 	@Autowired
-	SystemFundingCycleRepository systemFundingCycleRepo;
+	private SystemFundingCycleRepository systemFundingCycleRepo;
 	@Autowired
-	FundingOpportunityRepository foRepo;
+	private FundingOpportunityRepository foRepo;
 	@Autowired
-	AgencyRepository agencyRepo;
+	private AgencyRepository agencyRepo;
 	@Autowired
-	FundingCycleRepository fundingCycleRepo;
+	private FundingCycleRepository fundingCycleRepo;
 	@Autowired
-	GrantingCapabilityRepository grantingCapabilityRepo;
+	private GrantingCapabilityRepository grantingCapabilityRepo;
 	@Autowired
-	FundingCycleRepository fcRepo;
+	private FundingCycleRepository fcRepo;
 	@Autowired
-	FiscalYearRepository fyRepo;
-	@Autowired
-	ADUserRepository userRepo;
+	private FiscalYearRepository fyRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -129,7 +126,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public List<FundingOpportunity> getFoByNameEn(String nameEn) {
-		return foRepo.findByNameEn(nameEn);
+		return foRepo.findAllByNameEn(nameEn);
 	}
 
 	@Override
@@ -150,7 +147,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public List<FundingOpportunity> getAgencyFundingOpportunities(long id) {
-		return foRepo.findByLeadAgencyId(id);
+		return foRepo.findAllByLeadAgencyId(id);
 	}
 
 	@Override

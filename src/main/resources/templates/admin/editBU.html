@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
+<title th:text="#{title.editBUPage}"></title>
+</head>
+<body id="editBUPage">
+	<div th:insert="~{fragments/general.html :: header_nav('home')}"></div>
+	<div class="container">
+		<h1 th:text="#{h.editBu}" style="margin-bottom: 25px"></h1>
+
+		<form action="#" th:action="@{editBU}" th:object="${bu}" method="post">
+
+			<input th:hidden="true" th:type="text" th:field="*{id}" />
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.nameEn}"></div>
+				<div>
+					<input th:type="text" th:field="*{nameEn}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('nameEn')}" th:errors="*{nameEn}" th:text="#{err.nameErr}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.nameFr}"></div>
+				<div>
+					<input th:type="text" th:field="*{nameFr}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('nameFr')}" th:errors="*{nameFr}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.acronymEn}"></div>
+				<div>
+					<input th:type="text" th:field="*{acronymEn}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('acronymEn')}" th:errors="*{acronymEn}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.acronymFr}"></div>
+				<div>
+					<input th:type="text" th:field="*{acronymFr}" class="col-sm-2" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('acronymFr')}" th:errors="*{acronymFr}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.agency}"></div>
+				<div th:text="*{agency.getName()}"></div>
+			</div>
+
+			<div>
+				<input hidden="true" th:field="*{agency}">
+			</div>
+			
+			<div style="margin-bottom: 35px">
+				<input th:type="submit" class="btn btn-primary" role="button" th:value="#{input.submit}" /> <a class="btn btn-primary"
+					th:href="@{/browse/viewAgency(id=${bu.agency.id})}" th:text="#{msg.cancel}"></a>
+			</div>
+
+		</form>
+	</div>
+</body>
+</html>

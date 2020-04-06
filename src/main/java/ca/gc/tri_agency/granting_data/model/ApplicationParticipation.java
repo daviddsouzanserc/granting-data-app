@@ -1,7 +1,9 @@
 package ca.gc.tri_agency.granting_data.model;
 
 import java.time.Instant;
+import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,39 +11,69 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.CreatedDate;
+
 @Entity
 public class ApplicationParticipation {
 
     @Id
-    @SequenceGenerator(name="SEQ_APPLICATION_PARTICIPATION", sequenceName="SEQ_APPLICATION_PARTICIPATION", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator="SEQ_APPLICATION_PARTICIPATION")
+    @SequenceGenerator(name = "SEQ_APPLICATION_PARTICIPATION", sequenceName = "SEQ_APPLICATION_PARTICIPATION", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "SEQ_APPLICATION_PARTICIPATION")
     private Long id;
-    
-    private String applicationIdentifier;
-    private Long applicationId;
-    private Long competitionYear;
-    private String programId;
-    private String programEn;
-    private String programFr;
-    private Instant createdDate;
-    private Long roleCode;
-    private String roleEn;
-    private String roleFr;
-    private String familyName;
-    private String givenName;
-    private Long personIdentifier;
-    private Long organitzationId;
-    private String ogranizationNameEn;
-    private String organizationNameFr;
-    private String freeformAddress1;
-    private String freeformAddress2;
-    private String freeformAddress3;
-    private String freeformAddress4;
-    private String municipality;
+
+    private String applicationIdentifier;
+
+    private Long applicationId;
+
+    private Long competitionYear;
+
+    private String programId;
+
+    private String programEn;
+
+    private String programFr;
+
+    @CreatedDate
+    private Instant createDate;
+
+    private Long roleCode;
+
+    private String roleEn;
+
+    private String roleFr;
+
+    private String familyName;
+
+    private String givenName;
+
+    private Long personIdentifier;
+
+    private Long organizationId;
+
+    private String organizationNameEn;
+
+    private String organizationNameFr;
+
+    @Column(name = "freeform_address_1")
+    private String freeformAddress1;
+
+    @Column(name = "freeform_address_2")
+    private String freeformAddress2;
+
+    @Column(name = "freeform_address_3")
+    private String freeformAddress3;
+
+    @Column(name = "freeform_address_4")
+    private String freeformAddress4;
+
+    private String municipality;
+
     @Size(max = 7)
-    private String postalZipCode;
+    private String postalZipCode;
+
     @Size(max = 3)
-    private String provinceStateCode;
+    private String provinceStateCode;
+
     private String country;
 
     public Long getId() {
@@ -100,12 +132,12 @@ public class ApplicationParticipation {
         this.programFr = programFr;
     }
 
-    public Instant getCreatedDate() {
-        return createdDate;
+    public Instant getCreateDate() {
+        return createDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
+    public void setCreateDate(Instant createDate) {
+        this.createDate = createDate;
     }
 
     public Long getRoleCode() {
@@ -156,20 +188,20 @@ public class ApplicationParticipation {
         this.personIdentifier = personIdentifier;
     }
 
-    public Long getOrganitzationId() {
-        return organitzationId;
+    public Long getOrganizationId() {
+        return organizationId;
     }
 
-    public void setOrganitzationId(Long organitzationId) {
-        this.organitzationId = organitzationId;
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 
-    public String getOgranizationNameEn() {
-        return ogranizationNameEn;
+    public String getOrganizationNameEn() {
+        return organizationNameEn;
     }
 
-    public void setOgranizationNameEn(String ogranizationNameEn) {
-        this.ogranizationNameEn = ogranizationNameEn;
+    public void setOrganizationNameEn(String organizationNameEn) {
+        this.organizationNameEn = organizationNameEn;
     }
 
     public String getOrganizationNameFr() {
@@ -242,5 +274,84 @@ public class ApplicationParticipation {
 
     public void setCountry(String country) {
         this.country = country;
-    }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(applicationId, applicationIdentifier, competitionYear, country, createDate, familyName, freeformAddress1, freeformAddress2, freeformAddress3, freeformAddress4, givenName, municipality, organizationNameEn, organizationId,
+            organizationNameFr, personIdentifier, postalZipCode, programEn, programFr, programId, provinceStateCode, roleCode, roleEn, roleFr);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof ApplicationParticipation))
+            return false;
+        ApplicationParticipation other = (ApplicationParticipation) obj;
+        return Objects.equals(applicationId, other.applicationId) && Objects.equals(applicationIdentifier, other.applicationIdentifier) && Objects.equals(competitionYear, other.competitionYear) && Objects.equals(country, other.country)
+            && Objects.equals(createDate, other.createDate) && Objects.equals(familyName, other.familyName) && Objects.equals(freeformAddress1, other.freeformAddress1) && Objects.equals(freeformAddress2, other.freeformAddress2)
+            && Objects.equals(freeformAddress3, other.freeformAddress3) && Objects.equals(freeformAddress4, other.freeformAddress4) && Objects.equals(givenName, other.givenName) && Objects.equals(municipality, other.municipality)
+            && Objects.equals(organizationNameEn, other.organizationNameEn) && Objects.equals(organizationId, other.organizationId) && Objects.equals(organizationNameFr, other.organizationNameFr) && Objects.equals(personIdentifier, other.personIdentifier)
+            && Objects.equals(postalZipCode, other.postalZipCode) && Objects.equals(programEn, other.programEn) && Objects.equals(programFr, other.programFr) && Objects.equals(programId, other.programId)
+            && Objects.equals(provinceStateCode, other.provinceStateCode) && Objects.equals(roleCode, other.roleCode) && Objects.equals(roleEn, other.roleEn) && Objects.equals(roleFr, other.roleFr);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("ApplicationParticipation [id=");
+        builder.append(id);
+        builder.append(", applicationIdentifier=");
+        builder.append(applicationIdentifier);
+        builder.append(", applicationId=");
+        builder.append(applicationId);
+        builder.append(", competitionYear=");
+        builder.append(competitionYear);
+        builder.append(", programId=");
+        builder.append(programId);
+        builder.append(", programEn=");
+        builder.append(programEn);
+        builder.append(", programFr=");
+        builder.append(programFr);
+        builder.append(", createdDate=");
+        builder.append(createDate);
+        builder.append(", roleCode=");
+        builder.append(roleCode);
+        builder.append(", roleEn=");
+        builder.append(roleEn);
+        builder.append(", roleFr=");
+        builder.append(roleFr);
+        builder.append(", familyName=");
+        builder.append(familyName);
+        builder.append(", givenName=");
+        builder.append(givenName);
+        builder.append(", personIdentifier=");
+        builder.append(personIdentifier);
+        builder.append(", organizationId=");
+        builder.append(organizationId);
+        builder.append(", ogranizationNameEn=");
+        builder.append(organizationNameEn);
+        builder.append(", organizationNameFr=");
+        builder.append(organizationNameFr);
+        builder.append(", freeformAddress1=");
+        builder.append(freeformAddress1);
+        builder.append(", freeformAddress2=");
+        builder.append(freeformAddress2);
+        builder.append(", freeformAddress3=");
+        builder.append(freeformAddress3);
+        builder.append(", freeformAddress4=");
+        builder.append(freeformAddress4);
+        builder.append(", municipality=");
+        builder.append(municipality);
+        builder.append(", postalZipCode=");
+        builder.append(postalZipCode);
+        builder.append(", provinceStateCode=");
+        builder.append(provinceStateCode);
+        builder.append(", country=");
+        builder.append(country);
+        builder.append("]");
+        return builder.toString();
+    }
+
 }

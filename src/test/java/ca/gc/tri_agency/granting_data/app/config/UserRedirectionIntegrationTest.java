@@ -64,14 +64,11 @@ public class UserRedirectionIntegrationTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER", "nserc-user-edi" })
 	@Test
 	public void testAdminControllerAccess_withLoggedInNonAdminUser_shouldBeForbidden() throws Exception {
-		String responseString = mvc.perform(get("/admin/home")).andExpect(status().isForbidden()).andReturn().getResponse()
-				.getContentAsString();
-		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
-		responseString = mvc.perform(get("/admin/selectFileForComparison")).andExpect(status().isForbidden()).andReturn()
+		String responseString = mvc.perform(get("/admin/home")).andExpect(status().isForbidden()).andReturn()
 				.getResponse().getContentAsString();
 		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
-		responseString = mvc.perform(get("/admin/importProgramsFromFile")).andExpect(status().isForbidden()).andReturn()
-				.getResponse().getContentAsString();
+		responseString = mvc.perform(get("/admin/selectFileForComparison")).andExpect(status().isForbidden())
+				.andReturn().getResponse().getContentAsString();
 		assertTrue(responseString.contains("id=\"forbiddenByRoleErrorPage\""));
 	}
 
@@ -80,8 +77,6 @@ public class UserRedirectionIntegrationTest {
 	public void testAdminControllerAccess_withAdminUser_shouldSucceed200() throws Exception {
 		mvc.perform(get("/admin/home").contentType(MediaType.APPLICATION_XHTML_XML)).andExpect(status().isOk());
 		mvc.perform(get("/admin/selectFileForComparison").contentType(MediaType.APPLICATION_XHTML_XML))
-				.andExpect(status().isOk());
-		mvc.perform(get("/admin/importProgramsFromFile").contentType(MediaType.APPLICATION_XHTML_XML))
 				.andExpect(status().isOk());
 	}
 

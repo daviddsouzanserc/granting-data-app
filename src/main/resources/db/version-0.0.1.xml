@@ -6,9 +6,6 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     
     
-	<changeSet id="00000000000001" author="jfs">
-        <createSequence sequenceName="hibernate_sequence" />
-    </changeSet>
 	<changeSet id="00000000000002" author="jfs">
     	<createSequence sequenceName="seq_agency" startValue="1" incrementBy="1"/>
 	</changeSet>
@@ -44,8 +41,8 @@
             <column name="id" type="BIGINT" valueSequenceNext="seq_funding_opportunity">
                  <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="apply_method" type="VARCHAR(255)"/>
-            <column name="award_management_system" type="VARCHAR(255)"/>
+<!--             <column name="apply_method" type="VARCHAR(255)"/> -->
+<!--             <column name="award_management_system" type="VARCHAR(255)"/> -->
             <column name="division" type="VARCHAR(255)"/>
             <column name="frequency" type="VARCHAR(255)"/>
             <column name="funding_type" type="VARCHAR(255)"/>
@@ -181,20 +178,50 @@
             <column name="id" type="BIGINT" valueSequenceNext="seq_system_funding_cycle">
                  <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="comp_year" type="date"/>
+            <column name="fiscal_year" type="BIGINT"/>
             <column name="ext_id" type="VARCHAR(255)"/>
             <column name="num_apps_received" type="BIGINT"/>
             <column name="system_funding_opportunity_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_system_funding_cycle_system_funding_opportunity" references="system_funding_opportunity(id)"/>
             </column>
-            <column name="fiscal_year" type="date"/>
         </createTable>
     </changeSet>
 	<changeSet id="00000000000021" author="jfs">
         <addPrimaryKey columnNames="funding_opportunity_id, participating_agencies_id" constraintName="PRIMARY5" tableName="funding_opportunity_participating_agencies"/>
     </changeSet>
-    <changeSet author="dev_aha" id="00000000000022">
-    	<modifyDataType tableName="system_funding_cycle" columnName="fiscal_year" newDataType="BIGINT"/>
+    <changeSet id="00000000000022" author="dev_aha">
+        <createSequence sequenceName="seq_application_participation" startValue="1" incrementBy="1"/>
+    </changeSet>
+    <changeSet id="000000000023" author="dev_aha">
+        <createTable tableName="application_participation">
+            <column name="id" type="BIGINT" valueSequenceNext="seq_application_participation">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="application_identifier" type="VARCHAR(255)"/>
+            <column name="application_id" type="BIGINT"/>
+            <column name="competition_year" type="BIGINT"/>
+            <column name="program_id" type="VARCHAR(255)"/>
+            <column name="program_en" type="VARCHAR(255)"/>
+            <column name="program_fr" type="VARCHAR(255)"/>
+            <column name="create_date" type="TIMESTAMP"/>
+            <column name="role_code" type="BIGINT"/>
+            <column name="role_en" type="VARCHAR(255)"/>
+            <column name="role_fr" type="VARCHAR(255)"/>
+            <column name="family_name" type="VARCHAR(255)"/>
+            <column name="given_name" type="VARCHAR(255)"/>
+            <column name="person_identifier" type="BIGINT"/>
+            <column name="organization_id" type="BIGINT"/>
+            <column name="organization_name_en" type="VARCHAR(255)"/>
+            <column name="organization_name_fr" type="VARCHAR(255)"/>
+            <column name="freeform_address_1" type="VARCHAR(255)"/>
+            <column name="freeform_address_2" type="VARCHAR(255)"/>
+            <column name="freeform_address_3" type="VARCHAR(255)"/>
+            <column name="freeform_address_4" type="VARCHAR(255)"/>
+            <column name="municipality" type="VARCHAR(255)"/>
+            <column name="postal_zip_code" type="VARCHAR(255)"/>
+            <column name="province_state_code" type="VARCHAR(255)"/>
+            <column name="country" type="VARCHAR(255)"/>
+        </createTable>
     </changeSet>
     <changeSet id="00000000000023" author="dev_aha">
         <createSequence sequenceName="seq_business_unit" startValue="1" incrementBy="1"/>

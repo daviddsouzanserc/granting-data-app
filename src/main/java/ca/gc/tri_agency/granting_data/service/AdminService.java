@@ -18,8 +18,6 @@ public interface AdminService {
 
 	public int applyChangesFromFileByIds(String filename, String[] idsToAction);
 
-	public int importProgramsFromFile();
-
 	public int linkSystemFO(long systemFoId, long foId);
 
 	public int unlinkSystemFO(long systemFoId, long foId);

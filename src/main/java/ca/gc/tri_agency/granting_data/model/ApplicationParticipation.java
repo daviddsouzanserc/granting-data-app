@@ -277,12 +277,6 @@ public class ApplicationParticipation {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(applicationId, applicationIdentifier, competitionYear, country, createDate, familyName, freeformAddress1, freeformAddress2, freeformAddress3, freeformAddress4, givenName, municipality, organizationNameEn, organizationId,
-            organizationNameFr, personIdentifier, postalZipCode, programEn, programFr, programId, provinceStateCode, roleCode, roleEn, roleFr);
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -297,61 +291,5 @@ public class ApplicationParticipation {
             && Objects.equals(provinceStateCode, other.provinceStateCode) && Objects.equals(roleCode, other.roleCode) && Objects.equals(roleEn, other.roleEn) && Objects.equals(roleFr, other.roleFr);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("ApplicationParticipation [id=");
-        builder.append(id);
-        builder.append(", applicationIdentifier=");
-        builder.append(applicationIdentifier);
-        builder.append(", applicationId=");
-        builder.append(applicationId);
-        builder.append(", competitionYear=");
-        builder.append(competitionYear);
-        builder.append(", programId=");
-        builder.append(programId);
-        builder.append(", programEn=");
-        builder.append(programEn);
-        builder.append(", programFr=");
-        builder.append(programFr);
-        builder.append(", createdDate=");
-        builder.append(createDate);
-        builder.append(", roleCode=");
-        builder.append(roleCode);
-        builder.append(", roleEn=");
-        builder.append(roleEn);
-        builder.append(", roleFr=");
-        builder.append(roleFr);
-        builder.append(", familyName=");
-        builder.append(familyName);
-        builder.append(", givenName=");
-        builder.append(givenName);
-        builder.append(", personIdentifier=");
-        builder.append(personIdentifier);
-        builder.append(", organizationId=");
-        builder.append(organizationId);
-        builder.append(", ogranizationNameEn=");
-        builder.append(organizationNameEn);
-        builder.append(", organizationNameFr=");
-        builder.append(organizationNameFr);
-        builder.append(", freeformAddress1=");
-        builder.append(freeformAddress1);
-        builder.append(", freeformAddress2=");
-        builder.append(freeformAddress2);
-        builder.append(", freeformAddress3=");
-        builder.append(freeformAddress3);
-        builder.append(", freeformAddress4=");
-        builder.append(freeformAddress4);
-        builder.append(", municipality=");
-        builder.append(municipality);
-        builder.append(", postalZipCode=");
-        builder.append(postalZipCode);
-        builder.append(", provinceStateCode=");
-        builder.append(provinceStateCode);
-        builder.append(", country=");
-        builder.append(country);
-        builder.append("]");
-        return builder.toString();
-    }
 
 }

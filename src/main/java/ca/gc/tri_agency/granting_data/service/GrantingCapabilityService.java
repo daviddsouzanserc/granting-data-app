@@ -12,4 +12,5 @@ public interface GrantingCapabilityService {
 
 	GrantingCapability saveGrantingCapability(GrantingCapability gc);
 
+	List<GrantingCapability> findGrantingCapabilitiesByFoId(Long id);
 }

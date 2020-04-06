@@ -38,4 +38,9 @@ public class GrantingCapabilityServiceImpl implements GrantingCapabilityService 
 		return gcRepo.save(gc);
 	}
 
+	@Override
+	public List<GrantingCapability> findGrantingCapabilitiesByFoId(Long id) {
+		return gcRepo.findByFundingOpportunityId(id);
+	}
+
 }

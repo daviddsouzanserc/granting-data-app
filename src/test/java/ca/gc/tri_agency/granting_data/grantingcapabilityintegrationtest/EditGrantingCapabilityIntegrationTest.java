@@ -121,31 +121,33 @@ public class EditGrantingCapabilityIntegrationTest {
 	@Test
 	public void testController_adminCanEditGC_shouldSucceedWith302() throws Exception {
 		long initGcRepoCount = gcRepo.count();
-		GrantingCapability gcBeforeUpdate = gcService.findGrantingCapabilityById(1L);
 
 		String description = RandomStringUtils.randomAlphabetic(10);
 		String url = "www" + RandomStringUtils.randomAlphabetic(10) + ".ca";
-		String foId = "1";
 		String gStageId = "1";
 		String gSystemId = "1";
 
 		mvc.perform(MockMvcRequestBuilders.post("/manage/editGC").param("id", "1").param("description", description)
-				.param("foId", foId).param("gStageId", gStageId).param("gSystemId", gSystemId))
+				.param("url", url)
+				.param("fundingOpportunity", String
+						.valueOf(gcService.findGrantingCapabilityById(1L).getFundingOpportunity().getId()))
+				.param("grantingStage", gStageId).param("grantingSystem", gSystemId))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.redirectedUrl("/manage/manageFo?id=" + foId))
-				.andExpect(MockMvcResultMatchers.flash().attribute("actionMsg", "Edited a Granting Capability"));
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/manage/manageFo?id=" + String
+						.valueOf(gcService.findGrantingCapabilityById(1L).getFundingOpportunity().getId())))
+				.andExpect(MockMvcResultMatchers.flash().attribute("actionMsg",
+						"Granting Capability Successfully Updated"));
 
-		mvc.perform(MockMvcRequestBuilders.get("/manage/manageFo").param("id", foId))
+		mvc.perform(MockMvcRequestBuilders.get("/manage/manageFo").param("id",
+				String.valueOf(gcService.findGrantingCapabilityById(1L).getFundingOpportunity().getId())))
 				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
 
 		GrantingCapability gcAfterUpdate = gcService.findGrantingCapabilityById(1L);
 
-		assertNotEquals(gcBeforeUpdate, gcAfterUpdate);
 		assertEquals(description, gcAfterUpdate.getDescription());
 		assertEquals(url, gcAfterUpdate.getUrl());
-		assertEquals(foId, gcAfterUpdate.getFundingOpportunity().getId());
-		assertEquals(gStageId, gcAfterUpdate.getGrantingStage().getId());
-		assertEquals(gSystemId, gcAfterUpdate.getGrantingSystem().getId());
+		assertEquals(gStageId, String.valueOf(gcAfterUpdate.getGrantingStage().getId()));
+		assertEquals(gSystemId, String.valueOf(gcAfterUpdate.getGrantingSystem().getId()));
 
 		assertEquals(initGcRepoCount, gcRepo.count());
 	}
@@ -154,27 +156,26 @@ public class EditGrantingCapabilityIntegrationTest {
 	@Test
 	public void testController_nonAdminCannotEditGC_shouldReturn403() throws Exception {
 		long initGcRepoCount = gcRepo.count();
-		GrantingCapability gcBeforeFailedUpdate = gcService.findGrantingCapabilityById(1L);
 
 		String description = RandomStringUtils.randomAlphabetic(10);
 		String url = "www" + RandomStringUtils.randomAlphabetic(10) + ".ca";
-		String foId = "1";
 		String gStageId = "1";
 		String gSystemId = "1";
 
 		mvc.perform(MockMvcRequestBuilders.post("/manage/editGC").param("id", "1").param("description", description)
-				.param("foId", foId).param("gStageId", gStageId).param("gSystemId", gSystemId))
+				.param("url", url)
+				.param("fundingOpportunity", String
+						.valueOf(gcService.findGrantingCapabilityById(1L).getFundingOpportunity().getId()))
+				.param("grantingStage", gStageId).param("grantingSystem", gSystemId))
 				.andExpect(MockMvcResultMatchers.status().isForbidden()).andExpect(MockMvcResultMatchers.content()
 						.string(Matchers.containsString("id=\"forbiddenByRoleErrorPage\"")));
 
 		GrantingCapability gcAfterFailedUpdate = gcService.findGrantingCapabilityById(1L);
 
-		assertEquals(gcBeforeFailedUpdate, gcAfterFailedUpdate);
 		assertNotEquals(description, gcAfterFailedUpdate.getDescription());
 		assertNotEquals(url, gcAfterFailedUpdate.getUrl());
-		assertNotEquals(foId, gcAfterFailedUpdate.getFundingOpportunity().getId());
-		assertNotEquals(gStageId, gcAfterFailedUpdate.getGrantingStage().getId());
-		assertNotEquals(gSystemId, gcAfterFailedUpdate.getGrantingSystem().getId());
+		assertNotEquals(gStageId, String.valueOf(gcAfterFailedUpdate.getGrantingStage().getId()));
+		assertNotEquals(gSystemId, String.valueOf(gcAfterFailedUpdate.getGrantingSystem().getId()));
 
 		assertEquals(initGcRepoCount, gcRepo.count());
 	}

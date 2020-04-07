@@ -1,8 +1,8 @@
 package ca.gc.tri_agency.granting_data.grantingcapabilityintegrationtest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Pattern;
@@ -96,6 +96,56 @@ public class DeleteGrantingCapabilityIntegrationTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test(expected = AccessDeniedException.class)
 	public void testService_nonAdminCannotDeleteGC_shouldThrowAccessDeniedExcepction() {
-		gcService.deleteGrantingCapability(100L);
+		gcService.deleteGrantingCapability(101L);
 	}
+
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	@Test
+	public void test_adminCanAccessDeleteGCPage_shouldSucceedWith200() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/manage/deleteGC").param("id", "102"))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content()
+						.string(Matchers.containsString("id=\"deleteGrantingCapabilityPage\"")));
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@Test
+	public void test_nonAdminCannotAccessDeleteGCPage_shouldReturn403() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/manage/deleteGC").param("id", "102"))
+				.andExpect(MockMvcResultMatchers.status().isForbidden()).andExpect(MockMvcResultMatchers.content()
+						.string(Matchers.containsString("id=\"forbiddenByRoleErrorPage\"")));
+	}
+
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	@Test
+	public void testController_adminCanDeleteGC_shouldSucceedWith302() throws Exception {
+		long numGCs = gcRepo.count();
+
+		String foId = String.valueOf(gcService.findGrantingCapabilityById(103L).getFundingOpportunity().getId());
+
+		mvc.perform(MockMvcRequestBuilders.post("/manage/deleteGC").param("id", "103"))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/manage/manageFo?id=" + foId))
+				.andExpect(MockMvcResultMatchers.flash().attribute("actionMsg",
+						"Successfully Deleted Granting Capability"));
+
+		mvc.perform(MockMvcRequestBuilders.get("manage/manageFo").param("id", foId))
+				.andExpect(MockMvcResultMatchers.flash().attributeCount(0));
+
+		assertEquals(numGCs - 1, gcRepo.count());
+		assertFalse(gcRepo.findById(103L).isPresent());
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@Test
+	public void testController_nonAdminCannotDeleteGC_shouldReturn403() throws Exception {
+		long numGCs = gcRepo.count();
+
+		mvc.perform(MockMvcRequestBuilders.post("/manage/deleteGC").param("id", "104"))
+				.andExpect(MockMvcResultMatchers.status().isForbidden()).andExpect(MockMvcResultMatchers.content()
+						.string(Matchers.containsString("id=\"forbiddenByRoleErrorPage\"")));
+
+		assertEquals(numGCs, gcRepo.count());
+		assertTrue(gcRepo.findById(104L).isPresent());
+	}
+
 }

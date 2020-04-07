@@ -2,6 +2,7 @@ package ca.gc.tri_agency.granting_data.grantingcapabilityintegrationtest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Pattern;
@@ -12,6 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ActiveProfiles;
@@ -78,4 +81,21 @@ public class DeleteGrantingCapabilityIntegrationTest {
 		assertEquals(0L, numDeleteGCLinks);
 	}
 
+	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })
+	@Test(expected = DataRetrievalFailureException.class)
+	public void testService_adminCanDeleteGC() {
+		long numGCs = gcRepo.count();
+
+		gcService.deleteGrantingCapability(100L);
+
+		assertEquals(numGCs - 1, gcRepo.count());
+
+		gcService.findGrantingCapabilityById(100L);
+	}
+
+	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
+	@Test(expected = AccessDeniedException.class)
+	public void testService_nonAdminCannotDeleteGC_shouldThrowAccessDeniedExcepction() {
+		gcService.deleteGrantingCapability(100L);
+	}
 }

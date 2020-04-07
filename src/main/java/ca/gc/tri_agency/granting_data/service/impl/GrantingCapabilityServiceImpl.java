@@ -43,4 +43,9 @@ public class GrantingCapabilityServiceImpl implements GrantingCapabilityService 
 		return gcRepo.findByFundingOpportunityId(id);
 	}
 
+	@Override
+	@AdminOnly
+	public void deleteGrantingCapability(Long id) {
+		gcRepo.delete(findGrantingCapabilityById(id));
+	}
 }

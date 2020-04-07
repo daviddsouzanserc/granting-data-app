@@ -72,7 +72,6 @@ public class ManageFundingOpportunityController {
 	@GetMapping(value = "/editFo", params = "id")
 	public String editFo(@RequestParam("id") long id, Model model) {
 		FundingOpportunity fo = dataService.getFundingOpportunity(id);
-		model.addAttribute("fo", fo);
 		model.addAttribute("programForm", fo);
 
 		List<Agency> allAgencies = dataService.getAllAgencies();

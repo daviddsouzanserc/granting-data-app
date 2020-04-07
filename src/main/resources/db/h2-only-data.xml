@@ -18,5 +18,4 @@
 			<column name="granting_system_id" value="1" />
 		</insert>
 	</changeSet>
-
 </databaseChangeLog>

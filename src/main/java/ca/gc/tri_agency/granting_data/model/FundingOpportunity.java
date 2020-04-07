@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -60,6 +61,10 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	private String programLeadName;
 
 	private String programLeadDn;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "business_unit_id")
+	private BusinessUnit businessUnit;
 
 	public FundingOpportunity() {
 		setParticipatingAgencies(new HashSet<Agency>());
@@ -216,4 +221,12 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		isLOI = islOI;
 	}
 
+	public BusinessUnit getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(BusinessUnit businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+	
 }

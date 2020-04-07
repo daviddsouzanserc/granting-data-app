@@ -3,3 +3,7 @@
 /.settings/
 .project
 .classpath
+/.sts4-cache/
+/new1/
+/new/
+/.gitignore

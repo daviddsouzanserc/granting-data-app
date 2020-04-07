@@ -78,7 +78,7 @@ public class GoldenFundingOpportunityIntegrationTest {
 	@Transactional(readOnly = true)
 	public void testNameFieldsEmptyOnAddFoPageWhenNewSfoNotLinkedWithSfo() throws Exception {
 		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/admin/createFo"))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 		assertTrue(result.getResponse().getContentAsString()
 				.contains("<input class=\"col-sm-2\" id=\"nameEn\" name=\"nameEn\" value=\"\""));
 		assertTrue(result.getResponse().getContentAsString()
@@ -168,8 +168,8 @@ public class GoldenFundingOpportunityIntegrationTest {
 				.param("isEdiRequired", Boolean.toString(edi)).param("isNOI", Boolean.toString(noi))
 				.param("isLOI", Boolean.toString(loi)).param("programLeadName", pln).param("programLeadDn", pld))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home")).andExpect(MockMvcResultMatchers.flash()
-						.attribute("actionMessage", "Created Funding Opportunity named: " + nameEn));
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home"))
+				.andExpect(MockMvcResultMatchers.flash().attribute("actionMessage", "Created the Funding Opportunity named: " + nameEn));
 
 		// when the page is refreshed, the flash attribute should disappear
 		mvc.perform(MockMvcRequestBuilders.get("/admin/home"))

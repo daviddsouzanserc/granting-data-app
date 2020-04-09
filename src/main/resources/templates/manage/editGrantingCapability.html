@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+<meta charset="ISO-8859-1">
+<title th:text="#{title.editGc}"></title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+</head>
+<body id="editGrantingCapabilityPage" style="margin-bottom: 50px">
+	<div th:insert="~{fragments/general.html :: header_nav('home')}"></div>
+	<div class="container">
+		<form action="#" th:object="${gc}" th:action="@{/manage/editGC}" method="post">
+			<h1 th:text="#{h.editGc}" style="margin-bottom: 50px"></h1>
+
+			<input type="hidden" th:field="*{id}" />
+			<input type="hidden" th:field="*{fundingOpportunity}" />
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.description}"></div>
+				<div>
+					<textarea rows="5" cols="51" class="col-sm-5" th:field="*{description}"></textarea>
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.url}"></div>
+				<div>
+					<input type="text" class="col-sm-5" th:field="*{url}" />
+				</div>
+				<div class="col-sm-5" th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.gs}"></div>
+				<div>
+					<select th:class="col-sm-2" th:field="*{grantingStage}">
+						<option th:each="stage : ${grantingStages}" th:value="${stage.id}" th:text="${stage.getName()}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row" style="margin-bottom: 50px">
+				<div class="col-sm-2 col-form-label" th:text="#{form.gSys}"></div>
+				<div>
+					<select th:class="col-sm-2" th:field="*{grantingSystem}">
+						<option th:each="system : ${grantingSystems}" th:value="${system.id}" th:text="${system.acronym}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<div class="col-sm-2">
+					<input type="submit" th:value="#{input.submit}" class="btn btn-primary" />
+				</div>
+				<div>
+					<a class="btn btn-primary" th:href="@{/manage/manageFo(id=${gc.fundingOpportunity.id})}" th:text="#{msg.cancel}"></a>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+</body>
+</html>

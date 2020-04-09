@@ -122,7 +122,8 @@
 						<td th:text="#{form.url}"></td>
 						<td th:text="#{form.gs}"></td>
 						<td th:text="#{form.gSys}"></td>
-						<td></td>
+						<td sec:authorize="hasRole('MDM ADMIN')" th:text="#{form.edit}"></td>
+						<td sec:authorize="hasRole('MDM ADMIN')" th:text="#{form.delete}"></td>
 					</tr>
 
 				</thead>
@@ -130,18 +131,18 @@
 					<tr th:each="gc : ${grantingCapabilities}">
 						<td th:text="${gc.description}" ></td>
 						<td th:text="${gc.url}" ></td>
-						
-						<td th:text="${gc.grantingStage.getLocalizedAttribute('name')}" ></td>
+						<td th:text="${gc.grantingStage.getName()}"></td>
 						<td th:text="${gc.grantingSystem.getLocalizedAttribute('name')}" ></td>
-						<td><a></a></td>
-						
+						<td sec:authorize="hasRole('MDM ADMIN')"><a class="btn btn-primary" th:text="#{form.edit}" th:href="@{editGC(id=${gc.id})}"></a></td>
+						<td sec:authorize="hasRole('MDM ADMIN')"><a class="btn btn-primary" th:text="#{form.delete}" th:href="@{deleteGC(id=${gc.id})}" id="deleteGrantingCapabilityLink"></a></td>
 					</tr>
 
 				</tbody>
 				</table>
+				<div th:if="${actionMsg != null}"><h4 th:text="${actionMsg}"></h4></div>
 			</div>
 		</div>
-		<a class="btn btn-primary" th:href="@{addGrantingCapabilities(id=${fo.id})}" role="button" th:text="#{link.addGc}"></a>
+		<a style="margin-bottom: 50px" class="btn btn-primary" th:href="@{addGrantingCapabilities(id=${fo.id})}" role="button" th:text="#{link.addGc}"></a>
 		
 	</div>
    </body>

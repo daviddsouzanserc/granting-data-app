@@ -3,6 +3,7 @@ package ca.gc.tri_agency.granting_data.service;
 import java.io.File;
 import java.util.List;
 
+import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.GrantingSystem;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
@@ -25,4 +26,6 @@ public interface AdminService {
 
 	SystemFundingCycle registerSystemFundingCycle(FundingCycleDatasetRow row, SystemFundingOpportunity targetSfo);
 
+	BusinessUnit createOrUpdateBusinessUnit(BusinessUnit bu);
+	
 }

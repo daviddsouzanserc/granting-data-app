@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+<meta charset="ISO-8859-1">
+<title th:text="#{title.deleteGc}"></title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+</head>
+<body id="deleteGrantingCapabilityPage" style="margin-bottom: 50px">
+	<div th:insert="~{fragments/general.html :: header_nav('home')}"></div>
+	<div class="container">
+		<form action="#" th:action="@{/manage/deleteGC}" th:object="${gc}" method="post">
+			<input type="hidden" th:field="*{id}"/>
+		
+			<h1 th:text="#{h.deleteGc}" style="margin-bottom: 25px"></h1>
+			
+			<div class="form-group row" style="margin-bottom: 25px">
+				<h5 th:text="#{h.deleteGcAreYouSure}" class="col-sm-10"></h5>
+			</div>
+			
+			<div class="form-group row" style="margin-bottom: 50px">
+				<div class="col-sm-2"><input type="submit" th:value="#{form.delete}" class="btn btn-primary"/></div>
+				<div><a th:href="@{/manage/manageFo(id=${gc.fundingOpportunity.id})}" th:text="#{msg.cancel}" class="btn btn-primary"></a></div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

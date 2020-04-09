@@ -86,7 +86,7 @@ public class DeleteGrantingCapabilityIntegrationTest {
 	public void testService_adminCanDeleteGC() {
 		long numGCs = gcRepo.count();
 
-		gcService.deleteGrantingCapability(100L);
+		gcService.deleteGrantingCapabilityById(100L);
 
 		assertEquals(numGCs - 1, gcRepo.count());
 
@@ -96,7 +96,7 @@ public class DeleteGrantingCapabilityIntegrationTest {
 	@WithMockUser(roles = { "NSERC_USER", "SSHRC_USER", "AGENCY_USER" })
 	@Test(expected = AccessDeniedException.class)
 	public void testService_nonAdminCannotDeleteGC_shouldThrowAccessDeniedExcepction() {
-		gcService.deleteGrantingCapability(101L);
+		gcService.deleteGrantingCapabilityById(101L);
 	}
 
 	@WithMockUser(username = "admin", roles = { "MDM ADMIN" })

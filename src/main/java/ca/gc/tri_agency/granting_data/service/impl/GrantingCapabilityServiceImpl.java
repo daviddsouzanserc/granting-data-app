@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
 import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
@@ -45,7 +46,8 @@ public class GrantingCapabilityServiceImpl implements GrantingCapabilityService 
 
 	@Override
 	@AdminOnly
-	public void deleteGrantingCapability(Long id) {
+	@Transactional
+	public void deleteGrantingCapabilityById(Long id) {
 		gcRepo.delete(findGrantingCapabilityById(id));
 	}
 }

@@ -62,4 +62,21 @@ public class GrantingCapabilityController {
 		return "redirect:/manage/manageFo?id=" + gc.getFundingOpportunity().getId();
 	}
 
+	@AdminOnly
+	@GetMapping("/manage/deleteGC")
+	public String viewDeleteGC(@RequestParam("id") Long id, Model model) {
+		model.addAttribute("gc", gcService.findGrantingCapabilityById(id));
+		return "manage/deleteGrantingCapability";
+	}
+
+	@AdminOnly
+	@PostMapping("/manage/deleteGC")
+	public String processDeleteGC(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+		String foId = gcService.findGrantingCapabilityById(id).getFundingOpportunity().getId().toString();
+		gcService.deleteGrantingCapabilityById(id);
+		String actionMsg = msgSource.getMessage("h.deletedGC", null, LocaleContextHolder.getLocale());
+		redirectAttributes.addFlashAttribute("actionMsg", actionMsg);
+		return "redirect:/manage/manageFo?id=" + foId;
+	}
+
 }

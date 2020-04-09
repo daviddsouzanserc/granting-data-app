@@ -14,5 +14,5 @@ public interface GrantingCapabilityService {
 
 	List<GrantingCapability> findGrantingCapabilitiesByFoId(Long id);
 	
-	void deleteGrantingCapability(Long id);
+	void deleteGrantingCapabilityById(Long id);
 }

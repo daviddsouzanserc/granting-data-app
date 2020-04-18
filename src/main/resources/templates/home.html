@@ -12,15 +12,20 @@
 		
 		<P th:text="#{p.home.browse}"></P>
 		<ol>
-			<li><a href="browse/viewCalendar" th:text="#{link.fc.cal}"></a></li>
 			<li><a href="browse/goldenList" th:text="#{link.browse.fos}"></a></li>
-			<li><a href="browse/viewFiscalYear" th:text="#{link.browse.fy}"></a></li>
+<!-- 			<li><a href="browse/grantingSystems" th:text="#{link.browse.systems}"></a></li> -->
+			<li><a href="browse/appParticipations" th:text="#{link.browse.appParticipations}"></a></li>
+
+<!-- 			<li><a href="browse/viewCalendar" th:text="#{link.fc.cal}"></a></li> -->
+<!-- 			<li><a href="browse/viewFiscalYear" th:text="#{link.browse.fy}"></a></li> -->
 		</ol>
 		
 		<p th:text="#{p.home.adminZone}">
 		<ol>
-			<li><a href="fundingOpp/editProgramLead" th:text="#{link.fo.searchUser}"></a></li>
-			<li><a href="admin/home" th:text="#{link.admin.home}"></a></li>
+<!-- 			<li><a href="admin/home" th:text="#{link.admin.home}"></a></li> -->
+	        <li><a href="admin/selectFileForComparison" th:text="#{link.selectFileForComparison}"></a></li>
+	        <li><a href="admin/analyzeSystemFOs" th:text="#{link.analyzeSFos}"></a></li>
+	        <li><a href="admin/viewSystemActivities" th:text="#{link.viewSystemActivities}"></a></li>
 		</ol>
 	</div>
 </body>

@@ -84,8 +84,8 @@
 				<thead>
 					<tr>
 						<td th:text="#{th.yr}"></td>
-						<td th:text="#{th.startDateSystemPlanned}"></td>
-						<td th:text="#{th.endDateSystemPlanned}"></td>
+<!-- 						<td th:text="#{th.startDateSystemPlanned}"></td> -->
+<!-- 						<td th:text="#{th.endDateSystemPlanned}"></td> -->
 						<td th:text="#{th.numApps}"></td>
 					</tr>
 
@@ -94,8 +94,8 @@
 				<tbody th:if="${fcDataMap!=null}">
 					<tr th:each="row : ${fcDataMap}">
 						<td th:text="${row.value.year}" ></td>
-						<td><span th:text="${row.value.fc} ? ${row.value.fc.startDate} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td>
-						<td><span th:if="${row.value.fc}"><span th:text="${row.value.fc.isOpen} ? 'Open' : ${row.value.fc.endDate}"></span></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td>
+<!-- 						<td><span th:text="${row.value.fc} ? ${row.value.fc.startDate} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.fiscalYear} : 'N/A'"></span></td> -->
+<!-- 						<td><span th:if="${row.value.fc}"><span th:text="${row.value.fc.isOpen} ? 'Open' : ${row.value.fc.endDate}"></span></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.compYear} : 'N/A'"></span></td> -->
 						<td><span th:text="${row.value.fc} ? ${row.value.fc.expectedApplications} : 'N/A'"></span> / <span th:text="${row.value.sfc} ? ${row.value.sfc.numAppsReceived} : 'N/A'"></span></td>
 					</tr>
 				</tbody>

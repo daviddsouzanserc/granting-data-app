@@ -18,6 +18,7 @@ import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
+import ca.gc.tri_agency.granting_data.model.GrantingSystem;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.util.FundingCycleInfo;
@@ -95,17 +96,17 @@ public class DataAccessServiceImpl implements DataAccessService {
 			newItem.setFc(fc);
 			retval.put(year, newItem);
 		}
-//		for (SystemFundingCycle sfc : sfcList) {
-//			String year = sfc.getFiscalYear().toString().substring(0, 4);
-//			if (retval.containsKey(year)) {
-//				retval.get(year).setSfc(sfc);
-//			} else {
-//				FundingCycleInfo newItem = new FundingCycleInfo();
-//				newItem.setYear(year);
-//				newItem.setSfc(sfc);
-//				retval.put(year, newItem);
-//			}
-//		}
+		for (SystemFundingCycle sfc : sfcList) {
+			String year = sfc.getFiscalYear().toString().substring(0, 4);
+			if (retval.containsKey(year)) {
+				retval.get(year).setSfc(sfc);
+			} else {
+				FundingCycleInfo newItem = new FundingCycleInfo();
+				newItem.setYear(year);
+				newItem.setSfc(sfc);
+				retval.put(year, newItem);
+			}
+		}
 		return retval;
 	}
 
@@ -453,4 +454,26 @@ public class DataAccessServiceImpl implements DataAccessService {
 		return retval;
 	}
 
+	@Override
+	public Map<Long, GrantingSystem> getApplySystemsByFundingOpportunityMap() {
+		Map<Long, GrantingSystem> retval = new HashMap<Long, GrantingSystem>();
+		List<GrantingCapability> applyCapabilities = grantingCapabilityRepo.findByGrantingStageNameEn("APPLY");
+		for (GrantingCapability c : applyCapabilities) {
+			retval.put(c.getFundingOpportunity().getId(), c.getGrantingSystem());
+		}
+		return retval;
+	}
+
+	@Override
+	public Map<Long, List<GrantingSystem>> getAwardSystemsByFundingOpportunityMap() {
+		Map<Long, List<GrantingSystem>> retval = new HashMap<Long, List<GrantingSystem>>();
+		List<GrantingCapability> applyCapabilities = grantingCapabilityRepo.findByGrantingStageNameEn("AWARD");
+		for (GrantingCapability c : applyCapabilities) {
+			if (retval.containsKey(c.getFundingOpportunity().getId()) == false) {
+				retval.put(c.getFundingOpportunity().getId(), new ArrayList<GrantingSystem>());
+			}
+			retval.get(c.getFundingOpportunity().getId()).add(c.getGrantingSystem());
+		}
+		return retval;
+	}
 }

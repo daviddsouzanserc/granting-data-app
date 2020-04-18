@@ -20,8 +20,8 @@ import ca.gc.tri_agency.granting_data.service.DataAccessService;
 @Controller
 @RequestMapping("/browse")
 public class BrowseController {
-    
-        // private static final Logger LOG = LogManager.getLogger();
+
+	// private static final Logger LOG = LogManager.getLogger();
 
 	@Autowired
 	DataAccessService dataService;
@@ -41,7 +41,10 @@ public class BrowseController {
 	@GetMapping("/goldenList")
 	public String goldListDisplay(Model model) {
 		model.addAttribute("goldenList", dataService.getAllFundingOpportunities());
-		model.addAttribute("fcByFoMap", dataService.getFundingCycleByFundingOpportunityMap());
+		// model.addAttribute("fcByFoMap",
+		// dataService.getFundingCycleByFundingOpportunityMap());
+		model.addAttribute("applySystemByFoMap", dataService.getApplySystemsByFundingOpportunityMap());
+		model.addAttribute("awardSystemsByFoMap", dataService.getAwardSystemsByFundingOpportunityMap());
 		return "browse/goldenList";
 	}
 
@@ -56,7 +59,8 @@ public class BrowseController {
 	}
 
 	@GetMapping(value = "/viewCalendar")
-	public String viewCalendar(@RequestParam(name = "plusMinusMonth", defaultValue = "0") Long plusMinusMonth, Model model) {
+	public String viewCalendar(@RequestParam(name = "plusMinusMonth", defaultValue = "0") Long plusMinusMonth,
+			Model model) {
 		model.addAttribute("plusMonth", plusMinusMonth + 1);
 		model.addAttribute("minusMonth", plusMinusMonth - 1);
 		model.addAttribute("calGrid", new CalendarGrid(plusMinusMonth));

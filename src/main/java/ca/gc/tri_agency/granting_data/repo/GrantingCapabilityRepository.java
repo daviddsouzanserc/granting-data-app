@@ -12,4 +12,6 @@ public interface GrantingCapabilityRepository extends JpaRepository<GrantingCapa
 
 	List<GrantingCapability> findByFundingOpportunityId(Long id); // TODO: refactor its implementation
 
+	List<GrantingCapability> findByGrantingStageNameEn(String name);
+
 }

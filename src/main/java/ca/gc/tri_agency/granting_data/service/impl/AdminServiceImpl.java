@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +24,6 @@ import com.ebay.xcelite.Xcelite;
 import com.ebay.xcelite.reader.SheetReader;
 import com.ebay.xcelite.sheet.XceliteSheet;
 
-import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingSystem;
@@ -61,10 +59,10 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private GrantingSystemRepository grantingSystemRepo;
-	
+
 	@Autowired
 	private BusinessUnitRepository buRepo;
-	
+
 	@Value("${dataset.analysis.folder}")
 	private String datasetAnalysisFolder;
 
@@ -150,18 +148,20 @@ public class AdminServiceImpl implements AdminService {
 		for (SystemFundingOpportunity fo : foList) {
 			map.put(fo.getExtId(), fo);
 		}
-		Set<String> foIdList = map.keySet();
+		// Set<String> foIdList = map.keySet();
 		List<FundingCycleDatasetRow> foCyclesList = getFundingCyclesFromFile(filename);
 		List<Long> newIdList = new ArrayList<Long>();
 		for (FundingCycleDatasetRow row : foCyclesList) {
 			if (actionList.contains(row.getFoCycle())) {
 				SystemFundingOpportunity targetFo = null;
 				// if program exists, use it, else create it
-				if (foIdList.contains(row.getProgram_ID())) {
+				// String targetId = row.getProgram_ID().substring(0,
+				// row.getProgram_ID().length() - 5);
+				if (map.containsKey(row.getProgram_ID())) {
 					targetFo = map.get(row.getProgram_ID());
 				} else {
 					targetFo = registerSystemFundingOpportunity(row, targetSystem);
-					map.put(targetFo.getExtId(), targetFo);
+					map.put(row.getProgram_ID(), targetFo);
 
 				}
 				SystemFundingCycle newCycle = registerSystemFundingCycle(row, targetFo);

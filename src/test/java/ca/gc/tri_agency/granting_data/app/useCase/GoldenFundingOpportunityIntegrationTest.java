@@ -22,7 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -168,8 +167,8 @@ public class GoldenFundingOpportunityIntegrationTest {
 				.param("isEdiRequired", Boolean.toString(edi)).param("isNOI", Boolean.toString(noi))
 				.param("isLOI", Boolean.toString(loi)).param("programLeadName", pln).param("programLeadDn", pld))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home"))
-				.andExpect(MockMvcResultMatchers.flash().attribute("actionMessage", "Created the Funding Opportunity named: " + nameEn));
+				.andExpect(MockMvcResultMatchers.redirectedUrl("/admin/home")).andExpect(MockMvcResultMatchers.flash()
+						.attribute("actionMessage", "Created Funding Opportunity named: " + nameEn));
 
 		// when the page is refreshed, the flash attribute should disappear
 		mvc.perform(MockMvcRequestBuilders.get("/admin/home"))

@@ -21,20 +21,23 @@
 		            <tr>
 		                <th th:text="#{th.foName}"></th>
 		                <th th:text="#{th.leadAgency}"></th>
-		                <th th:text="#{th.cycleStart}"></th>
-		                <th th:text="#{th.cycleEnd}"></th>
-		                <th th:text="#{th.expectedApps}"></th>
+		                <th th:text="#{th.division}"></th>
+		                <th th:text="#{th.applySystem}"></th>
+		                <th th:text="#{th.awardSystems}"></th>
 		            </tr>
 				</thead>
 				
 				<tbody>
 	       			<tr th:each="fo : ${goldenList}">
 	           			<td><a th:href="@{viewFo(id=${fo.id})}"><span th:text="${fo.getLocalizedAttribute('name')}"></span></a></td>
-	           			<!-- <td><span th:if="${fo.leadAgency != null}" th:text="${fo.leadAgency.getLocalizedAttribute('name')}"></span></td>  -->
 	           			<td><span th:text="${fo.leadAgency == null} ? 'None' : ${fo.leadAgency.getLocalizedAttribute('acronym')}"></span></td>
-	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).startDate}"></span></td>   <!-- add cycle start date -->
-	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).endDate}"></span></td>	  <!-- add cycle end date -->
-	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).expectedApplications}"></span></td>   <!-- add expected applications -->
+	           			<td><span th:text="${fo.division}" ></span></td>
+	           			<td><span th:text="${applySystemByFoMap.get(fo.id) == null} ? 'None' : ${applySystemByFoMap.get(fo.id).acronym}"></span></td>
+	           			<td><span th:if="${awardSystemsByFoMap.get(fo.id) == null}" th:value="None"></span>
+	           				<span th:if="${awardSystemsByFoMap.get(fo.id) != null}" ><span th:each="system : ${awardSystemsByFoMap.get(fo.id)}"><span th:text="${system.acronym}"></span></span></span></td>
+<!-- 	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).startDate}"></span></td>   add cycle start date -->
+<!-- 	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).endDate}"></span></td>	  add cycle end date -->
+<!-- 	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).expectedApplications}"></span></td>   add expected applications -->
 	       			</tr>
    				</tbody>
 			</table>

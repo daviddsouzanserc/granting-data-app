@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +26,7 @@ import ca.gc.tri_agency.granting_data.model.User;
 import ca.gc.tri_agency.granting_data.repo.GrantingStageRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repoLdap.UserRepo;
+import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 import ca.gc.tri_agency.granting_data.service.RestrictedDataService;
 
@@ -49,7 +49,7 @@ public class ManageFundingOpportunityController {
 
 	@GetMapping(value = "/searchUser")
 	public String searchUserForm() {
-		return "fundingOpp/searchUser";
+		return "manage/searchUser";
 	}
 
 	@GetMapping(value = "/manageFo")
@@ -68,10 +68,10 @@ public class ManageFundingOpportunityController {
 		return "manage/searchUser";
 	}
 
+	@AdminOnly
 	@GetMapping(value = "/editFo", params = "id")
 	public String editFo(@RequestParam("id") long id, Model model) {
 		FundingOpportunity fo = dataService.getFundingOpportunity(id);
-		model.addAttribute("fo", fo);
 		model.addAttribute("programForm", fo);
 
 		List<Agency> allAgencies = dataService.getAllAgencies();
@@ -86,6 +86,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editFundingOpportunity";
 	}
 
+	@AdminOnly
 	@PostMapping(value = "/editFo")
 	public String editFoPost(@Valid @ModelAttribute("programForm") FundingOpportunity command,
 			BindingResult bindingResult) {
@@ -94,7 +95,7 @@ public class ManageFundingOpportunityController {
 			for (ObjectError br : bindingResult.getAllErrors()) {
 				System.out.println(br.toString());
 			}
-			return "redirect:/browse/goldenList";
+			return "redirect:/browse/fundingOpportunities";
 		}
 		restrictedDataService.saveFundingOpportunity(command);
 		return "redirect:/browse/viewFo?id=" + command.getId();
@@ -126,6 +127,7 @@ public class ManageFundingOpportunityController {
 
 /////////////////////////
 
+	@AdminOnly
 	@GetMapping(value = "/editProgramLead", params = "id")
 	public String editProgramLead(@RequestParam("id") long id, Model model) {
 		model.addAttribute("originalId", id);
@@ -134,6 +136,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editProgramLead";
 	}
 
+	@AdminOnly
 	@GetMapping(value = "/editProgramLead", params = { "id", "username" })
 	public String editProgramLeadSearchUser(@RequestParam("id") long id, @RequestParam("username") String username,
 			Model model) {
@@ -143,6 +146,7 @@ public class ManageFundingOpportunityController {
 		return "manage/editProgramLead";
 	}
 
+	@AdminOnly
 	@PostMapping(value = "/editProgramLead")
 	public String editProgramLeadPost(@RequestParam long foId, @RequestParam String leadUserDn) {
 		// get the FO based on the ID
@@ -176,6 +180,7 @@ public class ManageFundingOpportunityController {
 		return "redirect:/browse/viewFo?id=" + command.getFundingOpportunity().getId();
 	}
 
+	@AdminOnly
 	@GetMapping(value = "/addGrantingCapabilities", params = "id")
 	public String addGrantingCapabilities(@RequestParam("id") long id, Model model) {
 		model.addAttribute("foId", id);
@@ -185,6 +190,7 @@ public class ManageFundingOpportunityController {
 		return "manage/addGrantingCapabilities";
 	}
 
+	@AdminOnly
 	@PostMapping(value = "/addGrantingCapabilities")
 	public String addGrantingCapabilitiesPost(@Valid @ModelAttribute("gc") GrantingCapability command,
 			BindingResult bindingResult) {
@@ -206,7 +212,7 @@ public class ManageFundingOpportunityController {
 		return "manage/addFiscalYears";
 	}
 
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
+	@AdminOnly
 	@PostMapping(value = "/addFiscalYears")
 	public String addFiscalYearsPost(@Valid @ModelAttribute("fy") FiscalYear command, BindingResult bindingResult,
 			Model model) throws Exception {
@@ -227,38 +233,6 @@ public class ManageFundingOpportunityController {
 		}
 
 		return "redirect:/browse/viewFiscalYear";
-	}
-
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
-	@GetMapping(value = "/addFo")
-	public String addFo(Model model) {
-		List<Agency> allAgencies = dataService.getAllAgencies();
-		model.addAttribute("fo", new FundingOpportunity());
-		model.addAttribute("allAgencies", allAgencies);
-		return "manage/addFo";
-	}
-
-	@PreAuthorize("hasRole('ROLE_MDM ADMIN')")
-	@PostMapping(value = "/addFo", params = "id")
-	public String addFoPost(@Valid @ModelAttribute("fo") FundingOpportunity command, BindingResult bindingResult,
-			Model model) throws Exception {
-		if (bindingResult.hasErrors()) {
-			System.out.println(bindingResult.getFieldError().toString());
-
-		}
-
-		try {
-			dataService.createFo(command);
-		}
-
-		catch (Exception e) {
-			model.addAttribute("error", "Your input is not valid!"
-					+ " Please make sure to input a year between 1999 and 2050 that was not created before");
-			return "manage/addFo";
-
-		}
-
-		return "redirect:/browse/goldenList";
 	}
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
-	<title>Granting Data - View System Funding Opportunity</title>
+	<title th:text="#{title.viewSFo}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
@@ -11,38 +11,39 @@
 	</script>
 </head>
 <body>
-	<div th:insert="~{fragments/general.html :: header_nav('datasets')}" />
+	<div th:insert="~{fragments/general.html :: header_nav('datasets')}"></div> 
 	<div class="container">
-		<h1>View System Funding Opportunity</h1>
+		<h3 th:if="${unlinkedPerformedMsg != null}" th:utext="${unlinkedPerformedMsg}"></h3>
+		<h1 th:text="#{h.viewSFo}"></h1>
 		<div class="form-group row">
-			<div class="col-sm-2 col-form-label">Name</div>
+			<div class="col-sm-2 col-form-label" th:text="#{form.name}"></div>
 			<div class="col-sm-10" th:text="${systemFO.getLocalizedAttribute('name')}"></div>
 		</div>
 		<div class="form-group row">
-			<div class="col-sm-2 col-form-label">External ID</div>
+			<div class="col-sm-2 col-form-label" th:text="#{msg.extId}"></div>
 			<div class="col-sm-10" th:text="${systemFO.extId}"></div>
 		</div>
 		<div class="form-group row">
-			<div class="col-sm-2 col-form-label" >Golden Funding Opportunity Link</div>
-			<div class="col-sm-10" th:text="${systemFO.linkedFundingOpportunity != null} ? ${systemFO.linkedFundingOpportunity.getLocalizedAttribute('name')} : 'No Links'"></div>
+			<div class="col-sm-2 col-form-label" th:text="#{msg.goldenFo}"></div>
+			<div class="col-sm-10" th:text="${systemFO.linkedFundingOpportunity != null} ? ${systemFO.linkedFundingOpportunity.getLocalizedAttribute('name')} : #{msg.noLinks}"></div>
 		</div>
 		<div th:if="${systemFO.linkedFundingOpportunity == null}">
 			<div class="form-group row">
-				<div class="col-sm-2 col-form-label">Funding Opportunities for mapping</div>
+				<div class="col-sm-2 col-form-label" th:text="#{msg.fosForMapping}"></div>
 			</div>
 			<div class="form-group row">
 				<div class="col-sm-10">
 					<table id="fosForLinking">
 					<thead>
 						<tr>
-							<td>Funding Opportunity Name</td>
-							<td>Action</td>
+							<td th:text="#{msg.foName}"></td>
+							<td th:text="#{msg.action}"></td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="foForLink : ${fosForLink}">
 							<td><a th:href="@{'/browse/viewFO'(id=${foForLink.id})}" th:text="${foForLink.getLocalizedAttribute('name')}"></a></td>
-							<td><form method="post" th:action="registerFOLink"><input type="hidden" name="id" th:value="${systemFO.id}" /><input type="hidden" name="foId" th:value="${foForLink.id}" /><input class="btn" type="submit" th:value="Link"/></form></td>
+							<td><form method="post" th:action="registerFOLink"><input type="hidden" name="id" th:value="${systemFO.id}" /><input type="hidden" name="foId" th:value="${foForLink.id}" /><input class="btn" type="submit" th:value="#{input.link}"/></form></td>
 						</tr>
 					</tbody>
 					</table>
@@ -53,10 +54,19 @@
 				<div class="col-sm-4 col-form-label" th:utext="#{form.createFromDataset}">Create Entity From Data-set</div>
 				<div class="col-sm-8"><form th:action="createfoFromDataset" method="post"><input name="id" type="hidden" th:value="${systemFO.id}"/><input class="btn" type="submit" th:value="#{action.create}"/></form></div>
 			</div>
--->			
-			
+-->
+
+		</div>
+		<div th:if="${systemFO.linkedFundingOpportunity == null}" sec:authorize="hasRole('ROLE_MDM ADMIN')" class="form-group row">
+			<a th:href="@{'/admin/createFo'(sfoId=${systemFO.id})}" th:text="#{link.createFoFromFc}" />
+		</div>
+		<div th:unless="${systemFO.linkedFundingOpportunity == null}" sec:authorize="hasRole('ROLE_MDM ADMIN')" class="form-group row">
+			<div class="col-sm-2 col-form-label"></div>
+			<div class="col-sm-10">
+				<a class="btn btn-primary" id="unlinkSfoBtn" th:href="@{confirmUnlink(sfoId=${systemFO.id})}" role="button" th:text="#{msg.unlinkFo}"></a>
+			</div>
 		</div>
 	</div>
-   </body>
+</body>
 </html>
 

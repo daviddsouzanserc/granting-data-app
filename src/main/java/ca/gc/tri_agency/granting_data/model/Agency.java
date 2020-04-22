@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -12,7 +13,8 @@ import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 @Entity
 public class Agency implements LocalizedParametersModel {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_AGENCY", sequenceName = "SEQ_AGENCY", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AGENCY")
 	private Long id;
 
 	protected String nameEn;
@@ -86,6 +88,10 @@ public class Agency implements LocalizedParametersModel {
 		this.acronymEn = acronymEn;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Long getId() {
 		return id;
 	}

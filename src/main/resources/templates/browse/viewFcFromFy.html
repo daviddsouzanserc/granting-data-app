@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
 	<meta charset="ISO-8859-1">
-	<title>Granting Data - Golden List</title>
+	<title th:text="#{title.fundingOpportunities}"></title>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript">
@@ -15,13 +15,13 @@
 	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	<div class="container">
 		
-			<h1>Funding Cycles</h1>
+			<h1 th:text="#{h.fcs}"></h1>
 			<table id="fc" class="display" border="1" width="1000">
 				<thead>
 		            <tr>
-		                <th>Funding Opportunity Name</th>
-		                <th>Cycle Start Date</th>
-		                <th>Cycle End Date</th>
+		                <th th:text="#{th.foName}"></th>
+		                <th th:text="#{th.cycleStart}"></th>
+		                <th th:text="#{th.cycleEnd}"></th>
 		            </tr>
 				</thead>
 				

@@ -1,7 +1,6 @@
 package ca.gc.tri_agency.granting_data.service;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -20,6 +19,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -28,7 +28,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import ca.gc.tri_agency.granting_data.app.GrantingDataApp;
 import ca.gc.tri_agency.granting_data.model.GrantingSystem;
-import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.file.FundingCycleDatasetRow;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
@@ -36,7 +35,6 @@ import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
-import ca.gc.tri_agency.granting_data.service.impl.AdminServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = GrantingDataApp.class)
@@ -55,8 +53,6 @@ public class AdminServiceIntegrationTest {
 	FundingOpportunityRepository foRepo;
 	@Autowired
 	private WebApplicationContext context;
-	@Autowired
-	private AdminServiceImpl adminServiceImpl;
 
 	private MockMvc mvc;
 
@@ -67,7 +63,7 @@ public class AdminServiceIntegrationTest {
 	/* TEST UTIL FUNCTION */
 	FundingCycleDatasetRow createFcDatasetRow(String foName, String year) {
 		FundingCycleDatasetRow retval = new FundingCycleDatasetRow();
-		retval.setCompetitionYear(Long.getLong("2019"));
+		retval.setCompetitionYear(2019L);
 		retval.setFoCycle(foName + "-" + year);
 		retval.setProgram_ID(foName);
 		retval.setProgramNameEn(foName + "-en");
@@ -78,13 +74,19 @@ public class AdminServiceIntegrationTest {
 
 	@Test
 	@WithAnonymousUser
-	public void test_applyChangesFromFileByIds_unauthorizedUserShouldReturn401() throws Exception {
+	/*
+	 * Changed this method because the application currently has the security setup
+	 * so that when an unauthorized user tries to access any page that requires
+	 * authentication, that unauthorized user is redirected to the login page.
+	 */
+	public void test_applyChangesFromFileByIds_unauthorizedUserShouldRedirectToLoginPage() throws Exception {
 		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 		MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
 		paramMap.add("fileName", TEST_FILE);
 		String idToAction = adminService.getFundingCyclesFromFile(TEST_FILE).get(0).getFoCycle();
 		paramMap.add("idToAction", idToAction);
-		mvc.perform(post("/admin/analyzeFoUploadData").queryParams(paramMap)).andExpect(status().isUnauthorized());
+		mvc.perform(post("/admin/analyzeFoUploadData").queryParams(paramMap)).andExpect(status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
 	}
 
 	@Test
@@ -94,43 +96,28 @@ public class AdminServiceIntegrationTest {
 		String targetYear = "2009";
 		String sfoName = "SAMPLE";
 
-		long initSfcTableSize = sfcRepo.count();
-		long initSfoTableSize = sfoRepo.count();
+		// create new test SFO with no SFCs
+		SystemFundingOpportunity newSfo = new SystemFundingOpportunity();
+		newSfo.setNameEn(sfoName + " EN");
+		newSfo.setNameFr(sfoName + " FR");
+		newSfo.setExtId(sfoName);
 
+		// List<GrantingSystem> gsList = gsRepo.findAll();
+		newSfo.setGrantingSystem(gsRepo.findByAcronym("NAMIS"));
+		newSfo = sfoRepo.save(newSfo);
+		List<SystemFundingOpportunity> sfoMatchingNames = sfoRepo.findByNameEn(sfoName + " EN");
+		assertTrue("i think the process and test requires unique SFO names", sfoMatchingNames.size() == 1);
+
+		int origCountOfSFCsLinkedToSFO = sfcRepo.findBySystemFundingOpportunityId(newSfo.getId()).size();
+		assertTrue("logic says new SFO shoudl ahve no SFCs", origCountOfSFCsLinkedToSFO == 0);
+
+		// ADD A CYCLE TO "SAMPLE" thought the service
 		final String testFileName = "NAMIS-TestCase_registerSFCwhenSFOalreadyExists.xlsx";
 		adminService.applyChangesFromFileByIds(testFileName, new String[] { sfoName + "-" + targetYear });
 
-		long newSizeSfoRepo = sfoRepo.count();
+		int newCountOfSFCsLinkedToSFO = sfcRepo.findBySystemFundingOpportunityId(newSfo.getId()).size();
 
-		// check that SFO was added to the DB
-		assertEquals(initSfoTableSize + 1, newSizeSfoRepo);
-
-		// check that newly added SFO does not have a SFC
-		final SystemFundingOpportunity newSfo = sfoRepo.getOne(newSizeSfoRepo);
-		assertNull(newSfo.getExtId());
-
-		// register SFC with newly added SFO
-		List<FundingCycleDatasetRow> fcRows = adminService.getFundingCyclesFromFile(testFileName);
-		final SystemFundingCycle sfc = adminService.registerSystemFundingCycle(fcRows.get(0), newSfo);
-
-		/*
-		 * Check that newly added SFO now has a SFC however, there is no
-		 * getSystemFundingCycle() method for the SystemFundingOpportunity class even
-		 * though there is a getSystemFundingOpportunity() method in the
-		 * SystemFundingCycle class. When getExtId() is used, the problem is that value
-		 * is already in the Excel file. If the ext_id value is removed from the Excel
-		 * file, the assertion below will fail b/c there is no functionality in
-		 * registerSystemFundingCycle() that will add it. If it is added then the
-		 * assertion on line 110 will fail.
-		 */
-		assertNotNull(newSfo.getExtId());
-
-		// check that SFC table has a new entry
-		assertEquals(initSfcTableSize + 1, sfcRepo.count());
-
-		// I think the assertion below would be better if there is a
-		// getSystemFundingOpportunity() method
-		assertEquals(sfc.getExtId(), newSfo.getExtId());
+		assertTrue("new count of SFCs linked ot SFO shoudl now be 1", newCountOfSFCsLinkedToSFO == 1);
 	}
 
 	@Test

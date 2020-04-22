@@ -14,44 +14,50 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.GrantingCapability;
+import ca.gc.tri_agency.granting_data.model.GrantingSystem;
 import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.util.FundingCycleInfo;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
+import ca.gc.tri_agency.granting_data.repo.BusinessUnitRepository;
 import ca.gc.tri_agency.granting_data.repo.FiscalYearRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
+import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
-import ca.gc.tri_agency.granting_data.repoLdap.ADUserRepository;
+import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
 import ca.gc.tri_agency.granting_data.service.DataAccessService;
 
 @Service
 public class DataAccessServiceImpl implements DataAccessService {
 
 	@Autowired
-	SystemFundingOpportunityRepository systemFoRepo;
+	private SystemFundingOpportunityRepository systemFoRepo;
 	@Autowired
-	SystemFundingCycleRepository systemFundingCycleRepo;
+	private SystemFundingCycleRepository systemFundingCycleRepo;
 	@Autowired
-	FundingOpportunityRepository foRepo;
+	private FundingOpportunityRepository foRepo;
 	@Autowired
-	AgencyRepository agencyRepo;
+	private AgencyRepository agencyRepo;
 	@Autowired
-	FundingCycleRepository fundingCycleRepo;
+	private FundingCycleRepository fundingCycleRepo;
 	@Autowired
-	GrantingCapabilityRepository grantingCapabilityRepo;
+	private GrantingCapabilityRepository grantingCapabilityRepo;
 	@Autowired
-	FundingCycleRepository fcRepo;
+	private FundingCycleRepository fcRepo;
 	@Autowired
-	FiscalYearRepository fyRepo;
+	private FiscalYearRepository fyRepo;
 	@Autowired
-	ADUserRepository userRepo;
+	private BusinessUnitRepository buRepo;
+	@Autowired
+	private GrantingSystemRepository gsRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -97,17 +103,17 @@ public class DataAccessServiceImpl implements DataAccessService {
 			newItem.setFc(fc);
 			retval.put(year, newItem);
 		}
-//		for (SystemFundingCycle sfc : sfcList) {
-//			String year = sfc.getFiscalYear().toString().substring(0, 4);
-//			if (retval.containsKey(year)) {
-//				retval.get(year).setSfc(sfc);
-//			} else {
-//				FundingCycleInfo newItem = new FundingCycleInfo();
-//				newItem.setYear(year);
-//				newItem.setSfc(sfc);
-//				retval.put(year, newItem);
-//			}
-//		}
+		for (SystemFundingCycle sfc : sfcList) {
+			String year = sfc.getFiscalYear().toString().substring(0, 4);
+			if (retval.containsKey(year)) {
+				retval.get(year).setSfc(sfc);
+			} else {
+				FundingCycleInfo newItem = new FundingCycleInfo();
+				newItem.setYear(year);
+				newItem.setSfc(sfc);
+				retval.put(year, newItem);
+			}
+		}
 		return retval;
 	}
 
@@ -128,7 +134,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public List<FundingOpportunity> getFoByNameEn(String nameEn) {
-		return foRepo.findByNameEn(nameEn);
+		return foRepo.findAllByNameEn(nameEn);
 	}
 
 	@Override
@@ -149,7 +155,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	@Override
 	public List<FundingOpportunity> getAgencyFundingOpportunities(long id) {
-		return foRepo.findByLeadAgencyId(id);
+		return foRepo.findAllByLeadAgencyId(id);
 	}
 
 	@Override
@@ -241,6 +247,7 @@ public class DataAccessServiceImpl implements DataAccessService {
 
 	}
 
+	@AdminOnly
 	@Override
 	public void createFo(FundingOpportunity fo) {
 		// TODO Auto-generated method stub
@@ -454,4 +461,36 @@ public class DataAccessServiceImpl implements DataAccessService {
 		return retval;
 	}
 
+	@Override
+	public Map<Long, GrantingSystem> getApplySystemsByFundingOpportunityMap() {
+		Map<Long, GrantingSystem> retval = new HashMap<Long, GrantingSystem>();
+		List<GrantingCapability> applyCapabilities = grantingCapabilityRepo.findByGrantingStageNameEn("APPLY");
+		for (GrantingCapability c : applyCapabilities) {
+			retval.put(c.getFundingOpportunity().getId(), c.getGrantingSystem());
+		}
+		return retval;
+	}
+
+	@Override
+	public Map<Long, List<GrantingSystem>> getAwardSystemsByFundingOpportunityMap() {
+		Map<Long, List<GrantingSystem>> retval = new HashMap<Long, List<GrantingSystem>>();
+		List<GrantingCapability> applyCapabilities = grantingCapabilityRepo.findByGrantingStageNameEn("AWARD");
+		for (GrantingCapability c : applyCapabilities) {
+			if (retval.containsKey(c.getFundingOpportunity().getId()) == false) {
+				retval.put(c.getFundingOpportunity().getId(), new ArrayList<GrantingSystem>());
+			}
+			retval.get(c.getFundingOpportunity().getId()).add(c.getGrantingSystem());
+		}
+		return retval;
+	}
+
+	@Override
+	public List<BusinessUnit> getAllDivisions() {
+		return buRepo.findAll();
+	}
+
+	@Override
+	public List<GrantingSystem> getAllGrantingSystems() {
+		return gsRepo.findAll();
+	}
 }

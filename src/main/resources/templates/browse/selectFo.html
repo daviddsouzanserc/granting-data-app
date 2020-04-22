@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
 <meta charset="ISO-8859-1">
-<title>Granting Data</title>
+<title th:text="#{title.home}"></title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('home')}" ></div>
@@ -12,19 +12,15 @@
 			<table id="SelectedFoTable" class="table table-bordered">
 				<thead>
 		            <tr>
-		                <th>Apply Method</th>
-		                <th>Award Management System</th>
-		                <th>Division</th>
-		                <th>Frequency</th>
-		                <th>Funding Type</th>
-		                <th>Program Lead Name</th>
+		                <th th:text="#{form.division}"></th>
+		                <th th:text="#{form.frequency}"></th>
+		                <th th:text="#{form.fundingType}"></th>
+		                <th th:text="#{form.programLeadName}"></th>
 		            </tr>
 				</thead>
 				
 				<tbody>
 	       			<tr th:each="fo : ${fos}" >
-	           			<td><span th:text="${fo.applyMethod}"></span></td>
-	           			<td><span th:text="${fo.awardManagementSystem}"></span></td>
 	           			<td><span th:text="${fo.division}"></span></td>
 	           			<td><span th:text="${fo.frequency}"></span></td>
 	           			<td><span th:text="${fo.fundingType}"></span></td>

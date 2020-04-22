@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/general.html :: common_header(~{::title},~{::link},~{::script})}">
+	<meta charset="ISO-8859-1">
+	<title id="/browse/fundingOpportunitiesPage" th:text="#{title.fundingOpportunities}"></title>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function () {
+			var table = $('#fundingOpportunitiesTable').DataTable({});
+		});
+	</script>
+</head>
+<body id="fundingOpportunitiesPage">
+	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
+	<div class="container">
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFilter">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFilterBox" aria-expanded="false" aria-controls="collapseFilterBox">
+          Filters
+        </a>
+      </h4>
+    </div>
+    <div id="collapseFilterBox" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFilter">
+      <div class="panel-body">
+		<form action="#" th:action="@{fundingOpportunities}" th:object="${filter}" method="get"> 
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{form.leadAgency}"></div>
+					<div><select class="col-sm-2" th:field="*{leadAgency}">
+						<option value=""/>
+						<option th:each="agency : ${allAgencies}"
+							th:value="${agency.id}"
+							th:text="${agency.getLocalizedAttribute('acronym')}">
+						</option>
+					</select>
+				</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.division}"></div>
+					<div><select class="col-sm-2" th:field="*{division}">
+						<option value=""/>
+<!-- 						<option th:each="div : ${allDivisions}" -->
+<!-- 							th:value="${div.id}"  -->
+<!-- 							th:text="${div.getLocalizedAttribute('acronym')}"> -->
+<!-- 						</option> -->
+					</select>
+				</div>
+				<div class="col-sm-2 col-form-label" th:text="#{form.foType}"></div>
+					<div><select class="col-sm-2" name="foType">
+						<option value=""/>
+						<option>Scholarship</option>
+						<option>Grant</option>
+<!-- 						<option th:each="fot: ${foTypes}" -->
+<!-- 							th:value="${fot.id}" th:selected="${foType.id==fot.id} ? 'selected' : '0'" -->
+<!-- 							th:text="${fot.getLocalizedAttribute('name')}"> -->
+<!-- 						</option> -->
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2 col-form-label" th:text="#{th.applySystem}"></div>
+					<div><select class="col-sm-2" th:field="*{applySystem}">
+						<option value=""/>
+						<option th:each="system : ${allGrantingSystems}"
+							th:value="${system.id}"
+							th:text="${system.getLocalizedAttribute('name')}">
+						</option>
+					</select>
+				</div>
+				<div class="col-sm-2 col-form-label" th:text="#{th.awardSystems}"></div>
+					<div><select class="col-sm-2" th:field="*{awardSystem}">
+						<option value=""/>
+						<option th:each="system : ${allGrantingSystems}"
+							th:value="${system.id}"
+							th:text="${system.getLocalizedAttribute('name')}">
+						</option>
+					</select>
+				</div>
+				<div class="col-sm-2 col-form-label">
+					<input th:type="submit" class="btn btn-primary" role="button" th:value="#{input.applyFilter}"/>
+				</div>
+			</div>
+		</form>
+      </div>
+    </div>
+  </div>
+</div> 		
+
+			<h1 th:text="#{h.fundingOpportunities}"></h1>
+			<p th:text="#{intro.fundingOpportunities}"></p>
+			
+			<table id="fundingOpportunitiesTable" class="display">
+				<thead>
+		            <tr>
+		                <th th:text="#{th.foName}"></th>
+		                <th th:text="#{th.leadAgency}"></th>
+		                <th th:text="#{th.division}"></th>
+		                <th th:text="#{th.applySystem}"></th>
+		                <th th:text="#{th.awardSystems}"></th>
+		            </tr>
+				</thead>
+				
+				<tbody>
+	       			<tr th:each="fo : ${fundingOpportunities}">
+	           			<td><a th:href="@{viewFo(id=${fo.id})}"><span th:text="${fo.getLocalizedAttribute('name')}"></span></a></td>
+	           			<td><span th:text="${fo.leadAgency == null} ? 'None' : ${fo.leadAgency.getLocalizedAttribute('acronym')}"></span></td>
+	           			<td><span th:text="${fo.division}" ></span></td>
+	           			<td><span th:text="${applySystemByFoMap.get(fo.id) == null} ? 'None' : ${applySystemByFoMap.get(fo.id).acronym}"></span></td>
+	           			<td><span th:if="${awardSystemsByFoMap.get(fo.id) == null}" th:value="None"></span>
+	           				<span th:if="${awardSystemsByFoMap.get(fo.id) != null}" ><span th:each="system : ${awardSystemsByFoMap.get(fo.id)}"><span th:text="${system.acronym}"></span></span></span></td>
+<!-- 	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).startDate}"></span></td>   add cycle start date -->
+<!-- 	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).endDate}"></span></td>	  add cycle end date -->
+<!-- 	           			<td><span th:text="${fcByFoMap.get(fo.id) == null} ? 'None' : ${fcByFoMap.get(fo.id).expectedApplications}"></span></td>   add expected applications -->
+	       			</tr>
+   				</tbody>
+			</table>
+		<div th:if="${#request.isUserInRole('ROLE_MDM ADMIN')}"> 	
+		<div style="display:flex; justify-content:flex-end; width:100%; margin-top:10px;color:red">
+      	<h3 ><a href="/admin/createFo" th:text="#{link.addFo}"></a></h3>
+      	 </div> 
+		</div>
+	</div>
+
+</body>
+</html>

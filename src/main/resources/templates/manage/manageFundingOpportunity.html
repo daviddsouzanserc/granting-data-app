@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
-<title>Granting Data - View Funding Opportunity</title>
+<title th:text="#{title.viewFoPage}"></title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('programs')}" > </div>
 	<div class="container">
-		<h1>View Funding Opportunity</h1>
+		<h1 th:text="#{h.viewFo}"></h1>
 		<div class="form-group row">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.name}">Name</div>
 			<div class="col-sm-10" th:text="${fo.getLocalizedAttribute('name')}"></div>
@@ -24,7 +24,7 @@
 			<div class="col-sm-10" th:text="${fo.fundingType}"></div>
 		</div>
 		<div class="form-group row">
-			<div class="col-sm-2 col-form-label">Number of agencies</div>
+			<div class="col-sm-2 col-form-label" th:text="#{form.numAgencies}"></div>
 			<div class="col-sm-10" th:text="${#lists.size(fo.participatingAgencies)}"></div>
 		</div>
 		<div class="form-group row">
@@ -32,18 +32,10 @@
 			<div class="col-sm-10" th:text="${fo.frequency}"></div>
 		</div>
 		<div class="form-group row">
-			<div class="col-sm-2 col-form-label" th:utext="#{form.applyMethod}">Apply Method</div>
-			<div class="col-sm-10" th:text="${fo.applyMethod}"></div>
-		</div>
-		<div class="form-group row">
-			<div class="col-sm-2 col-form-label" th:utext="#{form.awardSystem}">Award System</div>
-			<div class="col-sm-10" th:text="${fo.awardManagementSystem}"></div>
-		</div>
-		<div class="form-group row">
 			<div class="col-sm-2 col-form-label" th:utext="#{form.programLeadName}">Program Lead Name</div>
 			<div class="col-sm-2" th:text="${fo.programLeadName}"></div>
 			<div sec:authorize="hasRole('MDM ADMIN')" class="col-sm-2">
-				<a class="btn" th:href="@{editProgramLead(id=${fo.id})}">Change Program Lead</a>
+				<a class="btn" th:href="@{editProgramLead(id=${fo.id})}" th:text="#{link.changeProgramLead}"></a>
 			</div>
 		</div>
 		<div class="form-group row">
@@ -54,25 +46,25 @@
 				</ul>
 			</div>
 		</div>
-		<a class="btn btn-primary" th:href="@{editFo(id=${fo.id})}" role="button">Edit</a>
+		<a class="btn btn-primary" th:href="@{editFo(id=${fo.id})}" role="button" th:text="#{link.edit}"></a>
 		
 		<div class="form-group row">
-			<div><h2>Funding Cycles</h2></div>
+			<div><h2 th:text="#{h.fcs}"></h2></div>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-10">
 				<table id="fundingCycles" class="table table-bordered">
 				<thead>
 					<tr>
-						<td>Fiscal Year</td>
-						<td>Start Date</td>
-						<td>End Date</td>
-						<td>Start Date NOI</td>
-						<td>End Date NOI</td>
-						<td>Start Date LOI</td>
-						<td>End Date LOI</td>
-						<td>Expected # of Applications</td>
-						<td> Edit  </td>
+						<td th:text="#{form.fy}"></td>
+						<td th:text="#{form.startDate}"></td>
+						<td th:text="#{form.endDate}"></td>
+						<td th:text="#{form.startDateNoi}"></td>
+						<td th:text="#{form.endDateNoi}"></td>
+						<td th:text="#{form.startDateLoi}"></td>
+						<td th:text="#{form.endDateLoi}"></td>
+						<td th:text="#{form.expectedNumApps}"></td>
+						<td th:text="#{form.edit}"></td>
 					</tr>
 
 				</thead>
@@ -86,25 +78,25 @@
 						<td th:text="${fundingCycle.startDateLOI}" ></td>
 						<td th:text="${fundingCycle.endDateLOI}" ></td>
 						<td th:text="${fundingCycle.expectedApplications}" ></td>
-						<td> <a class="btn btn-primary" th:href="@{/manage/editFc(id=${fundingCycle.id})}" role="button"> Edit </a></td>
+						<td> <a class="btn btn-primary" th:href="@{/manage/editFc(id=${fundingCycle.id})}" role="button" th:text="#{link.edit}"></a></td>
 					</tr>
 
 				</tbody>
 				</table>
 			</div>
 		</div>
-		<a class="btn btn-primary" th:href="@{createFundingCycle(id=${fo.id})}" role="button">Create Funding Cycle</a>
+		<a class="btn btn-primary" th:href="@{createFundingCycle(id=${fo.id})}" role="button" th:text="#{link.createFc}"></a>
 		
 		<div class="form-group row">
-			<div><h2>System Funding Cycles</h2></div>
+			<div><h2 th:text="#{h.sysFcs}"></h2></div>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-10">
 				<table id="fundingCycles" class="table table-bordered">
 				<thead>
 					<tr>
-						<td>Year</td>
-						<td># of Applications Received</td>
+						<td th:text="#{form.yr}"></td>
+						<td th:text="#{form.numAppsReceived}"></td>
 					</tr>
 
 				</thead>
@@ -119,18 +111,19 @@
 			</div>
 		</div>
 		<div class="form-group row">
-			<div><h2>Granting Capabilities</h2></div>
+			<div><h2 th:text="#{h.gcs}"></h2></div>
 		</div>
 		<div class="form-group row">
 			<div class="col-sm-10">
 				<table id="grantingCapabilitiesTable" class="table table-bordered">
 				<thead>
 					<tr>
-						<td>Description</td>
-						<td>URL</td>
-						<td>Granting Stage</td>
-						<td>Granting System</td>
-						<td></td>
+						<td th:text="#{form.description}"></td>
+						<td th:text="#{form.url}"></td>
+						<td th:text="#{form.gs}"></td>
+						<td th:text="#{form.gSys}"></td>
+						<td sec:authorize="hasRole('MDM ADMIN')" th:text="#{form.edit}"></td>
+						<td sec:authorize="hasRole('MDM ADMIN')" th:text="#{form.delete}"></td>
 					</tr>
 
 				</thead>
@@ -138,18 +131,18 @@
 					<tr th:each="gc : ${grantingCapabilities}">
 						<td th:text="${gc.description}" ></td>
 						<td th:text="${gc.url}" ></td>
-						
-						<td th:text="${gc.grantingStage.getLocalizedAttribute('name')}" ></td>
+						<td th:text="${gc.grantingStage.getName()}"></td>
 						<td th:text="${gc.grantingSystem.getLocalizedAttribute('name')}" ></td>
-						<td><a></a></td>
-						
+						<td sec:authorize="hasRole('MDM ADMIN')"><a class="btn btn-primary" th:text="#{form.edit}" th:href="@{editGC(id=${gc.id})}"></a></td>
+						<td sec:authorize="hasRole('MDM ADMIN')"><a class="btn btn-primary" th:text="#{form.delete}" th:href="@{deleteGC(id=${gc.id})}" id="deleteGrantingCapabilityLink"></a></td>
 					</tr>
 
 				</tbody>
 				</table>
+				<div th:if="${actionMsg != null}"><h4 th:text="${actionMsg}"></h4></div>
 			</div>
 		</div>
-		<a class="btn btn-primary" th:href="@{addGrantingCapabilities(id=${fo.id})}" role="button">Add Granting Capability</a>
+		<a style="margin-bottom: 50px" class="btn btn-primary" th:href="@{addGrantingCapabilities(id=${fo.id})}" role="button" th:text="#{link.addGc}"></a>
 		
 	</div>
    </body>

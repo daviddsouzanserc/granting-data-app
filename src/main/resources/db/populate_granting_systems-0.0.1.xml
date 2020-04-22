@@ -8,7 +8,137 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
   <changeSet
 id="populate_granting_systems"
 author="dev_dyd">
-      <sqlFile relativeToChangelogFile="true" path="insert-sqlFile-0.0.1.sql" />
+       <!-- <sqlFile relativeToChangelogFile="true" path="insert-sqlFile-0.0.1.sql" /> --> 
+       
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system" />
+			<column name="acronym" value="RP1" />
+			<column name="name_en" value="Research Portal" />
+			<column name="name_fr" value="Portail de Recherche" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system" />
+			<column name="acronym" value="CRM" />
+			<column name="name_en" value="CRM" />
+			<column name="name_fr" value="CRM" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system" />
+			<column name="acronym" value="SSHRC Online" />
+			<column name="name_en" value="SSHRC Online" />
+			<column name="name_fr" value="SSHRC Online" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system" />
+			<column name="acronym" value="AMIS" />
+			<column name="name_en" value="AMIS" />
+			<column name="name_fr" value="AMIS" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system" />
+			<column name="acronym" value="NSERC Online" />
+			<column name="name_en" value="NSERC Online" />
+			<column name="name_fr" value="NSERC Online" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system" />
+			<column name="acronym" value="NAMIS" />
+			<column name="name_en" value="NAMIS" />
+			<column name="name_fr" value="NAMIS" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="CIMS" />
+			<column name="name_en" value="Corporate Inventory Management System" />
+			<column name="name_fr" value="Corporate Inventory Management System" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="ResearchNet" />
+			<column name="name_en" value="ResearchNet" />
+			<column name="name_fr" value="ResearchNet" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="Convergence" />
+			<column name="name_en" value="Convergence" />
+			<column name="name_fr" value="Convergence" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="SP Secure Upload" />
+			<column name="name_en" value="SharePoint Secure Upload" />
+			<column name="name_fr" value="Téléchargement Sécurisé SharePoint" />
+		</insert>
+		<insert tableName="granting_system">
+			<column name="id" valueSequenceNext="seq_granting_system"></column>
+			<column name="acronym" value="SP Review" />
+			<column name="name_en" value="SharePoint Review" />
+			<column name="name_fr" value="Examen de SharePoint" />
+		</insert>
+
+		<insert tableName="agency">
+			<column name="id" valueSequenceNext="seq_agency" />
+			<column name="acronym_en" value="SSHRC" />
+			<column name="acronym_fr" value="CRSN" />
+			<column name="name_en" value="Social Sciences and Humanities Research Council" />
+			<column name="name_fr" value="Conseil de recherches en sciences humaines" />
+		</insert>
+		<insert tableName="agency">
+			<column name="id" valueSequenceNext="seq_agency" />
+			<column name="acronym_en" value="NSERC" />
+			<column name="acronym_fr" value="CRSNG" />
+			<column name="name_en" value="Natural Sciences and Engineering Research Council" />
+			<column name="name_fr" value="Conseil de recherches en sciences naturelles et en génie" />
+		</insert>
+		<insert tableName="agency">
+			<column name="id" valueSequenceNext="seq_agency" />
+			<column name="acronym_en" value="CIHR" />
+			<column name="acronym_fr" value="IRSC" />
+			<column name="name_en" value="Canadian Institutes of Health Research" />
+			<column name="name_fr" value="Instituts de recherche en santé" />
+		</insert>
+		<insert tableName="granting_stage">
+			<column name="id" valueSequenceNext="seq_granting_stage" />
+			<column name="name_en" value="ADMIN" />
+			<column name="name_fr" value="ADMIN" />
+		</insert>
+		<insert tableName="granting_stage">
+			<column name="id" valueSequenceNext="seq_granting_stage" />
+			<column name="name_en" value="APPLY" />
+			<column name="name_fr" value="APPLY" />
+		</insert>
+		<insert tableName="granting_stage">
+			<column name="id" valueSequenceNext="seq_granting_stage" />
+			<column name="name_en" value="ASSESS" />
+			<column name="name_fr" value="ASSESS" />
+		</insert>
+		<insert tableName="granting_stage">
+			<column name="id" valueSequenceNext="seq_granting_stage" />
+			<column name="name_en" value="AWARD" />
+			<column name="name_fr" value="AWARD" />
+		</insert>
+		<insert tableName="granting_stage">
+			<column name="id" valueSequenceNext="seq_granting_stage" />
+			<column name="name_en" value="AQUIT" />
+			<column name="name_fr" value="AQUIT" />
+		</insert>
+		<insert tableName="fiscal_year">
+			<column name="id" valueSequenceNext="seq_fiscal_year" />
+			<column name="year" value="2017" />
+		</insert>
+		<insert tableName="fiscal_year">
+			<column name="id" valueSequenceNext="seq_fiscal_year" />
+			<column name="year" value="2018" />
+		</insert>
+		<insert tableName="fiscal_year">
+			<column name="id" valueSequenceNext="seq_fiscal_year" />
+			<column name="year" value="2019" />
+		</insert>
+		<insert tableName="fiscal_year">
+			<column name="id" valueSequenceNext="seq_fiscal_year" />
+			<column name="year" value="2020" />
+		</insert>
       <rollback>
           <sql>
               TRUNCATE TABLE `granting_system`;

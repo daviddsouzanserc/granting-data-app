@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,23 +17,31 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import ca.gc.tri_agency.granting_data.model.util.LocalizedParametersModel;
 
 @Entity
 public class FundingOpportunity implements LocalizedParametersModel {
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "test_sequence")
-	@SequenceGenerator(name = "test_sequence", sequenceName = "hibernate_sequence", allocationSize = 1)
+	@SequenceGenerator(name = "SEQ_FUNDING_OPPORTUNITY", sequenceName = "SEQ_FUNDING_OPPORTUNITY", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FUNDING_OPPORTUNITY")
 	private Long id;
 
+	@NotBlank
+	@Size(min = 3)
 	private String nameEn;
 
+	@NotBlank
+	@Size(min = 3)
 	private String nameFr;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "lead_agency_id")
+	@NotNull
 	private Agency leadAgency;
 
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -45,10 +54,6 @@ public class FundingOpportunity implements LocalizedParametersModel {
 
 	private String frequency;
 
-	private String applyMethod;
-
-	private String awardManagementSystem;
-
 	public boolean isNOI;
 
 	private boolean isLOI;
@@ -56,14 +61,16 @@ public class FundingOpportunity implements LocalizedParametersModel {
 	private String programLeadName;
 
 	private String programLeadDn;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "business_unit_id")
+	private BusinessUnit businessUnit;
 
 	public FundingOpportunity() {
 		setParticipatingAgencies(new HashSet<Agency>());
 	}
 
 	public void loadFromForm(FundingOpportunity f) {
-		this.setApplyMethod(f.getApplyMethod());
-		this.setAwardManagementSystem(f.getAwardManagementSystem());
 		this.setDivision(f.getDivision());
 		this.setFundingType(f.getFundingType());
 		this.setFrequency(f.getFrequency());
@@ -97,27 +104,11 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		this.frequency = frequency;
 	}
 
-	public String getApplyMethod() {
-		return applyMethod;
-	}
-
 	private String partnerOrg;
 
 	private boolean isEdiRequired;
 
 	private boolean isComplex;
-
-	public void setApplyMethod(String applyMethod) {
-		this.applyMethod = applyMethod;
-	}
-
-	public String getAwardManagementSystem() {
-		return awardManagementSystem;
-	}
-
-	public void setAwardManagementSystem(String awardManagementSystem) {
-		this.awardManagementSystem = awardManagementSystem;
-	}
 
 	public String getProgramLeadName() {
 		return programLeadName;
@@ -186,7 +177,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isJointInitiative;
 	}
 
-	public void setJointInitiative(boolean isJointInitiative) {
+	public void setIsJointInitiative(boolean isJointInitiative) {
 		this.isJointInitiative = isJointInitiative;
 	}
 
@@ -202,7 +193,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isEdiRequired;
 	}
 
-	public void setEdiRequired(boolean isEdiRequired) {
+	public void setIsEdiRequired(boolean isEdiRequired) {
 		this.isEdiRequired = isEdiRequired;
 	}
 
@@ -210,7 +201,7 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		return isComplex;
 	}
 
-	public void setComplex(boolean isComplex) {
+	public void setIsComplex(boolean isComplex) {
 		this.isComplex = isComplex;
 	}
 
@@ -230,4 +221,12 @@ public class FundingOpportunity implements LocalizedParametersModel {
 		isLOI = islOI;
 	}
 
+	public BusinessUnit getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(BusinessUnit businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+	
 }

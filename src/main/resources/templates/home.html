@@ -3,24 +3,29 @@
 <head th:replace="~{fragments/general.html :: common_header(~{::title},~{},~{})}">
 <head>
 <meta charset="ISO-8859-1">
-<title>Granting Data</title>
+<title th:text="#{title.home}"></title>
 </head>
 <body>
 	<div th:insert="~{fragments/general.html :: header_nav('home')}" />
 	<div class="container">
-		<p>Welcome to the Granting Data Application. Please select one of the following options</p>
+		<p th:text="#{p.home.welcome}"></p>
 		
-		<P>  Browsing  </P>
+		<P th:text="#{p.home.browse}"></P>
 		<ol>
-			<li><a href="browse/viewCalendar">Funding Cycle Calendar</a></li>
-			<li><a href="browse/goldenList">Browse Funding Opportunities</a></li>
-			<li><a href="browse/viewFiscalYear"> Browse Funding Cycles </a></li>
+			<li><a href="browse/fundingOpportunities" th:text="#{link.browse.fos}"></a></li>
+<!-- 			<li><a href="browse/grantingSystems" th:text="#{link.browse.systems}"></a></li> -->
+			<li><a href="browse/appParticipations" th:text="#{link.browse.appParticipations}"></a></li>
+
+<!-- 			<li><a href="browse/viewCalendar" th:text="#{link.fc.cal}"></a></li> -->
+<!-- 			<li><a href="browse/viewFiscalYear" th:text="#{link.browse.fy}"></a></li> -->
 		</ol>
 		
-		<p> Admin Zone </p>
+		<p th:text="#{p.home.adminZone}">
 		<ol>
-			<li><a href="fundingOpp/editProgramLead">Search User</a></li>
-			<li><a href="admin/home">Admin Home</a></li>
+<!-- 			<li><a href="admin/home" th:text="#{link.admin.home}"></a></li> -->
+	        <li><a href="admin/selectFileForComparison" th:text="#{link.selectFileForComparison}"></a></li>
+	        <li><a href="admin/analyzeSystemFOs" th:text="#{link.analyzeSFos}"></a></li>
+	        <li><a href="admin/viewSystemActivities" th:text="#{link.viewSystemActivities}"></a></li>
 		</ol>
 	</div>
 </body>

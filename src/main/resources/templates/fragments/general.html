@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="common_header(title,links,scripts)">
 <meta charset="ISO-8859-1">
-<title th:replace="${title}">Application</title>
+<title th:replace="${title}" th:text="#{title.general}"></title>
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	
@@ -20,7 +20,7 @@
 
 	<!--/* Per-page placeholder for additional links */-->
   	<th:block th:replace="${scripts}" />
-<title>Insert title here</title>
+<title th:text="#{title.insertTitle}"></title>
 </head>
 
 <body>
@@ -32,7 +32,8 @@
    					<a class="nav-link" th:href="@{${currentUrl}(lang=#{lang.otherLocale})}" th:text="#{lang.otherLanguage}">other language</a>
 				</li>
 				<li class="nav-item" th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
-					<form th:action="@{/logout}" method="post"><input type="submit" value="Sign Out"/ class="btn"></form>
+					<form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post"><input type="submit" th:value="#{input.signOut}" class="btn"/></form>
+					<button sec:authorize="!isAuthenticated()" class="btn" onclick="location.href='/login';">Sign In</button>
 				</li>
    			</ul>
 		</nav>
@@ -42,7 +43,7 @@
 	<nav class="navbar navbar-inverse">
 		<div class="container">
 			<div class="navbar-header">
-				<a th:class="${activeTab == 'home'}? 'navbar-brand active' : 'navbar-brand'"href="/">Granting Data</a>
+				<a th:class="${activeTab == 'home'}? 'navbar-brand active' : 'navbar-brand'"href="/" th:text="#{link.home}"></a>
 			</div>  <!-- 
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">

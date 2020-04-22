@@ -6,11 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class GrantingCapability {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "SEQ_GRANTING_CAPABILITY", sequenceName = "SEQ_GRANTING_CAPABILITY", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GRANTING_CAPABILITY")
 	private Long id;
 
 	private String description;
@@ -31,6 +33,10 @@ public class GrantingCapability {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public FundingOpportunity getFundingOpportunity() {

@@ -80,21 +80,21 @@ author="dev_dyd">
 		<insert tableName="agency">
 			<column name="id" valueSequenceNext="seq_agency" />
 			<column name="acronym_en" value="SSHRC" />
-			<column name="acronym_en" value="CRSN" />
+			<column name="acronym_fr" value="CRSN" />
 			<column name="name_en" value="Social Sciences and Humanities Research Council" />
 			<column name="name_fr" value="Conseil de recherches en sciences humaines" />
 		</insert>
 		<insert tableName="agency">
 			<column name="id" valueSequenceNext="seq_agency" />
 			<column name="acronym_en" value="NSERC" />
-			<column name="acronym_en" value="CRSNG" />
+			<column name="acronym_fr" value="CRSNG" />
 			<column name="name_en" value="Natural Sciences and Engineering Research Council" />
 			<column name="name_fr" value="Conseil de recherches en sciences naturelles et en génie" />
 		</insert>
 		<insert tableName="agency">
 			<column name="id" valueSequenceNext="seq_agency" />
 			<column name="acronym_en" value="CIHR" />
-			<column name="acronym_en" value="IRSC" />
+			<column name="acronym_fr" value="IRSC" />
 			<column name="name_en" value="Canadian Institutes of Health Research" />
 			<column name="name_fr" value="Instituts de recherche en santé" />
 		</insert>

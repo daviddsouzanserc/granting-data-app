@@ -95,7 +95,7 @@ public class ManageFundingOpportunityController {
 			for (ObjectError br : bindingResult.getAllErrors()) {
 				System.out.println(br.toString());
 			}
-			return "redirect:/browse/goldenList";
+			return "redirect:/browse/fundingOpportunities";
 		}
 		restrictedDataService.saveFundingOpportunity(command);
 		return "redirect:/browse/viewFo?id=" + command.getId();

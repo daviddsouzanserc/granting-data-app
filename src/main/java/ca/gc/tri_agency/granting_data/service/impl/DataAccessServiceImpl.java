@@ -14,6 +14,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import ca.gc.tri_agency.granting_data.model.Agency;
+import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FiscalYear;
 import ca.gc.tri_agency.granting_data.model.FundingCycle;
 import ca.gc.tri_agency.granting_data.model.FundingOpportunity;
@@ -23,10 +24,12 @@ import ca.gc.tri_agency.granting_data.model.SystemFundingCycle;
 import ca.gc.tri_agency.granting_data.model.SystemFundingOpportunity;
 import ca.gc.tri_agency.granting_data.model.util.FundingCycleInfo;
 import ca.gc.tri_agency.granting_data.repo.AgencyRepository;
+import ca.gc.tri_agency.granting_data.repo.BusinessUnitRepository;
 import ca.gc.tri_agency.granting_data.repo.FiscalYearRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.FundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.repo.GrantingCapabilityRepository;
+import ca.gc.tri_agency.granting_data.repo.GrantingSystemRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingCycleRepository;
 import ca.gc.tri_agency.granting_data.repo.SystemFundingOpportunityRepository;
 import ca.gc.tri_agency.granting_data.security.annotations.AdminOnly;
@@ -51,6 +54,10 @@ public class DataAccessServiceImpl implements DataAccessService {
 	private FundingCycleRepository fcRepo;
 	@Autowired
 	private FiscalYearRepository fyRepo;
+	@Autowired
+	private BusinessUnitRepository buRepo;
+	@Autowired
+	private GrantingSystemRepository gsRepo;
 
 	@Override
 	public List<SystemFundingOpportunity> getAllSystemFOs() {
@@ -475,5 +482,15 @@ public class DataAccessServiceImpl implements DataAccessService {
 			retval.get(c.getFundingOpportunity().getId()).add(c.getGrantingSystem());
 		}
 		return retval;
+	}
+
+	@Override
+	public List<BusinessUnit> getAllDivisions() {
+		return buRepo.findAll();
+	}
+
+	@Override
+	public List<GrantingSystem> getAllGrantingSystems() {
+		return gsRepo.findAll();
 	}
 }

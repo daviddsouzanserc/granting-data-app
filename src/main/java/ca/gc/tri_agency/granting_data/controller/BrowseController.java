@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.gc.tri_agency.granting_data.form.FundingOpportunityFilterForm;
 import ca.gc.tri_agency.granting_data.model.Agency;
 import ca.gc.tri_agency.granting_data.model.BusinessUnit;
 import ca.gc.tri_agency.granting_data.model.FiscalYear;
@@ -38,14 +40,17 @@ public class BrowseController {
 		return "browse/viewAgency";
 	}
 
-	@GetMapping("/goldenList")
-	public String goldListDisplay(Model model) {
-		model.addAttribute("goldenList", dataService.getAllFundingOpportunities());
+	@GetMapping("/fundingOpportunities")
+	public String goldListDisplay(@ModelAttribute("filter") FundingOpportunityFilterForm filter, Model model) {
+		model.addAttribute("fundingOpportunities", dataService.getAllFundingOpportunities());
+		model.addAttribute("allAgencies", dataService.getAllAgencies());
+		model.addAttribute("allDivisions", dataService.getAllDivisions());
+		model.addAttribute("allGrantingSystems", dataService.getAllGrantingSystems());
 		// model.addAttribute("fcByFoMap",
 		// dataService.getFundingCycleByFundingOpportunityMap());
 		model.addAttribute("applySystemByFoMap", dataService.getApplySystemsByFundingOpportunityMap());
 		model.addAttribute("awardSystemsByFoMap", dataService.getAwardSystemsByFundingOpportunityMap());
-		return "browse/goldenList";
+		return "browse/fundingOpportunities";
 	}
 
 	@GetMapping(value = "/viewFo")
